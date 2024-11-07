@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SB Admin 2 Style Test - Extended</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="#" class="navbar-brand">Website Title</a>
+        <div class="navbar-nav">
+            <a href="settings.html" class="nav-link">Settings</a>
+            <a href="profile.html" class="nav-link">Profile</a>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="home.html" class="nav-link active">Home</a>
+            <a href="about.html" class="nav-link">About</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="card">
+                <h2>Welcome to the Extended Features Page</h2>
+                <p>This page includes various features like accordion, progress bar, and tooltips!</p>
+                <button class="button">Click Me</button>
+            </div>
+
+            <!-- Accordion Example -->
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">Click to Toggle Content</div>
+                    <div class="accordion-body">This is the content that can be toggled.</div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-bar-container">
+                <div class="progress-bar"></div>
+            </div>
+
+            <!-- Tooltip Example -->
+            <span class="tooltip">Hover over me
+                <span class="tooltiptext">Tooltip text</span>
+            </span>
+
+            <!-- Image Gallery -->
+            <div class="image-gallery">
+                <img src="https://via.placeholder.com/300" alt="Placeholder">
+                <img src="https://via.placeholder.com/300" alt="Placeholder">
+                <img src="https://via.placeholder.com/300" alt="Placeholder">
+            </div>
+
+            <!-- Modal Example -->
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        Modal Header
+                    </div>
+                    <div class="modal-body">
+                        This is a sample modal window.
+                    </div>
+                    <div class="modal-footer">
+                        <button class="modal-close" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Company Name. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function toggleAccordion(header) {
+            const body = header.nextElementSibling;
+            body.style.display = body.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

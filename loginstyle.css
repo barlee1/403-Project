@@ -1,0 +1,86 @@
+/* Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body, html {
+    font-family: "Nunito", sans-serif;
+    background-color: #f8f9fc;
+    color: #5a5c69;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Login Container */
+.login-container {
+    background-color: white;
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+    border-radius: 0.35rem;
+    box-shadow: 0 0.15rem 1.75rem rgba(58, 59, 69, 0.15);
+    text-align: center;
+}
+
+/* Logo/Header */
+.login-header {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4e73df;
+    margin-bottom: 1.5rem;
+}
+
+/* Form */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.login-form label {
+    text-align: left;
+    font-weight: 600;
+    color: #5a5c69;
+    margin-bottom: 0.25rem;
+}
+.login-form .form-control {
+    padding: 0.5rem;
+    border: 1px solid #d1d3e2;
+    border-radius: 0.35rem;
+}
+.login-form .form-control:focus {
+    border-color: #4e73df;
+    outline: none;
+    box-shadow: 0 0 5px rgba(78, 115, 223, 0.5);
+}
+
+/* Button */
+.login-btn {
+    padding: 0.75rem;
+    background-color: #4e73df;
+    color: white;
+    border: none;
+    border-radius: 0.35rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 1rem;
+}
+.login-btn:hover {
+    background-color: #2e59d9;
+}
+
+/* Link */
+.login-link {
+    color: #4e73df;
+    font-size: 0.875rem;
+    text-decoration: none;
+    margin-top: 1rem;
+    display: block;
+}
+.login-link:hover {
+    text-decoration: underline;
+}
