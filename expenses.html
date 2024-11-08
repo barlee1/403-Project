@@ -39,6 +39,73 @@
                 <p> Testing changes updates</p>
             </div>
         </div>
+
+        <header>
+            <h1>Add your Expenses</h1>
+        </header>
+
+        <div class="container">
+            
+            <!-- Income Card -->
+            <div class="card" id="incomeCard">
+                <h3>Income</h3>
+                <p id="incomeAmount">$0</p>
+                <div class="input-group">
+                    <label for="incomeInput">Add Income:</label>
+                    <input type="number" id="incomeInput" placeholder="Enter amount">
+                    <button onclick="addIncome()">Add Income</button>
+                </div>
+            </div>
+    
+            <!-- Expenses Card -->
+            <div class="card" id="expensesCard">
+                <h3>Expenses</h3>
+                <p id="expensesAmount">$0</p>
+                <div class="input-group">
+                    <label for="expensesInput">Add Expense:</label>
+                    <input type="number" id="expensesInput" placeholder="Enter amount">
+                    <button onclick="addExpense()">Add Expense</button>
+                </div>
+            </div>
+    
+            <!-- Balance Card -->
+            <div class="card" id="balanceCard">
+                <h3>Balance</h3>
+                <p id="balanceAmount">$0</p>
+            </div>
+        </div>
+    
+        <script>
+            let income = 0;
+            let expenses = 0;
+    
+            function updateBalance() {
+                const balance = income - expenses;
+                document.getElementById('balanceAmount').textContent = `$${balance.toFixed(2)}`;
+            }
+    
+            function addIncome() {
+                const incomeInput = document.getElementById('incomeInput');
+                const incomeValue = parseFloat(incomeInput.value);
+                if (!isNaN(incomeValue) && incomeValue > 0) {
+                    income += incomeValue;
+                    document.getElementById('incomeAmount').textContent = `$${income.toFixed(2)}`;
+                    updateBalance();
+                }
+                incomeInput.value = '';
+            }
+    
+            function addExpense() {
+                const expensesInput = document.getElementById('expensesInput');
+                const expenseValue = parseFloat(expensesInput.value);
+                if (!isNaN(expenseValue) && expenseValue > 0) {
+                    expenses += expenseValue;
+                    document.getElementById('expensesAmount').textContent = `$${expenses.toFixed(2)}`;
+                    updateBalance();
+                }
+                expensesInput.value = '';
+            }
+        </script>
     
         <!-- Footer -->
         <footer class="footer">
