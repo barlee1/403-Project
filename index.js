@@ -49,6 +49,5 @@ app.get("/home", async (req, res) => {
     }
 });
 
-
 //Tells you that the express app has started
 app.listen(port, () => console.log("Express App has started and server is listening!"));

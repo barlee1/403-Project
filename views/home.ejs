@@ -8,6 +8,7 @@
     <title>Home Page</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -36,12 +37,55 @@
             <h1>Welcome to our Website!</h1>
             <p>This page is the home page. It will have the dashboard, as well as links to all other pages.</p>
         </div>
+
+        <canvas id="myChart" width="400" height="200"></canvas>
     </div>
 
     <!-- Footer -->
     <footer class="footer">
         &copy; 2024 Our Website. All rights reserved.
     </footer>
+
+    <script>
+        async function fetchData() {
+            const response = await fetch("/data");
+            const data = await response.json();
+    
+            // Process the data for the chart here
+            const labels = data.map(item => item.someLabelField); // Modify to fit your data
+            const values = data.map(item => item.someValueField);
+    
+            createChart(labels, values);
+        }
+    
+        function createChart(labels, values) {
+            const ctx = document.getElementById("myChart").getContext("2d");
+            new Chart(ctx, {
+                type: "bar", // Choose the chart type
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Data Label",
+                        data: values,
+                        backgroundColor: "rgba(75, 192, 192, 0.2)",
+                        borderColor: "rgba(75, 192, 192, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    
+        // Call fetchData on page load
+        document.addEventListener("DOMContentLoaded", fetchData);
+    </script>
+    
 
 </body>
 </html>
