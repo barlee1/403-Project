@@ -49,5 +49,11 @@ app.get("/home", async (req, res) => {
     }
 });
 
+app.get("/", (req, res) => res.render("home"));
+app.get("/expenses", (req, res) => res.render("expenses"));
+app.get("/helpfultips", (req, res) => res.render("helpfultips"));
+app.get("/settings", (req, res) => res.render("settings"));
+app.get("/profile", (req, res) => res.render("profile"));
+
 //Tells you that the express app has started
 app.listen(port, () => console.log("Express App has started and server is listening!"));
