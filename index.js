@@ -39,7 +39,7 @@ app.get("/expenses", (req, res) => {
     res.render("expenses"); // This will render views/expenses.ejs
 });
 
-app.get("/home", async (req, res) => {
+app.get("/data", async (req, res) => {
     try {
         const data = await knex.select("*").from("Order_Details"); // Replace with your table name
         res.json(data);
