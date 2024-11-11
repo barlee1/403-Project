@@ -32,8 +32,8 @@ const knex = require("knex")({
 
 // Landing Page
 app.get("/", (req, res) => {
-    res.render("index"); //Render views/index.ejs
-})
+    res.render("index"); // Render views/index.ejs
+});
 
 // Home route
 app.get("/home", (req, res) => {
@@ -61,16 +61,38 @@ app.get("/profile", (req, res) => {
 });
 
 // Data route to fetch data from the database
-app.get("/data", async (req, res) => {
+// API route to fetch the data from PostgreSQL using knex
+app.get('/expenses-by-month', async (req, res) => {
     try {
-        const data = await knex.select("*").from("expenseinfo"); // Replace 'order_details' with your actual table name
-        res.json(data);
+        const result = await knex('expenseinfo')
+            .select(knex.raw("TO_CHAR(DATE_TRUNC('month', expensedatecreated), 'YYYY-MM') AS month"))
+            .avg('expenseamount AS avg_expense')
+            .groupBy(knex.raw("DATE_TRUNC('month', expensedatecreated)"))
+            .orderBy('month');
+
+        // Send the data in a JSON format
+        res.json(result);
     } catch (err) {
-        console.error("Error fetching data:", err);
-        res.status(500).send("Error fetching data");
+        console.error(err);
+        res.status(500).send('Error fetching data from database');
     }
 });
 
+app.get('/income-by-month', async (req, res) => {
+    try {
+        const result = await knex('incomeinfo')
+            .select(knex.raw("TO_CHAR(DATE_TRUNC('month', incomedatecreated), 'YYYY-MM') AS month"))
+            .sum('incomeamount AS total_income')
+            .groupBy(knex.raw("DATE_TRUNC('month', incomedatecreated)"))
+            .orderBy('month');
+
+        // Send the data in a JSON format
+        res.json(result);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error fetching income data from database');
+    }
+});
 
 
 // Start the server

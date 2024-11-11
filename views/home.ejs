@@ -34,8 +34,8 @@
             <p>This page is the home page. It will have the dashboard, as well as links to all other pages.</p>
         </div>
 
-        <canvas id="myChart" width="400" height="200"></canvas>
-    </div>
+        <canvas id="income-expense-chart" width="400" height="200"></canvas>
+        </div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -44,45 +44,75 @@
 
     <script>
         async function fetchData() {
-            const response = await fetch("/data");
-            const data = await response.json();
-    
-            // Process the data for the chart here
-            const labels = data.map(item => item.expenseamount); // Modify to fit your data
-            const values = data.map(item => item.expensedatecreated);
-    
-            createChart(labels, values);
-        }
-    
-        function createChart(labels, values) {
-            const ctx = document.getElementById("myChart").getContext("2d");
-            new Chart(ctx, {
-                type: "bar", // Choose the chart type
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: "Data Label",
-                        data: values,
-                        backgroundColor: "rgba(75, 192, 192, 0.2)",
-                        borderColor: "rgba(75, 192, 192, 1)",
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+            try {
+                // Fetch expenses data
+                const expensesResponse = await fetch('/expenses-by-month');
+                const expensesData = await expensesResponse.json();
+
+                // Fetch income data
+                const incomeResponse = await fetch('/income-by-month');
+                const incomeData = await incomeResponse.json();
+
+                // Extract the months, expenses, and income values
+                const months = expensesData.map(item => item.month);
+                const expenses = expensesData.map(item => parseFloat(item.avg_expense));
+                const income = incomeData.map(item => parseFloat(item.total_income));
+
+                // Create the chart
+                const ctx = document.getElementById('income-expense-chart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line', // Line chart type
+                    data: {
+                        labels: months, // X-axis labels (months)
+                        datasets: [
+                            {
+                                label: 'Expenses',
+                                data: expenses,
+                                borderColor: 'rgba(255, 99, 132, 1)', // Red for expenses
+                                fill: true,
+                                tension: 0.1
+                            },
+                            {
+                                label: 'Income',
+                                data: income,
+                                borderColor: 'rgba(54, 162, 235, 1)', // Blue for income
+                                fill: true,
+                                tension: 0.1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Month'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Amount ($)'
+                                },
+                                beginAtZero: true
+                            }
                         }
                     }
-                }
-            });
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         }
-    
-        // Call fetchData on page load
-        document.addEventListener("DOMContentLoaded", fetchData);
-    </script>
-    
 
+        // Fetch data and render the chart
+        fetchData();
+    </script>
 </body>
 </html>
 
