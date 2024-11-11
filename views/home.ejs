@@ -48,8 +48,8 @@
             const data = await response.json();
     
             // Process the data for the chart here
-            const labels = data.map(item => item.someLabelField); // Modify to fit your data
-            const values = data.map(item => item.someValueField);
+            const labels = data.map(item => item.expenseamount); // Modify to fit your data
+            const values = data.map(item => item.expensedatecreated);
     
             createChart(labels, values);
         }
