@@ -49,6 +49,9 @@ app.get("/data", async (req, res) => {
     }
 });
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+
 app.get("/", (req, res) => res.render("home"));
 app.get("/expenses", (req, res) => res.render("expenses"));
 app.get("/helpfultips", (req, res) => res.render("helpfultips"));
