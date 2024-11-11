@@ -11,23 +11,17 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar">
-        <a href="#" class="navbar-brand">Website Name</a>
-        <div class="navbar-nav">
-            <a href="settings.html" class="nav-link">Settings</a>
-            <a href="profile.html" class="nav-link active">Profile</a>
-        </div>
-    </nav>
+    <%- include("partials/navbar") %>
 
     <!-- Content Wrapper -->
     <div class="content-wrapper">
         <!-- Sidebar -->
         <div class="sidebar">
-            <a href="home.html" class="nav-link">Home</a>
-            <a href="expenses.html" class="nav-link">Expenses</a>
-            <a href="helpfultips.html" class="nav-link">Helpful Tips</a>
-            <a href="settings.html" class="nav-link">Settings</a>
-            <a href="profile.html" class="nav-link">Profile</a>
+            <a href="/home" class="nav-link active">Home</a>
+            <a href="/expenses" class="nav-link">Expenses</a>
+            <a href="/helpfultips" class="nav-link">Helpful Tips</a>
+            <a href="/settings" class="nav-link">Settings</a>
+            <a href="/profile" class="nav-link">Profile</a>
         </div>
 
         <!-- Main Content -->

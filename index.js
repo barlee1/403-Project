@@ -30,8 +30,13 @@ const knex = require("knex")({
 
 // Routes
 
-// Home route
+// Landing Page
 app.get("/", (req, res) => {
+    res.render("index"); //Render views/index.ejs
+})
+
+// Home route
+app.get("/home", (req, res) => {
     res.render("home"); // Render views/home.ejs
 });
 
