@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Budget Tracker</title>
+  <link rel="stylesheet" href="/public/stylesforlogin.css">
+</head>
+<body>
+  <section id="login">
+    <h2>Welcome Back To Your Financial Tracker</h2>
+    <form id="login-form" action="/login" method="POST">
+      <label for="login-email">Email:</label>
+      <input type="email" id="login-email" name="email" required>
+      
+      <label for="login-password">Password:</label>
+      <input type="password" id="login-password" name="password" required>
+      
+      <button type="submit">Login</button>
+      <p>Don’t have an account? <a href="#" onclick="showSignUp()">Create one</a></p>
+    </form>
+  </section>
+
+  <section id="signup" style="display:none;">
+    <h2>Create Account</h2>
+    <form id="signup-form" action="/signup" method="POST">
+      <label for="signup-email">Email:</label>
+      <input type="email" id="signup-email" name="email" required>
+
+      <label for="signup-password">Password:</label>
+      <input type="password" id="signup-password" name="password" required>
+
+      <label for="signup-confirm-password">Confirm Password:</label>
+      <input type="password" id="signup-confirm-password" name="confirm_password" required>
+
+      <button type="submit">Sign Up</button>
+      <p>Already have an account? <a href="#" onclick="showLogin()">Login here</a></p>
+    </form>
+  </section>
+
+  <script>
+    function showSignUp() {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('signup').style.display = 'block';
+    }
+
+    function showLogin() {
+      document.getElementById('signup').style.display = 'none';
+      document.getElementById('login').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
