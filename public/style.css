@@ -291,3 +291,50 @@ textarea:focus {
 .container {
     margin-top: 1rem; /* Ensure proper spacing without unnecessary breaks */
 }
+
+
+/*helpful tips page css*/
+
+.card-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-description {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.card-link {
+    color: #0073e6;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.card-link:hover {
+    text-decoration: underline;
+}

@@ -89,33 +89,4 @@ app.get('/income-by-month', async (req, res) => {
             .groupBy(knex.raw("DATE_TRUNC('month', incomedatecreated)"))
             .orderBy('month');
 
-        // Send the data in a JSON format
-        res.json(result);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching income data from database');
-    }
-});
-
-// Start the server
-app.listen(port, () => console.log(`Express App has started and server is listening on port ${port}!`));
-
-
-// Route for updating settings
-app.post('/update-settings', (req, res) => {
-    const themeColor = req.body['theme-color'];
-    const expenseCategories = JSON.parse(req.body['expense-categories']);
-    const incomeCategories = JSON.parse(req.body['income-categories']);
-
-    // Save the theme color and categories to settings
-    // This would ideally be stored in a database, but for now, we store it in cookies
-    res.cookie('theme-color', themeColor, { maxAge: 86400000 }); // Cookie expires in 1 day
-
-    // Optionally: Save the categories to a database, for example:
-    // knex('settings').insert({ themeColor, expenseCategories, incomeCategories })
-    //     .then(() => res.redirect('/settings'))
-    //     .catch(err => console.error(err));
-
-    // Redirect back to the settings page
-    res.redirect('/settings');
-});
+       
