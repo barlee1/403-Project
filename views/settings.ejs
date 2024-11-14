@@ -1,10 +1,9 @@
-<!-- Settings Page -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>Settings Page</title>
     <link rel="stylesheet" href="/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,7 +12,6 @@
 
      <!-- Navbar -->
      <%- include("partials/navbar") %>
-
 
      <!-- Content Wrapper -->
      <div class="content-wrapper">
@@ -35,26 +33,24 @@
                 <div class="setting-section">
                     <h2>Theme Color</h2>
                     <input type="color" id="color-picker" name="theme-color" value="#4e73df">
-                    <button id="apply-color-btn">Apply Color</button>
-                    <button id="reset-color-btn">Reset Colors</button>
+                    <button type="button" id="apply-color-btn">Test Color</button>
+                    <button type="button" id="reset-color-btn">Reset Colors</button>
                 </div>
-
 
                 <!-- Expense Categories Section -->
                 <div class="setting-section">
                     <h2 class="section-title">Expense Categories</h2>
-                    <table class="expense-categories-table">
+                    <table class="table expense-categories-table">
                         <thead>
                             <tr>
                                 <th>Category</th>
                                 <th>Icon</th>
-                                <th>Subcategories?</th>
                                 <th>Budget Entry</th>
+                                <th>Subcategories</th>
                                 <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Sample Row - Repeat for each category -->
                             <tr class="expense-category-row">
                                 <td>
                                     <input type="text" name="category-name" placeholder="Category Name">
@@ -63,10 +59,10 @@
                                     <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji" onfocus="this.placeholder=''" onblur="this.placeholder='Select Emoji'" pattern="[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}]+" title="Use emoji characters only">
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
+                                    <input type="number" name="category-budget" placeholder="Enter Budget" class="input-field">
                                 </td>
                                 <td>
-                                    <input type="number" name="category-budget" placeholder="Enter Budget">
+                                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
                                 </td>
                                 <td>
                                     <button type="button" class="delete-category">Delete</button>
@@ -74,25 +70,24 @@
                             </tr>
                         </tbody>
                     </table>
-                    <button class="add-new-category">Add New Category</button>
+                    <button type="button" class="add-new-expense-category">Add New Expense Category</button>
                 </div>
 
-                <!-- Income Categories Section (Moved here and formatted same as Expense Categories) -->
+                <!-- Income Categories Section -->
                 <div class="setting-section">
                     <h2 class="section-title">Income Categories</h2>
-                    <table class="income-categories-table">
+                    <table class="table income-categories-table">
                         <thead>
                             <tr>
                                 <th>Category</th>
                                 <th>Icon</th>
-                                <th>Subcategories?</th>
                                 <th>Budget Entry</th>
+                                <th>Subcategories</th>
                                 <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Sample Row - Repeat for each category -->
-                            <tr class="expense-category-row">
+                            <tr class="income-category-row">
                                 <td>
                                     <input type="text" name="category-name" placeholder="Category Name">
                                 </td>
@@ -100,10 +95,10 @@
                                     <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji" onfocus="this.placeholder=''" onblur="this.placeholder='Select Emoji'" pattern="[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}]+" title="Use emoji characters only">
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
+                                    <input type="number" name="category-budget" placeholder="Enter Budget" class="input-field">
                                 </td>
                                 <td>
-                                    <input type="number" name="category-budget" placeholder="Enter Budget">
+                                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
                                 </td>
                                 <td>
                                     <button type="button" class="delete-category">Delete</button>
@@ -111,26 +106,18 @@
                             </tr>
                         </tbody>
                     </table>
-                    <button class="add-new-category">Add New Category</button>
+                    <button type="button" class="add-new-income-category">Add New Income Category</button>
                 </div>
-
-
-                <!-- Preferences Section -->
-                <div class="setting-section">
-                    <h2 class="section-title">View Preferences</h2>
-                    <label for="dark-theme">Dark Theme</label>
-                    <input type="checkbox" id="dark-theme" name="dark-theme">
-                </div>
-
-                <button type="submit" class="submit-settings">Save Settings</button>
+                <br><br>
+                <button type="submit" class="submit-settings" style="background-color: #c82333;">Save Settings</button>
             </form>
         </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2024 Budget Tracker. All rights reserved.</p>
+        &copy; 2024 Our Website. All rights reserved.
     </footer>
-
 
     <!-- Script section-->
     <script>
@@ -144,6 +131,7 @@
         const defaultHeaderColor = "#3e5bb1";  // Slightly darker shade for header
         const defaultSidebarColor = "#759bec";  // Default sidebar color
     
+        
         // Apply color function
         function applyColor() {
             const selectedColor = colorPicker.value;
@@ -183,7 +171,45 @@
     
         // Initial load - set default colors
         resetColor();
-    </script>
+
+        // Add New Category functionality
+        const addExpenseCategoryButton = document.querySelector('.add-new-expense-category');
+        const addIncomeCategoryButton = document.querySelector('.add-new-income-category');
     
+        // Function to add a new row
+        function addNewCategory(table, rowType) {
+            const newRow = document.createElement('tr');
+            newRow.classList.add(`${rowType}-category-row`);
+            newRow.innerHTML = `
+                <td>
+                    <input type="text" name="category-name" placeholder="Category Name">
+                </td>
+                <td>
+                    <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji">
+                </td>
+                <td>
+                    <input type="number" name="category-budget" placeholder="Enter Budget" class="input-field">
+                </td>
+                <td>
+                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
+                </td>
+                <td>
+                    <button type="button" class="delete-category">Delete</button>
+                </td>
+            `;
+            table.appendChild(newRow);
+        }
+
+        addExpenseCategoryButton.addEventListener('click', function() {
+            const table = document.querySelector('.expense-categories-table tbody');
+            addNewCategory(table, 'expense');
+        });
+
+        addIncomeCategoryButton.addEventListener('click', function() {
+            const table = document.querySelector('.income-categories-table tbody');
+            addNewCategory(table, 'income');
+        });
+    
+    </script>
 </body>
 </html>

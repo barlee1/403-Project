@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const cookieParser = require("cookie-parser"); // Add cookie-parser to handle cookies
 
 const app = express();
 const port = 5500;
@@ -12,6 +13,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // Middleware to parse URL-encoded data (for forms)
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser()); // Initialize cookie-parser middleware
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
@@ -32,7 +34,7 @@ const knex = require("knex")({
 
 // Landing Page
 app.get("/", (req, res) => {
-    res.render("login"); // Render views/index.ejs
+    res.render("login"); // Render views/login.ejs
 });
 
 // Home route
@@ -50,9 +52,10 @@ app.get("/helpfultips", (req, res) => {
     res.render("helpfultips"); // Render views/helpfultips.ejs
 });
 
-// Settings route
+// Settings route - Retrieve the theme color and categories from cookies or settings
 app.get("/settings", (req, res) => {
-    res.render("settings"); // Render views/settings.ejs
+    const themeColor = req.cookies['theme-color'] || '#4e73df'; // Default theme color if not set
+    res.render("settings", { themeColor }); // Pass the themeColor to the EJS template
 });
 
 // Profile route
@@ -94,9 +97,25 @@ app.get('/income-by-month', async (req, res) => {
     }
 });
 
-
 // Start the server
 app.listen(port, () => console.log(`Express App has started and server is listening on port ${port}!`));
 
 
-//hello! This is a test
+// Route for updating settings
+app.post('/update-settings', (req, res) => {
+    const themeColor = req.body['theme-color'];
+    const expenseCategories = JSON.parse(req.body['expense-categories']);
+    const incomeCategories = JSON.parse(req.body['income-categories']);
+
+    // Save the theme color and categories to settings
+    // This would ideally be stored in a database, but for now, we store it in cookies
+    res.cookie('theme-color', themeColor, { maxAge: 86400000 }); // Cookie expires in 1 day
+
+    // Optionally: Save the categories to a database, for example:
+    // knex('settings').insert({ themeColor, expenseCategories, incomeCategories })
+    //     .then(() => res.redirect('/settings'))
+    //     .catch(err => console.error(err));
+
+    // Redirect back to the settings page
+    res.redirect('/settings');
+});
