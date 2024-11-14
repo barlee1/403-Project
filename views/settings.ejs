@@ -209,6 +209,18 @@
             const table = document.querySelector('.income-categories-table tbody');
             addNewCategory(table, 'income');
         });
+
+        // Add Event Listener for Delete Button
+        document.addEventListener('click', function(event) {
+            if (event.target && event.target.classList.contains('delete-category')) {
+                // Find the parent row of the clicked delete button
+                const row = event.target.closest('tr');
+                
+                // Remove the row
+                row.remove();
+            }
+        });
+
     
     </script>
 </body>
