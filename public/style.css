@@ -23,6 +23,11 @@ body, html {
     color: #fff;
     font-size: 1.5rem;
     font-weight: bold;
+    position: fixed; /* Fix the navbar at the top */
+    top: 0; /* Align the navbar at the top of the page */
+    left: 0; /* Align to the left edge */
+    width: 100%; /* Make sure it stretches across the entire width of the screen */
+    z-index: 1000; /* Ensure it stays on top of other elements */
 }
 
 .navbar-brand {
@@ -62,17 +67,24 @@ body, html {
 .content-wrapper {
     display: flex;
     flex-grow: 1;
+    margin-left: 200px; /* Push the content to the right to accommodate the sidebar */
+    margin-top: 4rem; /* Add top margin to prevent content from hiding under the fixed navbar */
+    flex-direction: column;
 }
 
 /* Sidebar Styles */
 .sidebar {
     width: 200px;
-    background-color: var(--sidebar-color, #759bec); /* Default lighter blue */
+    background-color: var(--sidebar-color, #759bec);
     padding-top: 2rem;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: calc(100vh - 4rem); /* Subtract the height of the navbar */
+    position: fixed; /* Keep the sidebar fixed on the side */
+    top: 4rem; /* Start the sidebar just below the navbar */
+    left: 0; /* Align it to the left edge of the screen */
 }
+
 .sidebar .nav-link {
     display: block;
     padding: 1rem; /* Make the links larger */
@@ -143,7 +155,7 @@ body {
 .setting-section {
     padding: 1rem;
     margin-top: 2rem;
-    background-color: #ffffff;
+    background-color: #eeeeee;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -154,9 +166,19 @@ body {
     margin-bottom: 1rem;
 }
 
+/* Color Picker as a small rectangle, same size as buttons */
 #color-picker {
-    margin-right: 1rem;
+    width: 4rem; /* Let the width adjust to match the button */
+    height: 2.25rem; /* Match the height of the button */
+    padding: 0.5rem; /* Padding similar to the buttons */
+    background-color: var(--header-color); /* Use theme color */
+    cursor: pointer;
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Ensure smooth transition for both background and box-shadow */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Default shadow for the color picker */
 }
+
+
 
 button {
     padding: 0.5rem 1rem;
@@ -167,6 +189,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: auto;
 }
 
 button:hover {
@@ -177,26 +200,26 @@ button:focus {
     outline: none;
 }
 
-/* Expense Categories Table */
-.expense-categories-table {
+/* Common Styles for Tables */
+.table {
     width: 100%;
     margin-top: 2rem;
     border-collapse: collapse;
 }
 
-.expense-categories-table th, .expense-categories-table td {
+.table th, .table td {
     padding: 1rem;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-.expense-categories-table th {
+.table th {
     background-color: var(--theme-color);
     color: #fff;
 }
 
-.expense-categories-table td input[type="text"],
-.expense-categories-table td input[type="checkbox"] {
+.table td input[type="text"],
+.table td input[type="checkbox"] {
     padding: 0.5rem;
     width: 100%;
     border: 1px solid #ddd;
@@ -204,7 +227,7 @@ button:focus {
     margin-top: 0.5rem;
 }
 
-.expense-categories-table td button {
+.table td button {
     padding: 0.5rem;
     background-color: #dc3545;
     color: #fff;
@@ -213,49 +236,13 @@ button:focus {
     cursor: pointer;
 }
 
-.expense-categories-table td button:hover {
+.table td button:hover {
     background-color: #c82333;
 }
 
-
-/* income Categories Table */
-.income-categories-table {
-    width: 100%;
-    margin-top: 2rem;
-    border-collapse: collapse;
-}
-
-.income-categories-table th, .income-categories-table td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.income-categories-table th {
-    background-color: var(--theme-color);
-    color: #fff;
-}
-
-.income-categories-table td input[type="text"],
-.income-categories-table td input[type="checkbox"] {
-    padding: 0.5rem;
-    width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-top: 0.5rem;
-}
-
-.income-categories-table td button {
-    padding: 0.5rem;
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.income-categories-table td button:hover {
-    background-color: #c82333;
+/* Hover Effect for Table Rows */
+.table tr:hover {
+    background-color: #f1f1f1;
 }
 
 /* Collapse Row Button */
@@ -271,5 +258,36 @@ button:focus {
     background-color: #e2e6ea;
 }
 
+/* Uniform Styling for all input fields, including date and category picker */
+input[type="text"],
+input[type="number"],
+input[type="color"],
+input[type="date"],
+select,
+textarea {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%; /* Ensure all inputs are the same width */
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
 
+/* Focus state for all inputs */
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="color"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #4e73df;
+    outline: none;
+}
 
+/* Remove the extra <br> tag before the table */
+.container {
+    margin-top: 1rem; /* Ensure proper spacing without unnecessary breaks */
+}

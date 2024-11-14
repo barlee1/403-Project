@@ -1,110 +1,139 @@
-<!--This page hosts the new expense/income form, as well as a search/filter function for viewing entries-->
-
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Expenses Page</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses Page</title>
     <link rel="stylesheet" href="/style.css">
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-    </head>
-    <body>
-    
-        <!-- Nav Bar -->
-        <%- include("partials/navbar") %>
-    
-        <!-- Content Wrapper -->
-        <div class="content-wrapper">
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <a href="/home" class="nav-link">Home</a>
-                <a href="/expenses" class="nav-link active">Expenses</a>
-                <a href="/helpfultips" class="nav-link">Helpful Tips</a>
-                <a href="/settings" class="nav-link">Settings</a>
-                <a href="/profile" class="nav-link">Profile</a>
-            </div>
-    
-            <!-- Main Content -->
-            <div class="main-content">
-                <h1>Welcome to our Website!</h1>
-                <p>This page hosts the new expense/income form, as well as a search/filter function for viewing entries</p>
-                <br>
-                <p> Testing changes updates</p>
-            </div>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
 
-        <header>
-            <h1>Add your Expenses</h1>
-        </header>
+    <!-- Nav Bar -->
+    <%- include("partials/navbar") %>
 
-        <div class="container">
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <a href="/home" class="nav-link">Home</a>
+            <a href="/expenses" class="nav-link active">Expenses</a>
+            <a href="/helpfultips" class="nav-link">Helpful Tips</a>
+            <a href="/settings" class="nav-link">Settings</a>
+            <a href="/profile" class="nav-link">Profile</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="container">
+                <!-- Expense/Income Entry Form -->
+                <div class="setting-section">
+                    <h2 class="section-title">Add New Entry</h2>
+                    <table class="table expense-categories-table">
+                        <thead>
+                            <tr>
+                                <th>Entry Type</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                                <th>Submit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="expense-category-row">
+                                <td>
+                                    <label><input type="radio" name="entryType" id="expenseRadio" checked> New Expense Entry</label>
+                                    <label><input type="radio" name="entryType" id="incomeRadio"> New Income Entry</label>
+                                </td>
+                                <td>
+                                    <input type="date" id="entryDate" class="styled-input">
+                                </td>
+                                <td>
+                                    <select id="category" class="styled-select">
+                                        <!-- Dynamic categories will be inserted here -->
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" id="amount" placeholder="Enter amount" class="input-field">
+                                </td>
+                                <td>
+                                    <textarea id="description" placeholder="Enter description (optional)"></textarea>
+                                </td>
+                                <td>
+                                    <button type="button" class="submit-entry" onclick="submitEntry()">Submit</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Example category objects - these would be passed from the backend
+        const expenseCategories = [
+            { name: "Food", icon: "🍔" },
+            { name: "Transportation", icon: "🚗" },
+            { name: "Utilities", icon: "💡" },
+            { name: "Entertainment", icon: "🎮" }
+        ];
+        const incomeCategories = [
+            { name: "Salary", icon: "💼" },
+            { name: "Freelance", icon: "✍️" },
+            { name: "Investments", icon: "📈" }
+        ];
+
+        // Function to populate the category dropdown
+        function populateCategoryDropdown(categories) {
+            const categorySelect = document.getElementById('category');
+            categorySelect.innerHTML = ''; // Clear existing options
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.name.toLowerCase();
+                option.innerHTML = `${category.icon} ${category.name}`;
+                categorySelect.appendChild(option);
+            });
+        }
+
+        // Set the default category list to expense categories
+        populateCategoryDropdown(expenseCategories);
+
+        // Event listener for radio buttons
+        document.getElementById('expenseRadio').addEventListener('change', function() {
+            if (this.checked) {
+                populateCategoryDropdown(expenseCategories); // Show expense categories
+            }
+        });
+
+        document.getElementById('incomeRadio').addEventListener('change', function() {
+            if (this.checked) {
+                populateCategoryDropdown(incomeCategories); // Show income categories
+            }
+        });
+
+        // Submit Entry Function
+        function submitEntry() {
+            const entryDate = document.getElementById('entryDate').value;
+            const category = document.getElementById('category').value;
+            const amount = document.getElementById('amount').value;
+            const description = document.getElementById('description').value;
             
-            <!-- Income Card -->
-            <div class="card" id="incomeCard">
-                <h3>Income</h3>
-                <p id="incomeAmount">$0</p>
-                <div class="input-group">
-                    <label for="incomeInput">Add Income:</label>
-                    <input type="number" id="incomeInput" placeholder="Enter amount">
-                    <button onclick="addIncome()">Add Income</button>
-                </div>
-            </div>
-    
-            <!-- Expenses Card -->
-            <div class="card" id="expensesCard">
-                <h3>Expenses</h3>
-                <p id="expensesAmount">$0</p>
-                <div class="input-group">
-                    <label for="expensesInput">Add Expense:</label>
-                    <input type="number" id="expensesInput" placeholder="Enter amount">
-                    <button onclick="addExpense()">Add Expense</button>
-                </div>
-            </div>
-    
-            <!-- Balance Card -->
-            <div class="card" id="balanceCard">
-                <h3>Balance</h3>
-                <p id="balanceAmount">$0</p>
-            </div>
-        </div>
-        </div>
-    
-        <script>
-            let income = 0;
-            let expenses = 0;
-    
-            function updateBalance() {
-                const balance = income - expenses;
-                document.getElementById('balanceAmount').textContent = `$${balance.toFixed(2)}`;
-            }
-    
-            function addIncome() {
-                const incomeInput = document.getElementById('incomeInput');
-                const incomeValue = parseFloat(incomeInput.value);
-                if (!isNaN(incomeValue) && incomeValue > 0) {
-                    income += incomeValue;
-                    document.getElementById('incomeAmount').textContent = `$${income.toFixed(2)}`;
-                    updateBalance();
-                }
-                incomeInput.value = '';
-            }
-    
-            function addExpense() {
-                const expensesInput = document.getElementById('expensesInput');
-                const expenseValue = parseFloat(expensesInput.value);
-                if (!isNaN(expenseValue) && expenseValue > 0) {
-                    expenses += expenseValue;
-                    document.getElementById('expensesAmount').textContent = `$${expenses.toFixed(2)}`;
-                    updateBalance();
-                }
-                expensesInput.value = '';
-            }
-        </script>
-    
-        <!-- Footer -->
-        <footer class="footer">
-            &copy; 2024 Our Website. All rights reserved.
-        </footer>
-    
-    </body>
-    </html>
+            // Clear the form fields after submission
+            document.getElementById('entryDate').value = '';
+            document.getElementById('category').value = ''; // default to empty
+            document.getElementById('amount').value = '';
+            document.getElementById('description').value = '';
+
+            alert('Entry Submitted!');
+        }
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        &copy; 2024 Our Website. All rights reserved.
+    </footer>
+
+</body>
+</html>
