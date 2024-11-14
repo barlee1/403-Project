@@ -19,7 +19,7 @@ body, html {
     justify-content: center; /* Centers the title */
     align-items: center;
     padding: 1rem 2rem;
-    background-color: #4e73df; /* Darker blue */
+    background-color: var(--header-color, #4e73df); /* Default darker blue */
     color: #fff;
     font-size: 1.5rem;
     font-weight: bold;
@@ -42,9 +42,20 @@ body, html {
     text-decoration: none;
     font-size: 0.875rem; /* Smaller links */
     font-weight: bold;
+    padding: 0.5rem 1rem; /* Add padding to create 'boxes' around the links */
+    border-radius: 5px; /* Rounded corners for links */
+    transition: background-color 0.3s, color 0.3s;
 }
+
 .navbar-nav .nav-link:hover {
     color: #d1d3e2;
+    background-color: var(--header-color);
+}
+
+/* Active Link Styling */
+.navbar-nav .nav-link.active {
+    background-color: #fff; /* Inverted background for active links */
+    color: var(--theme-color); /* Active link text in theme color */
 }
 
 /* Content Wrapper */
@@ -56,7 +67,7 @@ body, html {
 /* Sidebar Styles */
 .sidebar {
     width: 200px;
-    background-color: #759bec; /* Lighter blue */
+    background-color: var(--sidebar-color, #759bec); /* Default lighter blue */
     padding-top: 2rem;
     display: flex;
     flex-direction: column;
@@ -76,8 +87,8 @@ body, html {
 .sidebar .nav-link:hover,
 .sidebar .nav-link.active {
     background-color: white;
-    color: #4e73df;
-    box-shadow: inset -5px 0 0 0 #f8f9fc; /* Connect bubble to main content */
+    color: var(--header-color);
+    box-shadow: inset -5px 0 0 0 var(--theme-color); /* Connect bubble to main content */
     border-radius: 0; /* Remove rounded corners for a square bubble */
 }
 
@@ -85,13 +96,180 @@ body, html {
 .main-content {
     padding: 2rem;
     flex-grow: 1;
-    background-color: #f8f9fc;
+    background-color: var(--content-bg, #f8f9fc); /* Default background for content */
 }
 
 /* Footer Styles */
 .footer {
     text-align: center;
     padding: 1rem;
-    background-color: #e2e6ea;
+    background-color: var(--footer-bg, #e2e6ea); /* Footer background */
     color: #5a5c69;
 }
+
+/* Default Theme Color */
+:root {
+    --theme-color: #4e73df; /* Default color */
+    --header-color: #3e5bb1; /* Slightly darker for header */
+    --sidebar-color: #759bec; /* Sidebar color */
+    --content-bg: #f8f9fc; /* Default background color */
+    --footer-bg: #e2e6ea; /* Default footer background */
+}
+
+/* Apply the custom theme color */
+body {
+    background-color: var(--content-bg);
+}
+
+.navbar {
+    background-color: var(--header-color); /* Navbar header color */
+    color: #fff;
+}
+
+.sidebar .nav-link {
+    background-color: var(--theme-color); /* Sidebar links */
+}
+
+.sidebar .nav-link:hover {
+    background-color: var(--header-color); /* Hover effect */
+}
+
+/* Main content area and other sections */
+.main-content {
+    background-color: var(--content-bg); /* Keep content background dynamic */
+}
+
+/* Theme Color Section */
+.setting-section {
+    padding: 1rem;
+    margin-top: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.setting-section h2 {
+    color: var(--theme-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+#color-picker {
+    margin-right: 1rem;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: var(--theme-color);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--header-color);
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Expense Categories Table */
+.expense-categories-table {
+    width: 100%;
+    margin-top: 2rem;
+    border-collapse: collapse;
+}
+
+.expense-categories-table th, .expense-categories-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.expense-categories-table th {
+    background-color: var(--theme-color);
+    color: #fff;
+}
+
+.expense-categories-table td input[type="text"],
+.expense-categories-table td input[type="checkbox"] {
+    padding: 0.5rem;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+}
+
+.expense-categories-table td button {
+    padding: 0.5rem;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.expense-categories-table td button:hover {
+    background-color: #c82333;
+}
+
+
+/* income Categories Table */
+.income-categories-table {
+    width: 100%;
+    margin-top: 2rem;
+    border-collapse: collapse;
+}
+
+.income-categories-table th, .income-categories-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.income-categories-table th {
+    background-color: var(--theme-color);
+    color: #fff;
+}
+
+.income-categories-table td input[type="text"],
+.income-categories-table td input[type="checkbox"] {
+    padding: 0.5rem;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 0.5rem;
+}
+
+.income-categories-table td button {
+    padding: 0.5rem;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.income-categories-table td button:hover {
+    background-color: #c82333;
+}
+
+/* Collapse Row Button */
+.collapse-btn {
+    padding: 0.3rem 0.6rem;
+    background-color: #f8f9fc;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.collapse-btn:hover {
+    background-color: #e2e6ea;
+}
+
+
+

@@ -1,40 +1,189 @@
-<!--This page hosts the users website settings (where they can change view preferences, categories, etc.)-->
+<!-- Settings Page -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Page</title>
+    <title>Home Page</title>
     <link rel="stylesheet" href="/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-    <!-- Navbar -->
-    <%- include("partials/navbar") %>
+     <!-- Navbar -->
+     <%- include("partials/navbar") %>
 
-    <!-- Content Wrapper -->
-    <div class="content-wrapper">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <a href="/home" class="nav-link">Home</a>
-            <a href="/expenses" class="nav-link">Expenses</a>
-            <a href="/helpfultips" class="nav-link">Helpful Tips</a>
-            <a href="/settings" class="nav-link active">Settings</a>
-            <a href="/profile" class="nav-link">Profile</a>
-        </div>
+
+     <!-- Content Wrapper -->
+     <div class="content-wrapper">
+         <!-- Sidebar -->
+         <div class="sidebar">
+             <a href="/home" class="nav-link">Home</a>
+             <a href="/expenses" class="nav-link">Expenses</a>
+             <a href="/helpfultips" class="nav-link">Helpful Tips</a>
+             <a href="/settings" class="nav-link active">Settings</a>
+             <a href="/profile" class="nav-link">Profile</a>
+         </div>
 
         <!-- Main Content -->
         <div class="main-content">
-            <h1>Welcome to our Website!</h1>
-            <p>This page hosts the users website settings (where they can change view preferences, categories, etc.)</p>
+            <h1>Account Settings</h1>
+            <form action="/update-settings" method="POST">
+
+                <!-- Theme Color Section -->
+                <div class="setting-section">
+                    <h2>Theme Color</h2>
+                    <input type="color" id="color-picker" name="theme-color" value="#4e73df">
+                    <button id="apply-color-btn">Apply Color</button>
+                    <button id="reset-color-btn">Reset Colors</button>
+                </div>
+
+
+                <!-- Expense Categories Section -->
+                <div class="setting-section">
+                    <h2 class="section-title">Expense Categories</h2>
+                    <table class="expense-categories-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Icon</th>
+                                <th>Subcategories?</th>
+                                <th>Budget Entry</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Sample Row - Repeat for each category -->
+                            <tr class="expense-category-row">
+                                <td>
+                                    <input type="text" name="category-name" placeholder="Category Name">
+                                </td>
+                                <td>
+                                    <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji" onfocus="this.placeholder=''" onblur="this.placeholder='Select Emoji'" pattern="[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}]+" title="Use emoji characters only">
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
+                                </td>
+                                <td>
+                                    <input type="number" name="category-budget" placeholder="Enter Budget">
+                                </td>
+                                <td>
+                                    <button type="button" class="delete-category">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="add-new-category">Add New Category</button>
+                </div>
+
+                <!-- Income Categories Section (Moved here and formatted same as Expense Categories) -->
+                <div class="setting-section">
+                    <h2 class="section-title">Income Categories</h2>
+                    <table class="income-categories-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Icon</th>
+                                <th>Subcategories?</th>
+                                <th>Budget Entry</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Sample Row - Repeat for each category -->
+                            <tr class="expense-category-row">
+                                <td>
+                                    <input type="text" name="category-name" placeholder="Category Name">
+                                </td>
+                                <td>
+                                    <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji" onfocus="this.placeholder=''" onblur="this.placeholder='Select Emoji'" pattern="[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}]+" title="Use emoji characters only">
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
+                                </td>
+                                <td>
+                                    <input type="number" name="category-budget" placeholder="Enter Budget">
+                                </td>
+                                <td>
+                                    <button type="button" class="delete-category">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="add-new-category">Add New Category</button>
+                </div>
+
+
+                <!-- Preferences Section -->
+                <div class="setting-section">
+                    <h2 class="section-title">View Preferences</h2>
+                    <label for="dark-theme">Dark Theme</label>
+                    <input type="checkbox" id="dark-theme" name="dark-theme">
+                </div>
+
+                <button type="submit" class="submit-settings">Save Settings</button>
+            </form>
         </div>
-    </div>
 
     <!-- Footer -->
     <footer class="footer">
-        &copy; 2024 Our Website. All rights reserved.
+        <p>&copy; 2024 Budget Tracker. All rights reserved.</p>
     </footer>
 
+
+    <!-- Script section-->
+    <script>
+        // Get the color picker and buttons
+        const colorPicker = document.getElementById("color-picker");
+        const applyColorBtn = document.getElementById("apply-color-btn");
+        const resetColorBtn = document.getElementById("reset-color-btn");
+    
+        // Default color scheme (original theme color)
+        const defaultColor = "#4e73df";  // Default blue color
+        const defaultHeaderColor = "#3e5bb1";  // Slightly darker shade for header
+        const defaultSidebarColor = "#759bec";  // Default sidebar color
+    
+        // Apply color function
+        function applyColor() {
+            const selectedColor = colorPicker.value;
+    
+            // Set the theme color for the page elements
+            document.documentElement.style.setProperty('--theme-color', selectedColor);
+            document.documentElement.style.setProperty('--header-color', darkenColor(selectedColor, 0.15));
+    
+            // Set the sidebar color
+            document.documentElement.style.setProperty('--sidebar-color', selectedColor);
+        }
+    
+        // Reset to default colors
+        function resetColor() {
+            document.documentElement.style.setProperty('--theme-color', defaultColor);
+            document.documentElement.style.setProperty('--header-color', defaultHeaderColor);
+            document.documentElement.style.setProperty('--sidebar-color', defaultSidebarColor);  // Reset sidebar color
+        }
+    
+        // Helper function to darken a color (to apply to the header)
+        function darkenColor(color, percent) {
+            let colorHex = color.startsWith("#") ? color.slice(1) : color;
+            let r = parseInt(colorHex.slice(0, 2), 16);
+            let g = parseInt(colorHex.slice(2, 4), 16);
+            let b = parseInt(colorHex.slice(4, 6), 16);
+    
+            r = Math.floor(r * (1 - percent));
+            g = Math.floor(g * (1 - percent));
+            b = Math.floor(b * (1 - percent));
+    
+            return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+        }
+    
+        // Event listeners for the buttons
+        applyColorBtn.addEventListener("click", applyColor);
+        resetColorBtn.addEventListener("click", resetColor);
+    
+        // Initial load - set default colors
+        resetColor();
+    </script>
+    
 </body>
 </html>
