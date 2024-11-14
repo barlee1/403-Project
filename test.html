@@ -93,3 +93,158 @@
 
 </body>
 </html>
+
+
+<!--this is a placeholder for code I do not want to delete yet, just in case-->
+
+<!--This page hosts the users website settings (where they can change view preferences, categories, etc.)-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <%- include("partials/navbar") %>
+
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <a href="/home" class="nav-link">Home</a>
+            <a href="/expenses" class="nav-link">Expenses</a>
+            <a href="/helpfultips" class="nav-link">Helpful Tips</a>
+            <a href="/settings" class="nav-link active">Settings</a>
+            <a href="/profile" class="nav-link">Profile</a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h1>Welcome to our Website!</h1>
+            <p>This page hosts the users website settings (where they can change view preferences, categories, etc.)</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        &copy; 2024 Our Website. All rights reserved.
+    </footer>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Basic Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body, html {
+    font-family: "Nunito", sans-serif;
+    background-color: #f8f9fc;
+    color: #5a5c69;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: center; /* Centers the title */
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #4e73df; /* Darker blue */
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.navbar-brand {
+    color: #fff;
+    text-decoration: none;
+    flex-grow: 1;
+    text-align: center;
+    font-size: 2rem; /* Larger title */
+}
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+.navbar-nav .nav-link {
+    color: #f8f9fc;
+    margin-left: 1rem;
+    text-decoration: none;
+    font-size: 0.875rem; /* Smaller links */
+    font-weight: bold;
+}
+.navbar-nav .nav-link:hover {
+    color: #d1d3e2;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    display: flex;
+    flex-grow: 1;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 200px;
+    background-color: #759bec; /* Lighter blue */
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+.sidebar .nav-link {
+    display: block;
+    padding: 1rem; /* Make the links larger */
+    color: #f8f9fc;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Hover and Active Effect */
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: white;
+    color: #4e73df;
+    box-shadow: inset -5px 0 0 0 #f8f9fc; /* Connect bubble to main content */
+    border-radius: 0; /* Remove rounded corners for a square bubble */
+}
+
+/* Main Content */
+.main-content {
+    padding: 2rem;
+    flex-grow: 1;
+    background-color: #f8f9fc;
+}
+
+/* Footer Styles */
+.footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #e2e6ea;
+    color: #5a5c69;
+}
+
