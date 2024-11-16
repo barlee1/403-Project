@@ -10,19 +10,19 @@
 </head>
 <body>
 
-     <!-- Navbar -->
-     <%- include("partials/navbar") %>
+    <!-- Navbar -->
+    <%- include("partials/navbar") %>
 
-     <!-- Content Wrapper -->
-     <div class="content-wrapper">
-         <!-- Sidebar -->
-         <div class="sidebar">
-             <a href="/home" class="nav-link">Home</a>
-             <a href="/expenses" class="nav-link">Expenses</a>
-             <a href="/helpfultips" class="nav-link">Helpful Tips</a>
-             <a href="/settings" class="nav-link active">Settings</a>
-             <a href="/profile" class="nav-link">Profile</a>
-         </div>
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <a href="/home" class="nav-link">Home</a>
+            <a href="/expenses" class="nav-link">Expenses</a>
+            <a href="/helpfultips" class="nav-link">Helpful Tips</a>
+            <a href="/settings" class="nav-link active">Settings</a>
+            <a href="/profile" class="nav-link">Profile</a>
+        </div>
 
         <!-- Main Content -->
         <div class="main-content">
@@ -43,34 +43,53 @@
                     <table class="table expense-categories-table">
                         <thead>
                             <tr>
-                                <th>Category</th>
                                 <th>Icon</th>
-                                <th>Budget Entry</th>
-                                <th>Subcategories</th>
+                                <th>Category</th>
+                                <th>Budget Goal</th>
                                 <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="expense-category-row">
                                 <td>
-                                    <input type="text" name="category-name" placeholder="Category Name">
+                                    <!-- Icon input field -->
+                                    <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji" required>
                                 </td>
                                 <td>
-                                    <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji" onfocus="this.placeholder=''" onblur="this.placeholder='Select Emoji'" pattern="[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}]+" title="Use emoji characters only">
+                                    <!-- Dropdown for Expense Categories -->
+                                    <select name="category-name" class="category-select" required>
+                                        <option value="Tuition & Fees">Tuition & Fees</option>
+                                        <option value="Textbooks & Supplies">Textbooks & Supplies</option>
+                                        <option value="Housing">Housing</option>
+                                        <option value="Utilities">Utilities</option>
+                                        <option value="Groceries">Groceries</option>
+                                        <option value="Dining Out">Dining Out</option>
+                                        <option value="Transportation">Transportation</option>
+                                        <option value="Health & Insurance">Health & Insurance</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                        <option value="Clothing">Clothing</option>
+                                        <option value="Personal Care">Personal Care</option>
+                                        <option value="Phone & Internet">Phone & Internet</option>
+                                        <option value="Sports & Recreation">Sports & Recreation</option>
+                                        <option value="Miscellaneous">Miscellaneous</option>
+                                        <option value="Custom">Custom</option> <!-- Option for Custom -->
+                                    </select>
+                                    <input type="text" name="custom-category" class="custom-category-input" placeholder="Enter custom category" style="display: none;">
                                 </td>
                                 <td>
-                                    <input type="number" name="category-budget" placeholder="Enter Budget" class="input-field">
+                                    <div class="budget-goal-container">
+                                        <span class="currency-symbol">$</span>
+                                        <input type="text" class="budget-goal-input" placeholder="0.00" required>
+                                        <span class="per-month-text">per month</span>
+                                    </div>
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
-                                </td>
-                                <td>
-                                    <button type="button" class="delete-category">Delete</button>
+                                    <button type="button" class="delete-category" style="background-color: #c82333;">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" class="add-new-expense-category">Add New Expense Category</button>
+                    <button type="button" class="add-new-expense-category" style="background-color: #4e73df; color: white;">Add New Expense Category</button>
                 </div>
 
                 <!-- Income Categories Section -->
@@ -79,47 +98,60 @@
                     <table class="table income-categories-table">
                         <thead>
                             <tr>
-                                <th>Category</th>
                                 <th>Icon</th>
-                                <th>Budget Entry</th>
-                                <th>Subcategories</th>
+                                <th>Category</th>
+                                <th>Budget Goal</th>
                                 <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="income-category-row">
                                 <td>
-                                    <input type="text" name="category-name" placeholder="Category Name">
+                                    <!-- Icon input field -->
+                                    <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji" required>
                                 </td>
                                 <td>
-                                    <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji" onfocus="this.placeholder=''" onblur="this.placeholder='Select Emoji'" pattern="[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}]+" title="Use emoji characters only">
+                                    <!-- Dropdown for Income Categories -->
+                                    <select name="category-name" class="category-select" required>
+                                        <option value="Part-Time Job">Part-Time Job</option>
+                                        <option value="Scholarships">Scholarships</option>
+                                        <option value="Student Loans">Student Loans</option>
+                                        <option value="Family Support">Family Support</option>
+                                        <option value="Grants">Grants</option>
+                                        <option value="Gifts">Gifts</option>
+                                        <option value="Investments">Investments</option>
+                                        <option value="Custom">Custom</option> <!-- Option for Custom -->
+                                    </select>
+                                    <input type="text" name="custom-category" class="custom-category-input" placeholder="Enter custom category" style="display: none;">
                                 </td>
                                 <td>
-                                    <input type="number" name="category-budget" placeholder="Enter Budget" class="input-field">
+                                    <div class="budget-goal-container">
+                                        <span class="currency-symbol">$</span>
+                                        <input type="text" class="budget-goal-input" placeholder="0.00" required>
+                                        <span class="per-month-text">per month</span>
+                                    </div>
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
-                                </td>
-                                <td>
-                                    <button type="button" class="delete-category">Delete</button>
+                                    <button type="button" class="delete-category" style="background-color: #c82333;">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" class="add-new-income-category">Add New Income Category</button>
+                    <button type="button" class="add-new-income-category" style="background-color: #4e73df; color: white;">Add New Income Category</button>
                 </div>
+
                 <br><br>
-                <button type="submit" class="submit-settings" style="background-color: #c82333;">Save Settings</button>
+                <button type="submit" class="submit-settings" style="background-color: #c82333; color: white;">Save Settings</button>
             </form>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" style="background-color: #4e73df; color: white;">
         &copy; 2024 CashCow. All rights reserved.
     </footer>
 
-    <!-- Script section-->
+    <!-- Script Section-->
     <script>
         // Get the color picker and buttons
         const colorPicker = document.getElementById("color-picker");
@@ -131,7 +163,6 @@
         const defaultHeaderColor = "#3e5bb1";  // Slightly darker shade for header
         const defaultSidebarColor = "#759bec";  // Default sidebar color
     
-        
         // Apply color function
         function applyColor() {
             const selectedColor = colorPicker.value;
@@ -170,58 +201,101 @@
         resetColorBtn.addEventListener("click", resetColor);
     
         // Initial load - set default colors
-        resetColor();
-
-        // Add New Category functionality
-        const addExpenseCategoryButton = document.querySelector('.add-new-expense-category');
-        const addIncomeCategoryButton = document.querySelector('.add-new-income-category');
+        resetColor(); 
     
-        // Function to add a new row
-        function addNewCategory(table, rowType) {
+        // Show/Hide custom category input field when 'Custom' option is selected
+        document.querySelectorAll('.category-select').forEach(selectElement => {
+            selectElement.addEventListener('change', (event) => {
+                const customCategoryInput = event.target.closest('td').querySelector('.custom-category-input');
+                if (event.target.value === 'Custom') {
+                    customCategoryInput.style.display = 'block';
+                } else {
+                    customCategoryInput.style.display = 'none';
+                }
+            });
+        });
+
+        // Add new expense category row
+        document.querySelector('.add-new-expense-category').addEventListener('click', () => {
+            const tableBody = document.querySelector('.expense-categories-table tbody');
             const newRow = document.createElement('tr');
-            newRow.classList.add(`${rowType}-category-row`);
+            newRow.classList.add('expense-category-row');
             newRow.innerHTML = `
+                <td><input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji" required></td>
                 <td>
-                    <input type="text" name="category-name" placeholder="Category Name">
+                    <select name="category-name" class="category-select" required>
+                        <option value="Tuition & Fees">Tuition & Fees</option>
+                        <option value="Textbooks & Supplies">Textbooks & Supplies</option>
+                        <option value="Housing">Housing</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Groceries">Groceries</option>
+                        <option value="Dining Out">Dining Out</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Health & Insurance">Health & Insurance</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Personal Care">Personal Care</option>
+                        <option value="Phone & Internet">Phone & Internet</option>
+                        <option value="Sports & Recreation">Sports & Recreation</option>
+                        <option value="Miscellaneous">Miscellaneous</option>
+                        <option value="Custom">Custom</option>
+                    </select>
+                    <input type="text" name="custom-category" class="custom-category-input" placeholder="Enter custom category" style="display: none;">
                 </td>
                 <td>
-                    <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji">
+                    <div class="budget-goal-container">
+                        <span class="currency-symbol">$</span>
+                        <input type="text" class="budget-goal-input" placeholder="0.00" required>
+                        <span class="per-month-text">per month</span>
+                    </div>
                 </td>
                 <td>
-                    <input type="number" name="category-budget" placeholder="Enter Budget" class="input-field">
-                </td>
-                <td>
-                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
-                </td>
-                <td>
-                    <button type="button" class="delete-category">Delete</button>
+                    <button type="button" class="delete-category" style="background-color: #c82333;">Delete</button>
                 </td>
             `;
-            table.appendChild(newRow);
-        }
-
-        addExpenseCategoryButton.addEventListener('click', function() {
-            const table = document.querySelector('.expense-categories-table tbody');
-            addNewCategory(table, 'expense');
+            tableBody.appendChild(newRow);
         });
 
-        addIncomeCategoryButton.addEventListener('click', function() {
-            const table = document.querySelector('.income-categories-table tbody');
-            addNewCategory(table, 'income');
+        // Add new income category row
+        document.querySelector('.add-new-income-category').addEventListener('click', () => {
+            const tableBody = document.querySelector('.income-categories-table tbody');
+            const newRow = document.createElement('tr');
+            newRow.classList.add('income-category-row');
+            newRow.innerHTML = `
+                <td><input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji" required></td>
+                <td>
+                    <select name="category-name" class="category-select" required>
+                        <option value="Part-Time Job">Part-Time Job</option>
+                        <option value="Scholarships">Scholarships</option>
+                        <option value="Student Loans">Student Loans</option>
+                        <option value="Family Support">Family Support</option>
+                        <option value="Grants">Grants</option>
+                        <option value="Gifts">Gifts</option>
+                        <option value="Investments">Investments</option>
+                        <option value="Custom">Custom</option>
+                    </select>
+                    <input type="text" name="custom-category" class="custom-category-input" placeholder="Enter custom category" style="display: none;">
+                </td>
+                <td>
+                    <div class="budget-goal-container">
+                        <span class="currency-symbol">$</span>
+                        <input type="text" class="budget-goal-input" placeholder="0.00" required>
+                        <span class="per-month-text">per month</span>
+                    </div>
+                </td>
+                <td>
+                    <button type="button" class="delete-category" style="background-color: #c82333;">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(newRow);
         });
-
-        // Add Event Listener for Delete Button
-        document.addEventListener('click', function(event) {
-            if (event.target && event.target.classList.contains('delete-category')) {
-                // Find the parent row of the clicked delete button
-                const row = event.target.closest('tr');
-                
-                // Remove the row
-                row.remove();
+        // Event listener for delete buttons
+        document.addEventListener('click', (event) => {
+        if (event.target.classList.contains('delete-category')) {
+            const row = event.target.closest('tr'); // Find the closest row to the delete button
+            row.remove(); // Remove the row from the table
             }
         });
-
-    
     </script>
 </body>
 </html>

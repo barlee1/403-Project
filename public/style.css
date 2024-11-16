@@ -338,3 +338,102 @@ textarea:focus {
 .card-link:hover {
     text-decoration: underline;
 }
+
+.budget-goal-container {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Space between elements */
+    margin: 10px 0; /* Adjust margins as needed */
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+.currency-symbol {
+    font-size: 1rem;
+    color: #5a5c69;
+}
+
+.budget-goal-input {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 80px; /* Adjust width to match expected input size */
+    box-sizing: border-box;
+    text-align: right; /* Align text to the right for better currency formatting */
+}
+
+.per-month-text {
+    font-size: 0.9rem;
+    color: #5a5c69;
+}
+
+/* Custom dropdown and input field styling */
+.select-custom-container {
+    position: relative;
+    width: 100%;
+}
+
+.select-custom-container select,
+.select-custom-container input[type="text"] {
+    width: 100%; /* Make both the select box and input the same width */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.select-custom-container input[type="text"] {
+    display: none; /* Initially hide the custom input */
+}
+
+/* Show the input field when custom is selected */
+.select-custom-container.custom-active input[type="text"] {
+    display: block; /* Display the custom input when active */
+}
+
+.select-custom-container.custom-active select {
+    display: none; /* Hide the dropdown when custom is active */
+}
+
+/* Back button to return to dropdown */
+.back-to-dropdown {
+    display: none; /* Hidden by default */
+    background-color: #4e73df;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.select-custom-container.custom-active .back-to-dropdown {
+    display: inline-block; /* Show the back button when custom is active */
+}
+
+/* Back button hover effect */
+.back-to-dropdown:hover {
+    background-color: #3e5bb1;
+}
+
+/* Adjustments for form inputs to ensure consistency */
+input[type="text"],
+input[type="number"],
+input[type="color"],
+input[type="date"],
+select,
+textarea {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%; /* Ensure all inputs are the same width */
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
