@@ -290,5 +290,6 @@ app.post('/update-settings', (req, res) => {
     res.redirect('/settings');
 });
 
+// Serve the '403-Project/javascript' folder as static files
+app.use('/javascript', express.static('403-Project/javascript'));
 
-app.listen(port, () => console.log(`Express App has started and server is listening on port ${port}!`));
