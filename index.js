@@ -3,7 +3,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser"); // Add cookie-parser to handle cookies
 
 const app = express();
-const port = 5500;
+const port = process.env.PORT || 5500;
 
 // Set EJS as the view engine
 app.set("view engine", "ejs");
