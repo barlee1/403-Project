@@ -218,8 +218,7 @@ button:focus {
     color: #fff;
 }
 
-.table td input[type="text"],
-.table td input[type="checkbox"] {
+.table td input[type="text"]{
     padding: 0.5rem;
     width: 100%;
     border: 1px solid #ddd;
@@ -245,18 +244,6 @@ button:focus {
     background-color: #f1f1f1;
 }
 
-/* Collapse Row Button */
-.collapse-btn {
-    padding: 0.3rem 0.6rem;
-    background-color: #f8f9fc;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.collapse-btn:hover {
-    background-color: #e2e6ea;
-}
 
 /* Uniform Styling for all input fields, including date and category picker */
 input[type="text"],
@@ -285,11 +272,6 @@ select:focus,
 textarea:focus {
     border-color: #4e73df;
     outline: none;
-}
-
-/* Remove the extra <br> tag before the table */
-.container {
-    margin-top: 1rem; /* Ensure proper spacing without unnecessary breaks */
 }
 
 
@@ -348,7 +330,7 @@ textarea:focus {
 }
 
 .currency-symbol {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: #5a5c69;
 }
 
@@ -358,6 +340,7 @@ textarea:focus {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    height: 44px;
     width: 80px; /* Adjust width to match expected input size */
     box-sizing: border-box;
     text-align: right; /* Align text to the right for better currency formatting */
@@ -367,6 +350,7 @@ textarea:focus {
     font-size: 0.9rem;
     color: #5a5c69;
 }
+
 
 /* Custom dropdown and input field styling */
 .select-custom-container {
@@ -418,22 +402,4 @@ textarea:focus {
 /* Back button hover effect */
 .back-to-dropdown:hover {
     background-color: #3e5bb1;
-}
-
-/* Adjustments for form inputs to ensure consistency */
-input[type="text"],
-input[type="number"],
-input[type="color"],
-input[type="date"],
-select,
-textarea {
-    font-family: 'Nunito', sans-serif;
-    font-size: 14px;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%; /* Ensure all inputs are the same width */
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
 }
