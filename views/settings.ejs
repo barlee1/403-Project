@@ -122,9 +122,7 @@
                                         <option value="Phone & Internet">Phone & Internet</option>
                                         <option value="Sports & Recreation">Sports & Recreation</option>
                                         <option value="Miscellaneous">Miscellaneous</option>
-                                        <option value="Custom">Custom</option> <!-- Custom Option -->
                                     </select>
-                                    <input type="text" name="custom-category" class="custom-category-input" placeholder="Enter custom category" style="display: none;">
                                 </td>
                                 <td>
                                     <!-- Budget Goal Input -->
@@ -215,9 +213,7 @@
                                         <option value="Grants">Grants</option>
                                         <option value="Gifts">Gifts</option>
                                         <option value="Investments">Investments</option>
-                                        <option value="Custom">Custom</option> <!-- Custom Option -->
                                     </select>
-                                    <input type="text" name="custom-category" class="custom-category-input" placeholder="Enter custom category" style="display: none;">
                                 </td>
                                 <td>
                                     <!-- Budget Goal Input -->
@@ -312,33 +308,6 @@
         // Initial load: Apply the default colors
         resetColor();
 
-        /**
-         * Show or hide the custom category input field based on the selected option.
-         */
-        document.querySelectorAll('.category-select').forEach(selectElement => {
-            selectElement.addEventListener('change', (event) => {
-                const customCategoryInput = event.target.closest('td').querySelector('.custom-category-input');
-                // Display custom input if "Custom" is selected; otherwise, hide it
-                if (event.target.value === 'Custom') {
-                    customCategoryInput.style.display = 'block';
-                } else {
-                    customCategoryInput.style.display = 'none';
-                }
-            });
-        });
-
-        /**
-         * Function to handle the "Custom" category input display logic.
-         */
-        function handleCategorySelectChange(event) {
-            const customCategoryInput = event.target.closest('td').querySelector('.custom-category-input');
-            // Display custom input if "Custom" is selected; otherwise, hide it
-            if (event.target.value === 'Custom') {
-                customCategoryInput.style.display = 'block';
-            } else {
-                customCategoryInput.style.display = 'none';
-            }
-        }
 
         /**
          * Attach the event listener to all current and future select elements.
@@ -422,9 +391,7 @@
                         <option value="Phone & Internet">Phone & Internet</option>
                         <option value="Sports & Recreation">Sports & Recreation</option>
                         <option value="Miscellaneous">Miscellaneous</option>
-                        <option value="Custom">Custom</option>
                     </select>
-                    <input type="text" name="custom-category" class="custom-category-input" placeholder="Enter custom category" style="display: none;">
                 </td>
                 <td>
                     <div class="budget-goal-container">
@@ -507,9 +474,7 @@
                         <option value="Grants">Grants</option>
                         <option value="Gifts">Gifts</option>
                         <option value="Investments">Investments</option>
-                        <option value="Custom">Custom</option>
                     </select>
-                    <input type="text" name="custom-category" class="custom-category-input" placeholder="Enter custom category" style="display: none;">
                 </td>
                 <td>
                     <div class="budget-goal-container">
