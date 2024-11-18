@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -50,7 +50,86 @@
     }
   </script>
 </body>
-<footer class="footer">
-  &copy; 2024 CashCow. All rights reserved.
-</footer>
+
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Budget Tracker</title>
+  <link rel="stylesheet" href="/stylesforlogin.css">
+</head>
+<body>
+  <section id="login">
+    <h2>Welcome Back To Your Financial Tracker</h2>
+
+    <!-- Error message display for login -->
+    <% if (error && error.type === 'login') { %>
+      <p class="error"><%= error.message %></p>
+    <% } %>
+
+    <form id="login-form" action="/login" method="POST">
+      <label for="login-email">Email:</label>
+      <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
+      
+      <label for="login-password">Password:</label>
+      <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+      
+      <button type="submit">Login</button>
+      <p>Don’t have an account? <a href="#" onclick="showSignUp()">Create one</a></p>
+    </form>
+  </section>
+
+  <section id="signup" style="display:none;">
+    <h2>Create Account</h2>
+
+    <!-- Error message display for sign-up -->
+    <% if (error && error.type === 'signup') { %>
+      <p class="error"><%= error.message %></p>
+    <% } %>
+
+    <form id="signup-form" action="/signup" method="POST">
+      <label for="signup-email">Email:</label>
+      <input type="email" id="signup-email" name="email" placeholder="Enter your email" required>
+
+      <label for="signup-password">Password:</label>
+      <input type="password" id="signup-password" name="password" placeholder="Enter a strong password" required>
+
+      <label for="signup-confirm-password">Confirm Password:</label>
+      <input type="password" id="signup-confirm-password" name="confirm_password" placeholder="Confirm your password" required>
+
+      <button type="submit">Sign Up</button>
+      <p>Already have an account? <a href="#" onclick="showLogin()">Login here</a></p>
+    </form>
+  </section>
+
+  <script>
+    function showSignUp() {
+      document.getElementById('login').style.display = 'none';
+      document.getElementById('signup').style.display = 'block';
+    }
+
+    function showLogin() {
+      document.getElementById('signup').style.display = 'none';
+      document.getElementById('login').style.display = 'block';
+    }
+
+    // Password validation for sign-up
+    document.getElementById("signup-form").addEventListener("submit", function (e) {
+      const password = document.getElementById("signup-password").value;
+      const confirmPassword = document.getElementById("signup-confirm-password").value;
+
+      if (password.length < 8) {
+        e.preventDefault();
+        alert("Password must be at least 8 characters long.");
+      } else if (password !== confirmPassword) {
+        e.preventDefault();
+        alert("Passwords do not match.");
+      }
+    });
+  </script>
+</body>
 </html>
+
