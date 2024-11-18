@@ -3,7 +3,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser"); // Add cookie-parser to handle cookies
 
 const app = express();
-const port = 5500;
+const port = process.env.PORT || 5500;
 
 // Set EJS as the view engine
 app.set("view engine", "ejs");
@@ -22,11 +22,12 @@ app.use(express.static(path.join(__dirname, "public")));
 const knex = require("knex")({
     client: "pg",
     connection: {
-        host: "localhost",
-        user: "kyleebrown",
-        password: "Admin",
-        database: "budgetsite",
-        port: 5432
+        host: process.env.RDS_HOSTNAME || "localhost",
+        user: process.env.RDS_USERNAME || "kyleebrown",
+        password: process.env.RDS_PASSWORD || "Admin",
+        database: process.env.RDS_DB_NAME || "budgetsite",
+        port: process.env.RDS_PORT || 5432,
+        ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
     }
 });
 
