@@ -218,8 +218,7 @@ button:focus {
     color: #fff;
 }
 
-.table td input[type="text"],
-.table td input[type="checkbox"] {
+.table td input[type="text"]{
     padding: 0.5rem;
     width: 100%;
     border: 1px solid #ddd;
@@ -245,18 +244,6 @@ button:focus {
     background-color: #f1f1f1;
 }
 
-/* Collapse Row Button */
-.collapse-btn {
-    padding: 0.3rem 0.6rem;
-    background-color: #f8f9fc;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.collapse-btn:hover {
-    background-color: #e2e6ea;
-}
 
 /* Uniform Styling for all input fields, including date and category picker */
 input[type="text"],
@@ -285,11 +272,6 @@ select:focus,
 textarea:focus {
     border-color: #4e73df;
     outline: none;
-}
-
-/* Remove the extra <br> tag before the table */
-.container {
-    margin-top: 1rem; /* Ensure proper spacing without unnecessary breaks */
 }
 
 
@@ -337,4 +319,87 @@ textarea:focus {
 
 .card-link:hover {
     text-decoration: underline;
+}
+
+.budget-goal-container {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Space between elements */
+    margin: 10px 0; /* Adjust margins as needed */
+    white-space: nowrap; /* Prevent wrapping */
+}
+
+.currency-symbol {
+    font-size: 1.1rem;
+    color: #5a5c69;
+}
+
+.budget-goal-input {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 44px;
+    width: 80px; /* Adjust width to match expected input size */
+    box-sizing: border-box;
+    text-align: right; /* Align text to the right for better currency formatting */
+}
+
+.per-month-text {
+    font-size: 0.9rem;
+    color: #5a5c69;
+}
+
+
+/* Custom dropdown and input field styling */
+.select-custom-container {
+    position: relative;
+    width: 100%;
+}
+
+.select-custom-container select,
+.select-custom-container input[type="text"] {
+    width: 100%; /* Make both the select box and input the same width */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.select-custom-container input[type="text"] {
+    display: none; /* Initially hide the custom input */
+}
+
+/* Show the input field when custom is selected */
+.select-custom-container.custom-active input[type="text"] {
+    display: block; /* Display the custom input when active */
+}
+
+.select-custom-container.custom-active select {
+    display: none; /* Hide the dropdown when custom is active */
+}
+
+/* Back button to return to dropdown */
+.back-to-dropdown {
+    display: none; /* Hidden by default */
+    background-color: #4e73df;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.select-custom-container.custom-active .back-to-dropdown {
+    display: inline-block; /* Show the back button when custom is active */
+}
+
+/* Back button hover effect */
+.back-to-dropdown:hover {
+    background-color: #3e5bb1;
 }
