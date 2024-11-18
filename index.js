@@ -26,7 +26,8 @@ const knex = require("knex")({
         user: process.env.RDS_USERNAME || "kyleebrown",
         password: process.env.RDS_PASSWORD || "Admin",
         database: process.env.RDS_DB_NAME || "budgetsite",
-        port: process.env.RDS_PORT || 5432
+        port: process.env.RDS_PORT || 5432,
+        ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
     }
 });
 
