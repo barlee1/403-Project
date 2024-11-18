@@ -289,5 +289,5 @@ app.post('/update-settings', (req, res) => {
     res.redirect('/settings');
 });
 
-// Start the server
+
 app.listen(port, () => console.log(`Express App has started and server is listening on port ${port}!`));

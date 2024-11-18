@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta Information -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings Page</title>
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Chart.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <!--Reference to javascript in the settings.js file-->
+    <script src="/javascript/settings.js"></script>
 
-     <!-- Navbar -->
-     <%- include("partials/navbar") %>
+    <!-- Navbar (Included from Partial) -->
+    <%- include("partials/navbar") %>
 
-     <!-- Content Wrapper -->
-     <div class="content-wrapper">
-         <!-- Sidebar -->
-         <div class="sidebar">
-             <a href="/home" class="nav-link">Home</a>
-             <a href="/expenses" class="nav-link">Expenses</a>
-             <a href="/helpfultips" class="nav-link">Helpful Tips</a>
-             <a href="/settings" class="nav-link active">Settings</a>
-             <a href="/profile" class="nav-link">Profile</a>
-         </div>
+    <!-- Main Content Wrapper -->
+    <div class="content-wrapper">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <a href="/home" class="nav-link">Home</a>
+            <a href="/expenses" class="nav-link">Expenses</a>
+            <a href="/helpfultips" class="nav-link">Helpful Tips</a>
+            <a href="/settings" class="nav-link active">Settings</a>
+            <a href="/profile" class="nav-link">Profile</a>
+        </div>
 
-        <!-- Main Content -->
+        <!-- Main Content Area -->
         <div class="main-content">
             <h1>Account Settings</h1>
             <form action="/update-settings" method="POST">
@@ -43,34 +50,97 @@
                     <table class="table expense-categories-table">
                         <thead>
                             <tr>
-                                <th>Category</th>
                                 <th>Icon</th>
-                                <th>Budget Entry</th>
-                                <th>Subcategories</th>
+                                <th>Category</th>
+                                <th>Budget Goal</th>
                                 <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="expense-category-row">
                                 <td>
-                                    <input type="text" name="category-name" placeholder="Category Name">
+                                    <!-- Dropdown for Icon (Emoji) -->
+                                    <select name="expenseEmoji" id="expenseEmoji">
+                                        <option value="Prize Money">🥇 (1st Place Medal)</option>
+                                        <option value="Emergency Fund">🚑 (Ambulance)</option>
+                                        <option value="Child Support">👶 (Baby)</option>
+                                        <option value="Legal Fees">⚖️ (Balance Scale)</option>
+                                        <option value="Business Profits">📊 (Bar Chart)</option>
+                                        <option value="Sports & Recreation">🏀 (Basketball)</option>
+                                        <option value="Textbooks & Supplies">📚 (Books)</option>
+                                        <option value="Government Assistance">💼 (Briefcase)</option>
+                                        <option value="Home Maintenance">🧹 (Broom)</option>
+                                        <option value="Transportation">🚗 (Car)</option>
+                                        <option value="Groceries">🥕 (Carrot)</option>
+                                        <option value="Stocks">📉 (Chart Decreasing)</option>
+                                        <option value="Investments">📈 (Chart Increasing)</option>
+                                        <option value="Entertainment">🎬 (Clapper Board)</option>
+                                        <option value="Side Business">🏪 (Convenience Store)</option>
+                                        <option value="Dividends">💳 (Credit Card)</option>
+                                        <option value="Freelance Work">🖥️ (Desktop Computer)</option>
+                                        <option value="Pets">🐕 (Dog)</option>
+                                        <option value="Student Loans">💵 (Dollar Banknote)</option>
+                                        <option value="Clothing">👗 (Dress)</option>
+                                        <option value="Royalties">📀 (DVD)</option>
+                                        <option value="Family Support">👨‍👩‍👧‍👦 (Family)</option>
+                                        <option value="Gifts">🎁 (Gift)</option>
+                                        <option value="Crowdfunding">🌐 (Globe with Meridians)</option>
+                                        <option value="Scholarships">🎓 (Graduation Cap)</option>
+                                        <option value="Miscellaneous">🛠️ (Hammer and Wrench)</option>
+                                        <option value="Partnership">🤝 (Handshake)</option>
+                                        <option value="Subscriptions">🎧 (Headphone)</option>
+                                        <option value="Charity">❤️ (Heart)</option>
+                                        <option value="Inheritance">🏠 (House)</option>
+                                        <option value="Rental Income">🏘️ (Houses)</option>
+                                        <option value="Utilities">💡 (Light Bulb)</option>
+                                        <option value="Commissions">💰 (Money Bag)</option>
+                                        <option value="Cash Gifts">💸 (Money with Wings)</option>
+                                        <option value="Pension">🧓 (Older Person)</option>
+                                        <option value="Phone & Internet">📱 (Phone)</option>
+                                        <option value="Health & Insurance">💊 (Pill)</option>
+                                        <option value="Dining Out">🍽️ (Plate with Cutlery)</option>
+                                        <option value="Alimony">💍 (Ring)</option>
+                                        <option value="Medical Expenses">🩺 (Stethoscope)</option>
+                                        <option value="Wrench">🔧 (Wrench)</option>
+                                        <option value="Vacation">✈️ (Airplane)</option>
+                                    </select>
                                 </td>
                                 <td>
-                                    <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji" onfocus="this.placeholder=''" onblur="this.placeholder='Select Emoji'" pattern="[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}]+" title="Use emoji characters only">
+                                    <!-- Dropdown for Category Selection -->
+                                    <select name="category-name" class="category-select" required>
+                                        <option value="Tuition & Fees">Tuition & Fees</option>
+                                        <option value="Textbooks & Supplies">Textbooks & Supplies</option>
+                                        <option value="Housing">Housing</option>
+                                        <option value="Utilities">Utilities</option>
+                                        <option value="Groceries">Groceries</option>
+                                        <option value="Dining Out">Dining Out</option>
+                                        <option value="Transportation">Transportation</option>
+                                        <option value="Health & Insurance">Health & Insurance</option>
+                                        <option value="Entertainment">Entertainment</option>
+                                        <option value="Clothing">Clothing</option>
+                                        <option value="Personal Care">Personal Care</option>
+                                        <option value="Phone & Internet">Phone & Internet</option>
+                                        <option value="Sports & Recreation">Sports & Recreation</option>
+                                        <option value="Miscellaneous">Miscellaneous</option>
+                                    </select>
                                 </td>
                                 <td>
-                                    <input type="number" name="category-budget" placeholder="Enter Budget" class="input-field">
+                                    <!-- Budget Goal Input -->
+                                    <div class="budget-goal-container">
+                                        <span class="currency-symbol">$</span>
+                                        <input type="text" class="budget-goal-input" placeholder="0.00" required>
+                                        <span class="per-month-text">per month</span>
+                                    </div>
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
-                                </td>
-                                <td>
-                                    <button type="button" class="delete-category">Delete</button>
+                                    <!-- Delete Button -->
+                                    <button type="button" class="delete-category" style="background-color: #c82333;">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" class="add-new-expense-category">Add New Expense Category</button>
+                    <br>
+                    <button type="button" class="add-new-expense-category" style="background-color: var(--theme-color); color: white;">Add New Expense Category</button>
                 </div>
 
                 <!-- Income Categories Section -->
@@ -79,149 +149,363 @@
                     <table class="table income-categories-table">
                         <thead>
                             <tr>
-                                <th>Category</th>
                                 <th>Icon</th>
-                                <th>Budget Entry</th>
-                                <th>Subcategories</th>
+                                <th>Category</th>
+                                <th>Expected Income</th>
                                 <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="income-category-row">
                                 <td>
-                                    <input type="text" name="category-name" placeholder="Category Name">
+                                    <!-- Dropdown for Icon (Emoji) -->
+                                    <select name="incomeEmoji" id="incomeEmoji">
+                                        <option value="Prize Money">🥇 (1st Place Medal)</option>
+                                        <option value="Emergency Fund">🚑 (Ambulance)</option>
+                                        <option value="Child Support">👶 (Baby)</option>
+                                        <option value="Legal Fees">⚖️ (Balance Scale)</option>
+                                        <option value="Business Profits">📊 (Bar Chart)</option>
+                                        <option value="Sports & Recreation">🏀 (Basketball)</option>
+                                        <option value="Textbooks & Supplies">📚 (Books)</option>
+                                        <option value="Government Assistance">💼 (Briefcase)</option>
+                                        <option value="Home Maintenance">🧹 (Broom)</option>
+                                        <option value="Transportation">🚗 (Car)</option>
+                                        <option value="Groceries">🥕 (Carrot)</option>
+                                        <option value="Stocks">📉 (Chart Decreasing)</option>
+                                        <option value="Investments">📈 (Chart Increasing)</option>
+                                        <option value="Entertainment">🎬 (Clapper Board)</option>
+                                        <option value="Side Business">🏪 (Convenience Store)</option>
+                                        <option value="Dividends">💳 (Credit Card)</option>
+                                        <option value="Freelance Work">🖥️ (Desktop Computer)</option>
+                                        <option value="Pets">🐕 (Dog)</option>
+                                        <option value="Student Loans">💵 (Dollar Banknote)</option>
+                                        <option value="Clothing">👗 (Dress)</option>
+                                        <option value="Royalties">📀 (DVD)</option>
+                                        <option value="Family Support">👨‍👩‍👧‍👦 (Family)</option>
+                                        <option value="Gifts">🎁 (Gift)</option>
+                                        <option value="Crowdfunding">🌐 (Globe with Meridians)</option>
+                                        <option value="Scholarships">🎓 (Graduation Cap)</option>
+                                        <option value="Miscellaneous">🛠️ (Hammer and Wrench)</option>
+                                        <option value="Partnership">🤝 (Handshake)</option>
+                                        <option value="Subscriptions">🎧 (Headphone)</option>
+                                        <option value="Charity">❤️ (Heart)</option>
+                                        <option value="Inheritance">🏠 (House)</option>
+                                        <option value="Rental Income">🏘️ (Houses)</option>
+                                        <option value="Utilities">💡 (Light Bulb)</option>
+                                        <option value="Commissions">💰 (Money Bag)</option>
+                                        <option value="Cash Gifts">💸 (Money with Wings)</option>
+                                        <option value="Pension">🧓 (Older Person)</option>
+                                        <option value="Phone & Internet">📱 (Phone)</option>
+                                        <option value="Health & Insurance">💊 (Pill)</option>
+                                        <option value="Dining Out">🍽️ (Plate with Cutlery)</option>
+                                        <option value="Alimony">💍 (Ring)</option>
+                                        <option value="Medical Expenses">🩺 (Stethoscope)</option>
+                                        <option value="Wrench">🔧 (Wrench)</option>
+                                        <option value="Vacation">✈️ (Airplane)</option>
+                                    </select>
                                 </td>
                                 <td>
-                                    <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji" onfocus="this.placeholder=''" onblur="this.placeholder='Select Emoji'" pattern="[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}]+" title="Use emoji characters only">
+                                    <!-- Dropdown for Category Selection -->
+                                    <select name="category-name" class="category-select" required>
+                                        <option value="Part-Time Job">Paycheck</option>
+                                        <option value="Scholarships">Scholarships</option>
+                                        <option value="Student Loans">Student Loan Receipt</option>
+                                        <option value="Family Support">Family Support</option>
+                                        <option value="Grants">Grants</option>
+                                        <option value="Gifts">Gifts</option>
+                                        <option value="Investments">Investments</option>
+                                    </select>
                                 </td>
                                 <td>
-                                    <input type="number" name="category-budget" placeholder="Enter Budget" class="input-field">
+                                    <!-- Budget Goal Input -->
+                                    <div class="budget-goal-container">
+                                        <span class="currency-symbol">$</span>
+                                        <input type="text" class="budget-goal-input" placeholder="0.00" required>
+                                        <span class="per-month-text">per month</span>
+                                    </div>
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
-                                </td>
-                                <td>
-                                    <button type="button" class="delete-category">Delete</button>
+                                    <!-- Delete Button -->
+                                    <button type="button" class="delete-category" style="background-color: #c82333;">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" class="add-new-income-category">Add New Income Category</button>
+                    <br>
+                    <button type="button" class="add-new-income-category" style="background-color: var(--theme-color); color: white;">Add New Income Category</button>
                 </div>
-                <br><br>
-                <button type="submit" class="submit-settings" style="background-color: #c82333;">Save Settings</button>
+
+                <!-- Save Settings Button -->
+                <button type="submit" class="submit-settings" style="background-color: #c82333; color: white;">Save Settings</button>
             </form>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
-        &copy; 2024 Our Website. All rights reserved.
+    <footer class="footer" style="background-color: #4e73df; color: white;">
+        &copy; 2024 CashCow. All rights reserved.
     </footer>
 
-    <!-- Script section-->
     <script>
+        //Script Section for the settings page, called in settings.ejs file at the very bottom.
+
+
         // Get the color picker and buttons
         const colorPicker = document.getElementById("color-picker");
         const applyColorBtn = document.getElementById("apply-color-btn");
         const resetColorBtn = document.getElementById("reset-color-btn");
-    
+
         // Default color scheme (original theme color)
-        const defaultColor = "#4e73df";  // Default blue color
-        const defaultHeaderColor = "#3e5bb1";  // Slightly darker shade for header
-        const defaultSidebarColor = "#759bec";  // Default sidebar color
-    
-        
-        // Apply color function
+        const defaultColor = "#4e73df"; // Default blue color
+        const defaultHeaderColor = "#3e5bb1"; // Slightly darker shade for header
+        const defaultSidebarColor = "#759bec"; // Default sidebar color
+
+        /**
+         * Apply selected color theme to the page.
+         */
         function applyColor() {
             const selectedColor = colorPicker.value;
-    
-            // Set the theme color for the page elements
+
+            // Update CSS variables for the theme colors
             document.documentElement.style.setProperty('--theme-color', selectedColor);
-            document.documentElement.style.setProperty('--header-color', darkenColor(selectedColor, 0.15));
-    
-            // Set the sidebar color
-            document.documentElement.style.setProperty('--sidebar-color', selectedColor);
+            document.documentElement.style.setProperty('--header-color', darkenColor(selectedColor, 0.15)); // Darker shade for header
+            document.documentElement.style.setProperty('--sidebar-color', selectedColor); // Sidebar matches theme color
         }
-    
-        // Reset to default colors
+
+        /**
+         * Reset the theme colors to the default values.
+         */
         function resetColor() {
+            // Restore default colors
             document.documentElement.style.setProperty('--theme-color', defaultColor);
             document.documentElement.style.setProperty('--header-color', defaultHeaderColor);
-            document.documentElement.style.setProperty('--sidebar-color', defaultSidebarColor);  // Reset sidebar color
+            document.documentElement.style.setProperty('--sidebar-color', defaultSidebarColor);
         }
-    
-        // Helper function to darken a color (to apply to the header)
+
+        /**
+         * Helper function to darken a color by a percentage.
+         * @param {string} color - The original hex color.
+         * @param {number} percent - The percentage to darken the color.
+         * @returns {string} The darkened color as a hex string.
+         */
         function darkenColor(color, percent) {
-            let colorHex = color.startsWith("#") ? color.slice(1) : color;
-            let r = parseInt(colorHex.slice(0, 2), 16);
-            let g = parseInt(colorHex.slice(2, 4), 16);
-            let b = parseInt(colorHex.slice(4, 6), 16);
-    
+            let colorHex = color.startsWith("#") ? color.slice(1) : color; // Remove '#' if present
+            let r = parseInt(colorHex.slice(0, 2), 16); // Extract red
+            let g = parseInt(colorHex.slice(2, 4), 16); // Extract green
+            let b = parseInt(colorHex.slice(4, 6), 16); // Extract blue
+
+            // Adjust each color channel by the darkening percentage
             r = Math.floor(r * (1 - percent));
             g = Math.floor(g * (1 - percent));
             b = Math.floor(b * (1 - percent));
-    
+
+            // Return the darkened color in hex format
             return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
         }
-    
-        // Event listeners for the buttons
-        applyColorBtn.addEventListener("click", applyColor);
-        resetColorBtn.addEventListener("click", resetColor);
-    
-        // Initial load - set default colors
+
+        // Event listeners for the Apply and Reset buttons
+        applyColorBtn.addEventListener("click", applyColor); // Apply selected color
+        resetColorBtn.addEventListener("click", resetColor); // Reset to default colors
+
+        // Initial load: Apply the default colors
         resetColor();
 
-        // Add New Category functionality
-        const addExpenseCategoryButton = document.querySelector('.add-new-expense-category');
-        const addIncomeCategoryButton = document.querySelector('.add-new-income-category');
-    
-        // Function to add a new row
-        function addNewCategory(table, rowType) {
-            const newRow = document.createElement('tr');
-            newRow.classList.add(`${rowType}-category-row`);
-            newRow.innerHTML = `
-                <td>
-                    <input type="text" name="category-name" placeholder="Category Name">
-                </td>
-                <td>
-                    <input type="text" name="category-icon" class="emoji-input" placeholder="Select Emoji">
-                </td>
-                <td>
-                    <input type="number" name="category-budget" placeholder="Enter Budget" class="input-field">
-                </td>
-                <td>
-                    <input type="checkbox" name="subcategory" class="subcategory-toggle">
-                </td>
-                <td>
-                    <button type="button" class="delete-category">Delete</button>
-                </td>
-            `;
-            table.appendChild(newRow);
+
+        /**
+         * Attach the event listener to all current and future select elements.
+         */
+        function attachCategorySelectListeners() {
+            // Attach to existing rows
+            document.querySelectorAll('.category-select').forEach(selectElement => {
+                selectElement.removeEventListener('change', handleCategorySelectChange); // Remove previous listeners to prevent duplicates
+                selectElement.addEventListener('change', handleCategorySelectChange);
+            });
         }
 
-        addExpenseCategoryButton.addEventListener('click', function() {
-            const table = document.querySelector('.expense-categories-table tbody');
-            addNewCategory(table, 'expense');
+        /**
+         * Add a new row for an expense category.
+         */
+        document.querySelector('.add-new-expense-category').addEventListener('click', () => {
+            const tableBody = document.querySelector('.expense-categories-table tbody');
+            const newRow = document.createElement('tr');
+            newRow.classList.add('expense-category-row');
+            newRow.innerHTML = `
+                <td>
+                    <!-- Dropdown for Icon (Emoji) -->
+                    <select name="expenseEmoji" id="expenseEmoji">
+                        <option value="Prize Money">🥇 (1st Place Medal)</option>
+                        <option value="Emergency Fund">🚑 (Ambulance)</option>
+                        <option value="Child Support">👶 (Baby)</option>
+                        <option value="Legal Fees">⚖️ (Balance Scale)</option>
+                        <option value="Business Profits">📊 (Bar Chart)</option>
+                        <option value="Sports & Recreation">🏀 (Basketball)</option>
+                        <option value="Textbooks & Supplies">📚 (Books)</option>
+                        <option value="Government Assistance">💼 (Briefcase)</option>
+                        <option value="Home Maintenance">🧹 (Broom)</option>
+                        <option value="Transportation">🚗 (Car)</option>
+                        <option value="Groceries">🥕 (Carrot)</option>
+                        <option value="Stocks">📉 (Chart Decreasing)</option>
+                        <option value="Investments">📈 (Chart Increasing)</option>
+                        <option value="Entertainment">🎬 (Clapper Board)</option>
+                        <option value="Side Business">🏪 (Convenience Store)</option>
+                        <option value="Dividends">💳 (Credit Card)</option>
+                        <option value="Freelance Work">🖥️ (Desktop Computer)</option>
+                        <option value="Pets">🐕 (Dog)</option>
+                        <option value="Student Loans">💵 (Dollar Banknote)</option>
+                        <option value="Clothing">👗 (Dress)</option>
+                        <option value="Royalties">📀 (DVD)</option>
+                        <option value="Family Support">👨‍👩‍👧‍👦 (Family)</option>
+                        <option value="Gifts">🎁 (Gift)</option>
+                        <option value="Crowdfunding">🌐 (Globe with Meridians)</option>
+                        <option value="Scholarships">🎓 (Graduation Cap)</option>
+                        <option value="Miscellaneous">🛠️ (Hammer and Wrench)</option>
+                        <option value="Partnership">🤝 (Handshake)</option>
+                        <option value="Subscriptions">🎧 (Headphone)</option>
+                        <option value="Charity">❤️ (Heart)</option>
+                        <option value="Inheritance">🏠 (House)</option>
+                        <option value="Rental Income">🏘️ (Houses)</option>
+                        <option value="Utilities">💡 (Light Bulb)</option>
+                        <option value="Commissions">💰 (Money Bag)</option>
+                        <option value="Cash Gifts">💸 (Money with Wings)</option>
+                        <option value="Pension">🧓 (Older Person)</option>
+                        <option value="Phone & Internet">📱 (Phone)</option>
+                        <option value="Health & Insurance">💊 (Pill)</option>
+                        <option value="Dining Out">🍽️ (Plate with Cutlery)</option>
+                        <option value="Alimony">💍 (Ring)</option>
+                        <option value="Medical Expenses">🩺 (Stethoscope)</option>
+                        <option value="Wrench">🔧 (Wrench)</option>
+                        <option value="Vacation">✈️ (Airplane)</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="category-name" class="category-select" required>
+                        <option value="Tuition & Fees">Tuition & Fees</option>
+                        <option value="Textbooks & Supplies">Textbooks & Supplies</option>
+                        <option value="Housing">Housing</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Groceries">Groceries</option>
+                        <option value="Dining Out">Dining Out</option>
+                        <option value="Transportation">Transportation</option>
+                        <option value="Health & Insurance">Health & Insurance</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Personal Care">Personal Care</option>
+                        <option value="Phone & Internet">Phone & Internet</option>
+                        <option value="Sports & Recreation">Sports & Recreation</option>
+                        <option value="Miscellaneous">Miscellaneous</option>
+                    </select>
+                </td>
+                <td>
+                    <div class="budget-goal-container">
+                        <span class="currency-symbol">$</span>
+                        <input type="text" class="budget-goal-input" placeholder="0.00" required>
+                        <span class="per-month-text">per month</span>
+                    </div>
+                </td>
+                <td>
+                    <button type="button" class="delete-category" style="background-color: #c82333;">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(newRow);
+
+            // Reattach listeners to include the new row
+            attachCategorySelectListeners();
         });
 
-        addIncomeCategoryButton.addEventListener('click', function() {
-            const table = document.querySelector('.income-categories-table tbody');
-            addNewCategory(table, 'income');
+        /**
+         * Add a new row for an income category.
+         */
+        document.querySelector('.add-new-income-category').addEventListener('click', () => {
+            const tableBody = document.querySelector('.income-categories-table tbody');
+            const newRow = document.createElement('tr');
+            newRow.classList.add('income-category-row');
+            newRow.innerHTML = `
+                <td>
+                    <!-- Dropdown for Icon (Emoji) -->
+                    <select name="incomeEmoji" id="incomeEmoji">
+                        <option value="Prize Money">🥇 (1st Place Medal)</option>
+                        <option value="Emergency Fund">🚑 (Ambulance)</option>
+                        <option value="Child Support">👶 (Baby)</option>
+                        <option value="Legal Fees">⚖️ (Balance Scale)</option>
+                        <option value="Business Profits">📊 (Bar Chart)</option>
+                        <option value="Sports & Recreation">🏀 (Basketball)</option>
+                        <option value="Textbooks & Supplies">📚 (Books)</option>
+                        <option value="Government Assistance">💼 (Briefcase)</option>
+                        <option value="Home Maintenance">🧹 (Broom)</option>
+                        <option value="Transportation">🚗 (Car)</option>
+                        <option value="Groceries">🥕 (Carrot)</option>
+                        <option value="Stocks">📉 (Chart Decreasing)</option>
+                        <option value="Investments">📈 (Chart Increasing)</option>
+                        <option value="Entertainment">🎬 (Clapper Board)</option>
+                        <option value="Side Business">🏪 (Convenience Store)</option>
+                        <option value="Dividends">💳 (Credit Card)</option>
+                        <option value="Freelance Work">🖥️ (Desktop Computer)</option>
+                        <option value="Pets">🐕 (Dog)</option>
+                        <option value="Student Loans">💵 (Dollar Banknote)</option>
+                        <option value="Clothing">👗 (Dress)</option>
+                        <option value="Royalties">📀 (DVD)</option>
+                        <option value="Family Support">👨‍👩‍👧‍👦 (Family)</option>
+                        <option value="Gifts">🎁 (Gift)</option>
+                        <option value="Crowdfunding">🌐 (Globe with Meridians)</option>
+                        <option value="Scholarships">🎓 (Graduation Cap)</option>
+                        <option value="Miscellaneous">🛠️ (Hammer and Wrench)</option>
+                        <option value="Partnership">🤝 (Handshake)</option>
+                        <option value="Subscriptions">🎧 (Headphone)</option>
+                        <option value="Charity">❤️ (Heart)</option>
+                        <option value="Inheritance">🏠 (House)</option>
+                        <option value="Rental Income">🏘️ (Houses)</option>
+                        <option value="Utilities">💡 (Light Bulb)</option>
+                        <option value="Commissions">💰 (Money Bag)</option>
+                        <option value="Cash Gifts">💸 (Money with Wings)</option>
+                        <option value="Pension">🧓 (Older Person)</option>
+                        <option value="Phone & Internet">📱 (Phone)</option>
+                        <option value="Health & Insurance">💊 (Pill)</option>
+                        <option value="Dining Out">🍽️ (Plate with Cutlery)</option>
+                        <option value="Alimony">💍 (Ring)</option>
+                        <option value="Medical Expenses">🩺 (Stethoscope)</option>
+                        <option value="Wrench">🔧 (Wrench)</option>
+                        <option value="Vacation">✈️ (Airplane)</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="category-name" class="category-select" required>
+                        <option value="Part-Time Job">Paycheck</option>
+                        <option value="Scholarships">Scholarships</option>
+                        <option value="Student Loans">Student Loan Receipt</option>
+                        <option value="Family Support">Family Support</option>
+                        <option value="Grants">Grants</option>
+                        <option value="Gifts">Gifts</option>
+                        <option value="Investments">Investments</option>
+                    </select>
+                </td>
+                <td>
+                    <div class="budget-goal-container">
+                        <span class="currency-symbol">$</span>
+                        <input type="text" class="budget-goal-input" placeholder="0.00" required>
+                        <span class="per-month-text">per month</span>
+                    </div>
+                </td>
+                <td>
+                    <button type="button" class="delete-category" style="background-color: #c82333;">Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(newRow);
+
+            // Reattach listeners to include the new row
+            attachCategorySelectListeners();
         });
 
-        // Add Event Listener for Delete Button
-        document.addEventListener('click', function(event) {
-            if (event.target && event.target.classList.contains('delete-category')) {
-                // Find the parent row of the clicked delete button
-                const row = event.target.closest('tr');
-                
-                // Remove the row
-                row.remove();
+        /**
+         * Delete a row (for both expense and income categories).
+         */
+        document.addEventListener('click', (event) => {
+            if (event.target.classList.contains('delete-category')) {
+                const row = event.target.closest('tr'); // Find the closest row to the delete button
+                row.remove(); // Remove the row from the table
             }
         });
 
-    
     </script>
 </body>
 </html>
+
