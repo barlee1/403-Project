@@ -141,7 +141,8 @@
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" class="add-new-expense-category" style="background-color: #4e73df; color: white;">Add New Expense Category</button>
+                    <br>
+                    <button type="button" class="add-new-expense-category" style="background-color: var(--theme-color); color: white;">Add New Expense Category</button>
                 </div>
 
                 <!-- Income Categories Section -->
@@ -208,13 +209,14 @@
                                 <td>
                                     <!-- Dropdown for Category Selection -->
                                     <select name="category-name" class="category-select" required>
-                                        <option value="Part-Time Job">Part-Time Job</option>
+                                        <option value="Part-Time Job">Paycheck</option>
                                         <option value="Scholarships">Scholarships</option>
-                                        <option value="Student Loans">Student Loans</option>
+                                        <option value="Student Loans">Student Loans Reciept</option>
                                         <option value="Family Support">Family Support</option>
                                         <option value="Grants">Grants</option>
                                         <option value="Gifts">Gifts</option>
                                         <option value="Investments">Investments</option>
+                                        <option value="Custom">Custom</option> 
                                         <option value="Custom">Custom</option> <!-- Custom Option -->
                                     </select>
                                     <input type="text" name="custom-category" class="custom-category-input" placeholder="Enter custom category" style="display: none;">
@@ -234,7 +236,8 @@
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" class="add-new-income-category" style="background-color: #4e73df; color: white;">Add New Income Category</button>
+                    <br>
+                    <button type="button" class="add-new-income-category" style="background-color: var(--theme-color); color: white;">Add New Income Category</button>
                 </div>
 
                 <!-- Save Settings Button -->
@@ -500,14 +503,15 @@
                 </td>
                 <td>
                     <select name="category-name" class="category-select" required>
-                        <option value="Part-Time Job">Part-Time Job</option>
+                        <option value="Part-Time Job">Paycheck</option>
                         <option value="Scholarships">Scholarships</option>
-                        <option value="Student Loans">Student Loans</option>
+                        <option value="Student Loans">Student Loans Reciept</option>
                         <option value="Family Support">Family Support</option>
                         <option value="Grants">Grants</option>
                         <option value="Gifts">Gifts</option>
                         <option value="Investments">Investments</option>
-                        <option value="Custom">Custom</option>
+                        <option value="Custom">Custom</option> 
+                        <option value="Custom">Custom</option> <!-- Custom Option -->
                     </select>
                     <input type="text" name="custom-category" class="custom-category-input" placeholder="Enter custom category" style="display: none;">
                 </td>
@@ -538,12 +542,7 @@
             }
         });
 
-        // Initial setup to attach listeners
-        attachCategorySelectListeners();
-
     </script>
 </body>
 </html>
-
-
 
