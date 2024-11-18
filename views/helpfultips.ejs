@@ -7,6 +7,43 @@
     <title>Helpful Tips Page</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+        }
+        .card {
+            flex: 1 1 calc(48% - 20px);
+            max-width: 48%;
+            background-color: #f8f8f8;
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .card:hover {
+            transform: scale(1.07);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .card-description {
+            font-size: 1rem;
+        }
+        @media (max-width: 768px) {
+            .card {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -26,25 +63,73 @@
 
         <!-- Main Content -->
         <div class="main-content">
-            <h1>Welcome to our Website!</h1>
-            <p>his page provides all helpful financial/budgeting tips</p>
+            <h1>Helpful Tips for Creating Your Budget</h1>
+            <p>Saving you money and stress, here are some great articles and videos to get you started!</p>
             <div class="card-container">
-                    <!-- Card 1 -->
-                    <a href="https://www.nerdwallet.com/best/credit-cards/college-student" class="card" target="_blank">
-                      <div class="card-title">Best Credit Cards for College Students</div>
-                      <div class="card-description">
-                        Learn about the best credit card options for college students, including tips on managing credit responsibly.
-                      </div>
-                    </a>
-                
-                    <!-- Card 2 -->
-                    <a href="https://www.bestcolleges.com/resources/budgeting-in-college/" class="card" target="_blank">
-                      <div class="card-title">Budgeting in College</div>
-                      <div class="card-description">
-                        Discover essential budgeting strategies for college students to help manage finances effectively.
-                      </div>
-                    </a>
-                  </div>
+                <!-- Card 1 -->
+                <a href="https://www.nerdwallet.com/best/credit-cards/college-student" class="card" target="_blank">
+                    <div class="card-title">Best Credit Cards for College Students</div>
+                    <div class="card-description">
+                        Learn about the best credit card options for college students, including tips on managing credit responsibly.
+                    </div>
+                </a>
+
+                <!-- Card 2 -->
+                <a href="https://www.bestcolleges.com/resources/budgeting-in-college/" class="card" target="_blank">
+                    <div class="card-title">Budgeting in College</div>
+                    <div class="card-description">
+                        Discover essential budgeting strategies for college students to help manage finances effectively.
+                    </div>
+                </a>
+
+                <!-- Card 3 -->
+                <a href="https://studentaid.gov/resources/prepare-for-college/students/budgeting/creating-your-budget" class="card" target="_blank">
+                    <div class="card-title">Creating Your Budget</div>
+                    <div class="card-description">
+                        Explore how to create a budget for college and manage your finances with tips from Federal Student Aid.
+                    </div>
+                </a>
+
+                <!-- Card 4 -->
+                <a href="https://www.husson.edu/online/blog/2023/04/money-saving-tips-for-students" class="card" target="_blank">
+                    <div class="card-title">Money-Saving Tips for Students</div>
+                    <div class="card-description">
+                        Check out valuable money-saving tips tailored for college students to make the most of your budget.
+                    </div>
+                </a>
+
+                <!-- Card 5 -->
+                <a href="https://financialwellness.utah.edu/blog/posts/2021/septembernewsletter.php" class="card" target="_blank">
+                    <div class="card-title">Financial Wellness for Students</div>
+                    <div class="card-description">
+                        Learn practical strategies for financial wellness to stay ahead with your college budget.
+                    </div>
+                </a>
+
+                <!-- Card 6 -->
+                <a href="https://www.forbes.com/sites/enochomololu/2023/09/03/7-money-saving-hacks-for-college-students-budgeting-tips-and-tricks/" class="card" target="_blank">
+                    <div class="card-title">7 Money-Saving Hacks</div>
+                    <div class="card-description">
+                        Discover budgeting tips and tricks to save money as a college student from Forbes.
+                    </div>
+                </a>
+
+                <!-- Card 7 -->
+                <a href="https://www.fultonbank.com/Education-Center/Saving-and-Budgeting/Five-steps-to-start-saving" class="card" target="_blank">
+                    <div class="card-title">Five Steps to Start Saving</div>
+                    <div class="card-description">
+                        Learn five simple steps to start saving money and building a stronger financial future.
+                    </div>
+                </a>
+
+                <!-- Card 8 -->
+                <a href="https://www.youtube.com/watch?v=4Eh8QLcB1UQ" class="card" target="_blank">
+                    <div class="card-title">How Do I Make a Budget and Stick to It?</div>
+                    <div class="card-description">
+                        Watch Dave Ramsey's video for actionable advice on creating and maintaining a budget.
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 
