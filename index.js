@@ -125,7 +125,7 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser"); // Add cookie-parser to handle cookies
-const bcrypt = require("bcrypt"); // Add bcrypt for password hashing
+const bcrypt = require('bcryptjs'); // Add bcrypt for password hashing
 
 const app = express();
 const port = process.env.PORT || 5500;
@@ -160,8 +160,10 @@ const knex = require("knex")({
 
 // Landing Page
 app.get("/", (req, res) => {
-    res.render("login"); // Render views/login.ejs
+    const error = null; // Or get this from a specific source, like flash messages
+    res.render("login", { error }); // Pass 'error' to the template
 });
+
 
 // Login Route
 app.post("/login", async (req, res) => {
