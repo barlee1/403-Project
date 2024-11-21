@@ -38,6 +38,21 @@ const knex = require("knex")({
     }
 });
 
+const session = require("express-session");
+
+// Session configuration
+app.use(
+  session({
+    secret: "your-secret-key", // Use a secure random string in production
+    resave: false, // Prevent resaving session if it hasn't been modified
+    saveUninitialized: false, // Don't save uninitialized sessions
+    cookie: {
+      secure: false, // Set to true if using HTTPS
+      httpOnly: true, // Prevent client-side access to the cookie
+      maxAge: 1000 * 60 * 60, // Session expiration time (e.g., 1 hour)
+    },
+  })
+);
 
 
 // Test the database connection
@@ -59,30 +74,33 @@ app.get("/", (req, res) => {
 });
 
 
-// Login Route
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
-
+  
     try {
-        // Check if the user exists
-        const user = await knex("users").where({ email }).first();
-        if (!user) {
-            return res.render("login", { error: { type: 'login', message: 'Email not found.' } });
-        }
-
-        // Verify password
-        const validPassword = await bcrypt.compare(password, user.password);
-        if (!validPassword) {
-            return res.render("login", { error: { type: 'login', message: 'Invalid password.' } });
-        }
-
-        // Successful login
-        res.redirect("/home");
+      // Check if the user exists
+      const user = await knex("users").where({ email }).first();
+      if (!user) {
+        return res.render("login", { error: { type: "login", message: "Email not found." } });
+      }
+  
+      // Verify password
+      const validPassword = await bcrypt.compare(password, user.password);
+      if (!validPassword) {
+        return res.render("login", { error: { type: "login", message: "Invalid password." } });
+      }
+  
+      // Save user ID in the session
+      req.session.userId = user.id;
+  
+      // Redirect to home
+      res.redirect("/home");
     } catch (err) {
-        console.error("Error during login:", err);
-        res.status(500).send("An error occurred during login.");
+      console.error("Error during login:", err);
+      res.status(500).send("An error occurred during login.");
     }
-});
+  });
+  
 
 // Sign-Up Route
 app.post("/signup", async (req, res) => {
@@ -116,8 +134,12 @@ app.post("/signup", async (req, res) => {
 
 // Home route
 app.get("/home", (req, res) => {
-    res.render("home"); // Render views/home.ejs
-});
+    if (!req.session.userId) {
+      return res.redirect("/"); // Redirect to login if not authenticated
+    }
+    res.render("home"); // Render the home page
+  });
+  
 
 // Expenses route
 app.get("/expenses", (req, res) => {
@@ -138,39 +160,6 @@ app.get("/settings", (req, res) => {
 // Profile route
 app.get("/profile", (req, res) => {
     res.render("profile"); // Render views/profile.ejs
-});
-
-// Data route to fetch data from the database
-app.get('/expenses-by-month', async (req, res) => {
-    try {
-        const result = await knex('expenseinfo')
-            .select(knex.raw("TO_CHAR(DATE_TRUNC('month', expensedatecreated), 'YYYY-MM') AS month"))
-            .avg('expenseamount AS avg_expense')
-            .groupBy(knex.raw("DATE_TRUNC('month', expensedatecreated)"))
-            .orderBy('month');
-
-        // Send the data in a JSON format
-        res.json(result);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching data from database');
-    }
-});
-
-app.get('/income-by-month', async (req, res) => {
-    try {
-        const result = await knex('incomeinfo')
-            .select(knex.raw("TO_CHAR(DATE_TRUNC('month', incomedatecreated), 'YYYY-MM') AS month"))
-            .sum('incomeamount AS total_income')
-            .groupBy(knex.raw("DATE_TRUNC('month', incomedatecreated)"))
-            .orderBy('month');
-
-        // Send the data in a JSON format
-        res.json(result);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching income data from database');
-    }
 });
 
 // Route for updating settings
@@ -211,5 +200,17 @@ app.get('/expenses', (req, res) => {
 
 // Serve static files from the "Javascript" folder
 app.use('/js', express.static(path.join(__dirname, 'Javascript')));
+
+app.get("/logout", (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error destroying session:", err);
+        return res.status(500).send("An error occurred while logging out.");
+      }
+      res.clearCookie("connect.sid"); // Clear the session cookie
+      res.redirect("/"); // Redirect to login page
+    });
+  });
+  
 
 app.listen(port, () => console.log(`Express App has started and server is listening on port ${port}!`));
