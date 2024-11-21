@@ -86,14 +86,16 @@
             else { vizElement.style.width='100%';vizElement.style.height='1127px';}                     
             var scriptElement = document.createElement('script');                    
             scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    
-            vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script> -->
 
-    <!-- Footer -->
-    <footer class="footer">
-        &copy; 2024 CashCow. All rights reserved.
-    </footer>
+            vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+        
+        <canvas id="income-expense-chart" width="400" height="200"></canvas>
+        </div>
 
-    <!-- <script>
+        <footer class="footer" style="background-color: var(--theme-color); color: white;">
+            &copy; 2024 CashCow. All rights reserved.
+        </footer>
+    <script>
         async function fetchData() {
             try {
                 // Fetch expenses data
@@ -162,8 +164,9 @@
         }
 
         // Fetch data and render the chart
-        fetchData(); -->
-    <!-- </script> -->
+        fetchData();
+        </script>
+
 </body>
 </html>
 

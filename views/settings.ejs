@@ -14,9 +14,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Navbar (Included from Partial) -->
+    <!-- Navbar -->
     <%- include("partials/navbar") %>
 
+    <%= userId %>
     <!-- Main Content Wrapper -->
     <div class="content-wrapper">
         <!-- Sidebar Navigation -->
@@ -37,10 +38,13 @@
                 <!-- Theme Color Section -->
                 <div class="setting-section">
                     <h2>Theme Color</h2>
-                    <input type="color" id="color-picker" name="theme-color" value="#4e73df">
+                    <!-- Color Picker Input -->
+                    <input type="color" id="color-picker" name="selectedColor" value="<%= themeColor %>">
+                                                            
+                    <!-- Buttons for Actions -->
                     <button type="button" id="apply-color-btn">Test Color</button>
-                    <button type="button" id="save-color-btn">Save New Color</button>
                     <button type="button" id="reset-color-btn">Reset Color To Default</button>
+
                 </div>
 
                 <!-- Expense Categories Section -->
@@ -265,7 +269,7 @@
         &copy; 2024 CashCow. All rights reserved.
     </footer>
     <!--Reference to javascript in the settings.js file-->
+
     <script src="/js/settings.js"></script>
 </body>
 </html>
-

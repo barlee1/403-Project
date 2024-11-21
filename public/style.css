@@ -4,6 +4,14 @@
     margin: 0;
     padding: 0;
 }
+
+/* Default Theme Color */
+:root {
+    --theme-color: <%= themeColor %>;
+    --content-bg: #f8f9fc;
+    --footer-bg: #e2e6ea;
+}
+
 body, html {
     font-family: "Nunito", sans-serif;
     background-color: #f8f9fc;
@@ -115,17 +123,8 @@ body, html {
 .footer {
     text-align: center;
     padding: 1rem;
-    background-color: var(--footer-bg, #e2e6ea); /* Footer background */
+    background-color: var(--theme-color, #e2e6ea); /* Footer background */
     color: #5a5c69;
-}
-
-/* Default Theme Color */
-:root {
-    --theme-color: #4e73df; /* Default color */
-    --header-color: #3e5bb1; /* Slightly darker for header */
-    --sidebar-color: #759bec; /* Sidebar color */
-    --content-bg: #f8f9fc; /* Default background color */
-    --footer-bg: #e2e6ea; /* Default footer background */
 }
 
 /* Apply the custom theme color */
@@ -134,7 +133,7 @@ body {
 }
 
 .navbar {
-    background-color: var(--header-color); /* Navbar header color */
+    background-color: var(--theme-color); /* Navbar header color */
     color: #fff;
 }
 
@@ -143,7 +142,7 @@ body {
 }
 
 .sidebar .nav-link:hover {
-    background-color: var(--header-color); /* Hover effect */
+    background-color: var(--theme-color); /* Hover effect */
 }
 
 /* Main content area and other sections */
@@ -173,7 +172,7 @@ body {
     width: 4rem; /* Let the width adjust to match the button */
     height: 2.25rem; /* Match the height of the button */
     padding: 0.5rem; /* Padding similar to the buttons */
-    background-color: var(--header-color); /* Use theme color */
+    background-color: var(--theme-color); /* Use theme color */
     cursor: pointer;
     border-radius: 5px; /* Rounded corners */
     transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Ensure smooth transition for both background and box-shadow */
@@ -196,7 +195,7 @@ button {
 }
 
 button:hover {
-    background-color: var(--header-color);
+    background-color: var(--theme-color);
 }
 
 button:focus {
