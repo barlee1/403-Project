@@ -72,46 +72,43 @@
     </div>
 
     <script>
-        // Example category objects - these would be passed from the backend
-        const expenseCategories = [
-            { name: "Food", icon: "🍔" },
-            { name: "Transportation", icon: "🚗" },
-            { name: "Utilities", icon: "💡" },
-            { name: "Entertainment", icon: "🎮" }
-        ];
-        const incomeCategories = [
-            { name: "Salary", icon: "💼" },
-            { name: "Freelance", icon: "✍️" },
-            { name: "Investments", icon: "📈" }
-        ];
+        // Fetch categories from the server dynamically
+        fetch('/expenses')
+            .then(response => response.json())
+            .then(data => {
+                const expenseCategories = data.categories; // The categories object passed from the server
 
-        // Function to populate the category dropdown
-        function populateCategoryDropdown(categories) {
-            const categorySelect = document.getElementById('category');
-            categorySelect.innerHTML = ''; // Clear existing options
-            categories.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category.name.toLowerCase();
-                option.innerHTML = `${category.icon} ${category.name}`;
-                categorySelect.appendChild(option);
+                // Function to populate the category dropdown
+                function populateCategoryDropdown(categories) {
+                    const categorySelect = document.getElementById('category');
+                    categorySelect.innerHTML = ''; // Clear existing options
+                    categories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.name.toLowerCase();
+                        option.innerHTML = `${category.icon} ${category.name}`;
+                        categorySelect.appendChild(option);
+                    });
+                }
+
+                // Set the default category list to the fetched categories
+                populateCategoryDropdown(expenseCategories);
+
+                // Event listener for radio buttons
+                document.getElementById('expenseRadio').addEventListener('change', function() {
+                    if (this.checked) {
+                        populateCategoryDropdown(expenseCategories); // Show expense categories
+                    }
+                });
+
+                document.getElementById('incomeRadio').addEventListener('change', function() {
+                    if (this.checked) {
+                        populateCategoryDropdown(incomeCategories); // You can modify this to handle income categories if you have those too
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching categories:', error);
             });
-        }
-
-        // Set the default category list to expense categories
-        populateCategoryDropdown(expenseCategories);
-
-        // Event listener for radio buttons
-        document.getElementById('expenseRadio').addEventListener('change', function() {
-            if (this.checked) {
-                populateCategoryDropdown(expenseCategories); // Show expense categories
-            }
-        });
-
-        document.getElementById('incomeRadio').addEventListener('change', function() {
-            if (this.checked) {
-                populateCategoryDropdown(incomeCategories); // Show income categories
-            }
-        });
 
         // Submit Entry Function
         function submitEntry() {
@@ -131,7 +128,7 @@
     </script>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" style="background-color: var(--theme-color); color: white;">
         &copy; 2024 CashCow. All rights reserved.
     </footer>
 

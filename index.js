@@ -19,18 +19,36 @@ app.use(cookieParser()); // Initialize cookie-parser middleware
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, "public")));
 
-// Database connection setup
+require('dotenv').config(); // Load environment variables from .env
+
 const knex = require("knex")({
-    client: "pg",
-    connection: {
-        host: process.env.RDS_HOSTNAME || "localhost",
-        user: process.env.RDS_USERNAME || "kyleebrown",
-        password: process.env.RDS_PASSWORD || "Admin",
-        database: process.env.RDS_DB_NAME || "budgetsite",
-        port: process.env.RDS_PORT || 5432,
-        ssl: process.env.DB_SSL ? {rejectUnauthorized: false} : false
+  client: 'pg', // Specifies the PostgreSQL client
+  connection: {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT || 5432, // Default to 5432 if not set
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    ssl: { rejectUnauthorized: false }
+    },
+    pool: {
+        min: 2, // Minimum number of connections
+        max: 10, // Maximum number of connections
+        acquireTimeoutMillis: 30000 // Wait time before throwing an error
     }
 });
+
+
+
+// Test the database connection
+(async () => {
+    try {
+    const result = await knex.raw('SELECT 1+1 AS result'); // Simple query to test connection
+    console.log("Database connected successfully:", result.rows);
+    } catch (error) {
+    console.error("Database connection failed:", error.message);
+    }
+})();
 
 // Routes
 
@@ -156,17 +174,42 @@ app.get('/income-by-month', async (req, res) => {
 });
 
 // Route for updating settings
-app.post('/update-settings', (req, res) => {
-    const themeColor = req.body['theme-color'];
-    const expenseCategories = JSON.parse(req.body['expense-categories']);
-    const incomeCategories = JSON.parse(req.body['income-categories']);
+app.post('/update-settings', async (req, res) => {
+    const { id, expenseEmoji, categoryName, budgetAmount, categoryType } = req.body;
 
-    // Save the theme color and categories to settings
-    res.cookie('theme-color', themeColor, { maxAge: 86400000 }); // Cookie expires in 1 day
+    // Insert the data into the categories table
+    const query = `
+        INSERT INTO categories (id, emoji, category_name, budget_amount, category_type)
+        VALUES ($1, $2, $3, $4, $5)`;
+    const values = [userId, expenseEmoji, categoryName, parseFloat(budgetAmount), categoryType];
 
-    // Optionally save to a database
-    res.redirect('/settings');
+    try {
+        await db.query(query, values);  // db.query is a function that interacts with your PostgreSQL database
+        res.redirect('/settings');      // Redirect the user back to the settings page
+    } catch (error) {
+        console.error('Error inserting category:', error);
+        res.status(500).send('Error adding category');
+    }
 });
 
+// Route to fetch the expenses page
+app.get('/expenses', (req, res) => {
+    const userId = 2; // Hardcoded for this example
+
+    // Query the database for categories with userId = 2
+    db.query('SELECT name, icon FROM categories WHERE userid = ?', [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching categories:', err);
+            return res.status(500).send('Error fetching categories');
+        }
+
+        // Send the categories to the view (assuming you're using EJS for templating)
+        res.render('expenses', { categories: results });
+    });
+});
+
+
+// Serve static files from the "Javascript" folder
+app.use('/js', express.static(path.join(__dirname, 'Javascript')));
 
 app.listen(port, () => console.log(`Express App has started and server is listening on port ${port}!`));
