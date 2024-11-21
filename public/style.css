@@ -54,7 +54,7 @@ body, html {
 
 .navbar-nav .nav-link:hover {
     color: #d1d3e2;
-    background-color: var(--header-color);
+    background-color: var(--header-color, #4e73df);
 }
 
 /* Active Link Styling */
@@ -75,7 +75,7 @@ body, html {
 /* Sidebar Styles */
 .sidebar {
     width: 200px;
-    background-color: var(--sidebar-color, #759bec);
+    background-color: var(--theme-color, #4e73df);
     padding-top: 2rem;
     display: flex;
     flex-direction: column;
@@ -100,7 +100,7 @@ body, html {
 .sidebar .nav-link.active {
     background-color: white;
     color: var(--header-color);
-    box-shadow: inset -5px 0 0 0 var(--theme-color); /* Connect bubble to main content */
+    box-shadow: var(--theme-color); /* Connect bubble to main content */
     border-radius: 0; /* Remove rounded corners for a square bubble */
 }
 
@@ -158,12 +158,14 @@ body {
     background-color: #eeeeee;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
 }
 
 .setting-section h2 {
     color: var(--theme-color);
     font-size: 1.5rem;
     margin-bottom: 1rem;
+    
 }
 
 /* Color Picker as a small rectangle, same size as buttons */
@@ -189,7 +191,8 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: auto;
+    min-width: 80px;   /* Ensures the button is at least 80px wide */
+    width: auto; 
 }
 
 button:hover {
@@ -209,7 +212,7 @@ button:focus {
 
 .table th, .table td {
     padding: 1rem;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #ddd;
 }
 
@@ -224,6 +227,7 @@ button:focus {
     border: 1px solid #ddd;
     border-radius: 5px;
     margin-top: 0.5rem;
+    
 }
 
 .table td button {
@@ -233,6 +237,7 @@ button:focus {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    text-align: center;
 }
 
 .table td button:hover {
