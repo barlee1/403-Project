@@ -1,6 +1,3 @@
-//Script Section for the settings page, called in settings.ejs file at the very bottom.
-
-
 // Get the color picker and buttons
 const colorPicker = document.getElementById("color-picker");
 const applyColorBtn = document.getElementById("apply-color-btn");
@@ -11,26 +8,39 @@ const defaultColor = "#4e73df"; // Default blue color
 const defaultHeaderColor = "#3e5bb1"; // Slightly darker shade for header
 const defaultSidebarColor = "#759bec"; // Default sidebar color
 
+// Track if color has been applied
+let colorApplied = false;
+
 /**
  * Apply selected color theme to the page.
  */
 function applyColor() {
     const selectedColor = colorPicker.value;
+    const darkerThemeColor = darkenColor(selectedColor, 0.15);
 
     // Update CSS variables for the theme colors
     document.documentElement.style.setProperty('--theme-color', selectedColor);
-    document.documentElement.style.setProperty('--header-color', darkenColor(selectedColor, 0.15)); // Darker shade for header
+    document.documentElement.style.setProperty('--header-color', darkerThemeColor); // Darker shade for header
     document.documentElement.style.setProperty('--sidebar-color', selectedColor); // Sidebar matches theme color
+    console.log(selectedColor, darkerThemeColor)
+    // Set colorApplied to true to indicate color has been applied
+    colorApplied = true;
 }
 
 /**
  * Reset the theme colors to the default values.
  */
 function resetColor() {
-    // Restore default colors
-    document.documentElement.style.setProperty('--theme-color', defaultColor);
-    document.documentElement.style.setProperty('--header-color', defaultHeaderColor);
-    document.documentElement.style.setProperty('--sidebar-color', defaultSidebarColor);
+    if (colorApplied) {
+        // Restore default colors
+        document.documentElement.style.setProperty('--theme-color', defaultColor);
+        document.documentElement.style.setProperty('--header-color', defaultHeaderColor);
+        document.documentElement.style.setProperty('--sidebar-color', defaultSidebarColor);
+
+        // Set colorApplied to false because we're resetting to defaults
+        colorApplied = false;
+
+    }
 }
 
 /**
@@ -270,69 +280,5 @@ document.addEventListener('click', (event) => {
         const row = event.target.closest('tr'); // Find the closest row to the delete button
         row.remove(); // Remove the row from the table
     }
-});
-
-// Global variables to hold theme color and expense/income data
-let theme_color = "#4e73df"; // Default color
-let expenseCategories = [];  // Array to store expense categories
-let incomeCategories = [];   // Array to store income categories
-
-// Function to handle saving a new color
-document.getElementById('save-color-btn').addEventListener('click', function() {
-    const selectedColor = document.getElementById('color-picker').value;
-    theme_color = selectedColor; // Update the global theme color
-    alert("New theme color saved!");
-});
-
-// Function to handle saving an expense category
-document.querySelectorAll('.save-category').forEach(button => {
-    button.addEventListener('click', function() {
-        const row = this.closest('tr');
-        const icon = row.querySelector('select[name="expenseEmoji"]').value.charAt(0);;
-        const categoryName = row.querySelector('select[name="category-name"]').value;
-        const budgetGoal = row.querySelector('.budget-goal-input').value;
-
-        // Create a new expense object
-        const expense = {
-            icon,
-            categoryName,
-            budgetGoal: parseFloat(budgetGoal.replace(/[^0-9.-]+/g, "")), // Remove currency symbols, if any
-        };
-
-        // Add to expenseCategories array
-        expenseCategories.push(expense);
-
-        // Optionally, you can save this to the server using AJAX or form submission
-        console.log("Expense saved:", expense);
-
-        // You can also refresh the list or UI if needed
-        alert("Expense category saved!");
-    });
-});
-
-// Function to handle saving an income category
-document.querySelectorAll('.save-category').forEach(button => {
-    button.addEventListener('click', function() {
-        const row = this.closest('tr');
-        const icon = row.querySelector('select[name="incomeEmoji"]').value.charAt(0);;
-        const categoryName = row.querySelector('select[name="category-name"]').value;
-        const expectedIncome = row.querySelector('.budget-goal-input').value;
-
-        // Create a new income object
-        const income = {
-            icon,
-            categoryName,
-            expectedIncome: parseFloat(expectedIncome.replace(/[^0-9.-]+/g, "")), // Remove currency symbols, if any
-        };
-
-        // Add to incomeCategories array
-        incomeCategories.push(income);
-
-        // Optionally, you can save this to the server using AJAX or form submission
-        console.log("Income saved:", income);
-
-        // You can also refresh the list or UI if needed
-        alert("Income category saved!");
-    });
 });
 
