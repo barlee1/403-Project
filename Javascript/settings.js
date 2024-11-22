@@ -16,30 +16,21 @@ const defaultSidebarColor = "#759bec"; // Default sidebar color
  */
 function applyColor() {
     const selectedColor = colorPicker.value;
-    const darkerThemeColor = darkenColor(selectedColor, 0.15);
 
     // Update CSS variables for the theme colors
     document.documentElement.style.setProperty('--theme-color', selectedColor);
-    document.documentElement.style.setProperty('--header-color', darkerThemeColor); // Darker shade for header
+    document.documentElement.style.setProperty('--header-color', darkenColor(selectedColor, 0.15)); // Darker shade for header
     document.documentElement.style.setProperty('--sidebar-color', selectedColor); // Sidebar matches theme color
-    console.log(selectedColor, darkerThemeColor)
-    // Set colorApplied to true to indicate color has been applied
-    colorApplied = true;
+}
 
 /**
  * Reset the theme colors to the default values.
  */
 function resetColor() {
-    if (colorApplied) {
-        // Restore default colors
-        document.documentElement.style.setProperty('--theme-color', defaultColor);
-        document.documentElement.style.setProperty('--header-color', defaultHeaderColor);
-        document.documentElement.style.setProperty('--sidebar-color', defaultSidebarColor);
-
-        // Set colorApplied to false because we're resetting to defaults
-        colorApplied = false;
-
-    }
+    // Restore default colors
+    document.documentElement.style.setProperty('--theme-color', defaultColor);
+    document.documentElement.style.setProperty('--header-color', defaultHeaderColor);
+    document.documentElement.style.setProperty('--sidebar-color', defaultSidebarColor);
 }
 
 /**
