@@ -4,31 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/profile.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <!-- Navbar -->
-    <!-- 
-    <%- include("partials/navbar") %> 
+    <!--
+    <%- include("partials/navbar") %>
     -->
-
     <!-- Content Wrapper -->
     <div class="content-wrapper">
         <!-- Sidebar -->
-        <div class="sidebar">
-            <a href="/home" class="nav-link">Home</a>
-            <a href="/expenses" class="nav-link">Expenses</a>
-            <a href="/helpfultips" class="nav-link">Helpful Tips</a>
-            <a href="/settings" class="nav-link">Settings</a>
-            <a href="/profile" class="nav-link active">Profile</a>
-        </div>
-
+        <aside class="sidebar">
+            <nav>
+                <a href="/home" class="nav-link">Home</a>
+                <a href="/expenses" class="nav-link">Expenses</a>
+                <a href="/helpfultips" class="nav-link">Helpful Tips</a>
+                <a href="/settings" class="nav-link">Settings</a>
+                <a href="/profile" class="nav-link active">Profile</a>
+            </nav>
+        </aside>
         <!-- Main Content -->
-        <div class="main-content">
+        <main class="main-content">
             <h1>Edit Profile</h1>
             <form action="/update-profile" method="POST">
+                <!-- Username Field -->
                 <div class="form-group">
                     <label for="username">Username</label>
                     <div class="input-container">
@@ -38,7 +38,7 @@
                         </button>
                     </div>
                 </div>
-
+                <!-- Email Field -->
                 <div class="form-group">
                     <label for="email">Email</label>
                     <div class="input-container">
@@ -48,7 +48,7 @@
                         </button>
                     </div>
                 </div>
-
+                <!-- Phone Number Field -->
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
                     <div class="input-container">
@@ -58,7 +58,6 @@
                         </button>
                     </div>
                 </div>
-
                 <!-- Password Update Fields -->
                 <div class="form-group">
                     <label for="old-password">Old Password</label>
@@ -69,7 +68,6 @@
                         </button>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label for="new-password">New Password</label>
                     <div class="input-container">
@@ -79,7 +77,6 @@
                         </button>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label for="confirm-password">Confirm New Password</label>
                     <div class="input-container">
@@ -89,13 +86,11 @@
                         </button>
                     </div>
                 </div>
-
+                <!-- Submit Button -->
                 <button type="submit" class="btn btn-primary">Update Profile</button>
             </form>
-
-            <!-- Delete Account Button -->
+            <!-- Delete Account Button (Red) -->
             <button id="delete-account-btn" class="btn btn-danger">Delete Account</button>
-
             <!-- Confirmation Popup -->
             <div id="confirmation-popup" class="confirmation-popup">
                 <div class="popup-content">
@@ -104,105 +99,34 @@
                     <button id="cancel-delete" class="btn btn-secondary">Cancel</button>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
-
-    <!-- Popup Style -->
-    <style>
-        .confirmation-popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-        .popup-content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            width: 300px;
-        }
-        .confirmation-popup button {
-            margin-top: 10px;
-        }
-
-        .input-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .edit-btn, .toggle-password {
-            background-color: #4e73df;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            margin-left: 10px;
-            cursor: pointer;
-        }
-
-        .edit-btn:focus, .toggle-password:focus {
-            outline: none;
-        }
-
-        .input-container input {
-            font-family: 'Nunito', sans-serif;
-            font-size: 14px;
-            padding: 10px;
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 100%;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease;
-        }
-
-        .toggle-password {
-            background-color: transparent;
-            padding: 0;
-            font-size: 18px;
-        }
-    </style>
-
     <!-- JavaScript for Edit/Save functionality -->
     <script>
         function editField(fieldId) {
             const inputField = document.getElementById(fieldId);
             const editButton = inputField.nextElementSibling;
-
             // Enable input field for editing
             inputField.disabled = false;
-
             // Change button to Save
             editButton.innerHTML = '<span>&#10004;</span> Save Changes';
             editButton.setAttribute('onclick', `saveChanges('${fieldId}')`);
         }
-
         function saveChanges(fieldId) {
             const inputField = document.getElementById(fieldId);
             const editButton = inputField.nextElementSibling;
-
             // Disable input field after saving
             inputField.disabled = true;
-
             // Change button back to Edit
             editButton.innerHTML = '<span>&#9998;</span> Edit';
             editButton.setAttribute('onclick', `editField('${fieldId}')`);
-
             // Optionally, save the changes (send data to server, etc.)
             // Example: document.forms[0].submit();
         }
-
         // Password visibility toggle
         function togglePassword(passwordFieldId) {
             const passwordField = document.getElementById(passwordFieldId);
             const icon = passwordField.nextElementSibling.querySelector('span');
-
             if (passwordField.type === "password") {
                 passwordField.type = "text";
                 icon.textContent = "Hide";
@@ -211,30 +135,20 @@
                 icon.textContent = "Show";
             }
         }
-
         const deleteAccountBtn = document.getElementById('delete-account-btn');
         const confirmationPopup = document.getElementById('confirmation-popup');
         const confirmDeleteBtn = document.getElementById('confirm-delete');
         const cancelDeleteBtn = document.getElementById('cancel-delete');
-
         deleteAccountBtn.addEventListener('click', () => {
             confirmationPopup.style.display = 'flex';
         });
-
         cancelDeleteBtn.addEventListener('click', () => {
             confirmationPopup.style.display = 'none';
         });
-
         confirmDeleteBtn.addEventListener('click', () => {
             // Logic for deleting account (this should redirect to a backend route)
             window.location.href = '/delete-account';  // Replace with actual route
         });
     </script>
-
-    <!-- Footer -->
-    <footer class="footer" style="background-color: var(--theme-color); color: white;">
-        &copy; 2024 CashCow. All rights reserved.
-    </footer>
-
 </body>
 </html>
