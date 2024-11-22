@@ -14,10 +14,9 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Navbar -->
+    <!-- Navbar (Included from Partial) -->
     <%- include("partials/navbar") %>
 
-    <%= userId %>
     <!-- Main Content Wrapper -->
     <div class="content-wrapper">
         <!-- Sidebar Navigation -->
@@ -43,9 +42,12 @@
                                                             
                     <!-- Buttons for Actions -->
                 <div class="setting-section-buttons">
+
                     <button type="button" id="apply-color-btn">Test Color</button>
+                    <button type="button" id="save-color-btn">Save New Color</button>
                     <button type="button" id="reset-color-btn">Reset Color To Default</button>
                     <button type="submit" class="submit-settings" style="background-color: #c82333; color: white;">Save Changes</button>
+
                 </div>
                 </div>
                 <!-- Save Settings Button -->
@@ -276,7 +278,7 @@
         &copy; 2024 CashCow. All rights reserved.
     </footer>
     <!--Reference to javascript in the settings.js file-->
-
     <script src="/js/settings.js"></script>
 </body>
 </html>
+

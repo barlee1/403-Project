@@ -136,35 +136,21 @@ app.post("/signup", async (req, res) => {
 
 // Home route
 app.get("/home", (req, res) => {
-    //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-    const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-    const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
-
-    if (!userId) {
-        // If userId doesn't exist in the cookie, redirect to login
-        return res.redirect('/');
+    if (!req.session.userId) {
+      return res.redirect("/"); // Redirect to login if not authenticated
     }
-    res.render("home", {themeColor, userId}); // Render views/home.ejs
-});
+    res.render("home"); // Render the home page
+  });
+  
 
 // Expenses route
 app.get("/expenses", (req, res) => {
-                        //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-                        const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-                        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
-
-
-                        if (!userId) {
-                            // If userId doesn't exist in the cookie, redirect to login
-                            return res.redirect('/');
-                        }
-    res.render("expenses", {themeColor, userId}); // Render views/expenses.ejs
+    res.render("expenses"); // Render views/expenses.ejs
 });
 
 // Helpful Tips route
 app.get("/helpfultips", (req, res) => {
-                        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
-    res.render("helpfultips", {themeColor}); // Render views/helpfultips.ejs
+    res.render("helpfultips"); // Render views/helpfultips.ejs
 });
 
 // Settings route - Retrieve the theme color and categories from cookies or settings
@@ -248,64 +234,44 @@ router.post('/save-income-category', async (req, res) => {
     }
 });
 
-
 // Profile route
 app.get("/profile", (req, res) => {
-                            //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-                            const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-                            const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
-
-                            if (!userId) {
-                                // If userId doesn't exist in the cookie, redirect to login
-                                return res.redirect('/');
-                            }
-    res.render("profile", { themeColor, userId }); // Render views/profile.ejs
+    res.render("profile"); // Render views/profile.ejs
 });
 
-// Data route to fetch data from the database
-app.get('/expenses-by-month', async (req, res) => {
+// Route for updating settings
+app.post('/update-settings', async (req, res) => {
+    const { id, expenseEmoji, categoryName, budgetAmount, categoryType } = req.body;
+
+    // Insert the data into the categories table
+    const query = `
+        INSERT INTO categories (id, emoji, category_name, budget_amount, category_type)
+        VALUES ($1, $2, $3, $4, $5)`;
+    const values = [userId, expenseEmoji, categoryName, parseFloat(budgetAmount), categoryType];
+
     try {
-        const result = await knex('expenseinfo')
-            .select(knex.raw("TO_CHAR(DATE_TRUNC('month', expensedatecreated), 'YYYY-MM') AS month"))
-            .avg('expenseamount AS avg_expense')
-            .groupBy(knex.raw("DATE_TRUNC('month', expensedatecreated)"))
-            .orderBy('month');
-
-        // Send the data in a JSON format
-        res.json(result);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching data from database');
-    }
-});
-
-app.get('/income-by-month', async (req, res) => {
-    try {
-        const result = await knex('incomeinfo')
-            .select(knex.raw("TO_CHAR(DATE_TRUNC('month', incomedatecreated), 'YYYY-MM') AS month"))
-            .sum('incomeamount AS total_income')
-            .groupBy(knex.raw("DATE_TRUNC('month', incomedatecreated)"))
-            .orderBy('month');
-
-        // Send the data in a JSON format
-        res.json(result);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching income data from database');
+        await db.query(query, values);  // db.query is a function that interacts with your PostgreSQL database
+        res.redirect('/settings');      // Redirect the user back to the settings page
+    } catch (error) {
+        console.error('Error inserting category:', error);
+        res.status(500).send('Error adding category');
     }
 });
 
 // Route to fetch the expenses page
 app.get('/expenses', (req, res) => {
-    //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-    const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-    const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+    const userId = 2; // Hardcoded for this example
 
-    if (!userId) {
-        // If userId doesn't exist in the cookie, redirect to login
-        return res.redirect('/');
-    }
-    res.render("expenses", { themeColor, userId });
+    // Query the database for categories with userId = 2
+    db.query('SELECT name, icon FROM categories WHERE userid = ?', [userId], (err, results) => {
+        if (err) {
+            console.error('Error fetching categories:', err);
+            return res.status(500).send('Error fetching categories');
+        }
+
+        // Send the categories to the view (assuming you're using EJS for templating)
+        res.render('expenses', { categories: results });
+    });
 });
 
 
