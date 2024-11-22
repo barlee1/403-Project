@@ -32,29 +32,18 @@
 
         <div class="main-content">
             <h1>Account Settings</h1>
-            <form action="/update-color" method="POST">
+            <form action="/update-settings" method="POST">
+
                 <!-- Theme Color Section -->
                 <div class="setting-section">
                     <h2>Theme Color</h2>
-                    <!-- Color Picker Input -->
-                    <input type="color" id="color-picker" name="selectedColor" value="<%= themeColor %>">
-                    <br><br>
-                                                            
-                    <!-- Buttons for Actions -->
-                <div class="setting-section-buttons">
-
+                    <input type="color" id="color-picker" name="theme-color" value="#4e73df">
                     <button type="button" id="apply-color-btn">Test Color</button>
                     <button type="button" id="save-color-btn">Save New Color</button>
                     <button type="button" id="reset-color-btn">Reset Color To Default</button>
-                    <button type="submit" class="submit-settings" style="background-color: #c82333; color: white;">Save Changes</button>
-
                 </div>
-                </div>
-                <!-- Save Settings Button -->
-            </form>
 
                 <!-- Expense Categories Section -->
-            <form action="/save-expense-category" method="POST" class="category-form">
                 <div class="setting-section">
                     <h2 class="section-title">Expense Categories</h2>
                     <table class="table expense-categories-table">
@@ -160,12 +149,10 @@
                         </tbody>
                     </table>
                     <br>
-                </form>
                     <button type="button" class="add-new-expense-category" style="background-color: var(--theme-color); color: white;">Add New Expense Category</button>
                 </div>
 
                 <!-- Income Categories Section -->
-                <form action="/save-income-category" method="POST" class="category-form">
                 <div class="setting-section">
                     <h2 class="section-title">Income Categories</h2>
                     <table class="table income-categories-table">
@@ -263,12 +250,12 @@
                             </tr>
                         </tbody>
                     </table>
-                </form>
                     <br>
                     <button type="button" class="add-new-income-category" style="background-color: var(--theme-color); color: white;">Add New Income Category</button>
                 </div>
                 <br>
-
+                <!-- Save Settings Button -->
+                <button type="submit" class="submit-settings" style="background-color: #c82333; color: white;">Save Changes</button>
             </form>
         </div>
     </div>
