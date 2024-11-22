@@ -9,33 +9,52 @@
     <link rel="stylesheet" href="/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://public.tableau.com/views/403database/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link"></script>
+    <script src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
     <script>
-      // Pass user data from the server to the client-side
-      const userFilterValue = "<%= userFilter %>"; // Replace with a variable from your backend
-  
-      // Function to load Tableau Dashboard
-      function initViz() {
-        const containerDiv = document.getElementById("tableauViz");
-        const url = "https://public.tableau.com/views/your_dashboard";
-        const options = {
-          hideTabs: true,
-          onFirstInteractive: function () {
-            const workbook = viz.getWorkbook();
-            const activeSheet = workbook.getActiveSheet();
-  
-            // Apply user-specific filter
-            activeSheet.applyFilterAsync("YourFilterField", userFilterValue, tableau.FilterUpdateType.REPLACE)
-              .then(() => console.log("Filter applied"))
-              .catch((err) => console.error("Error applying filter:", err));
-          },
-        };
-  
-        viz = new tableau.Viz(containerDiv, url, options);
-      }
-  
-      // Wait for the page to load before initializing Tableau Viz
-      document.addEventListener("DOMContentLoaded", initViz);
+  // Pass user data from the backend to the frontend
+  const userFilterValue = "<%= userId %>"; // Replace with your backend variable (e.g., req.session.userID)
+
+  let viz; // Declare viz globally for reuse
+
+  // Function to initialize Tableau Dashboard
+  function initViz() {
+    const containerDiv = document.getElementById("tableauViz");
+    const url = "https://public.tableau.com/views/403database/Dashboard1";
+
+    const options = {
+      hideTabs: true,
+      onFirstInteractive: function () {
+        console.log("Tableau Dashboard Loaded!");
+
+        // Apply filter once the dashboard is interactive
+        const workbook = viz.getWorkbook();
+        const activeSheet = workbook.getActiveSheet();
+
+        if (activeSheet.getSheetType() === "dashboard") {
+          const sheets = activeSheet.getWorksheets();
+          sheets.forEach(sheet => {
+            sheet
+              .applyFilterAsync("userid", userFilterValue, tableau.FilterUpdateType.REPLACE)
+              .then(() => console.log("Filter applied: " + userFilterValue))
+              .catch(err => console.error("Error applying filter:", err));
+          });
+        } else {
+          activeSheet
+            .applyFilterAsync("userid", userFilterValue, tableau.FilterUpdateType.REPLACE)
+            .then(() => console.log("Filter applied: " + userFilterValue))
+            .catch(err => console.error("Error applying filter:", err));
+        }
+      },
+    };
+
+    // Initialize the Tableau viz
+    viz = new tableau.Viz(containerDiv, url, options);
+  }
+
+  // Initialize Tableau when the page is fully loaded
+  document.addEventListener("DOMContentLoaded", initViz);
+</script>
+
     </script>
 </head>
 <body>
@@ -92,78 +111,6 @@
     <footer class="footer">
         &copy; 2024 CashCow. All rights reserved.
     </footer>
-
-    <!-- <script>
-        async function fetchData() {
-            try {
-                // Fetch expenses data
-                const expensesResponse = await fetch('/expenses-by-month');
-                const expensesData = await expensesResponse.json();
-
-                // Fetch income data
-                const incomeResponse = await fetch('/income-by-month');
-                const incomeData = await incomeResponse.json();
-
-                // Extract the months, expenses, and income values
-                const months = expensesData.map(item => item.month);
-                const expenses = expensesData.map(item => parseFloat(item.avg_expense));
-                const income = incomeData.map(item => parseFloat(item.total_income));
-
-                // Create the chart
-                const ctx = document.getElementById('income-expense-chart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'line', // Line chart type
-                    data: {
-                        labels: months, // X-axis labels (months)
-                        datasets: [
-                            {
-                                label: 'Expenses',
-                                data: expenses,
-                                borderColor: 'rgba(255, 99, 132, 1)', // Red for expenses
-                                fill: true,
-                                tension: 0.1
-                            },
-                            {
-                                label: 'Income',
-                                data: income,
-                                borderColor: 'rgba(54, 162, 235, 1)', // Blue for income
-                                fill: true,
-                                tension: 0.1
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'top'
-                            }
-                        },
-                        scales: {
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Month'
-                                }
-                            },
-                            y: {
-                                title: {
-                                    display: true,
-                                    text: 'Amount ($)'
-                                },
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
-
-        // Fetch data and render the chart
-        fetchData(); -->
-    <!-- </script> -->
 </body>
 </html>
 
