@@ -16,18 +16,15 @@ let colorApplied = false;
  */
 function applyColor() {
     const selectedColor = colorPicker.value;
+    const darkerThemeColor = darkenColor(selectedColor, 0.15);
 
     // Update CSS variables for the theme colors
     document.documentElement.style.setProperty('--theme-color', selectedColor);
-    document.documentElement.style.setProperty('--header-color', darkenColor(selectedColor, 0.15)); // Darker shade for header
+    document.documentElement.style.setProperty('--header-color', darkerThemeColor); // Darker shade for header
     document.documentElement.style.setProperty('--sidebar-color', selectedColor); // Sidebar matches theme color
-
+    console.log(selectedColor, darkerThemeColor)
     // Set colorApplied to true to indicate color has been applied
     colorApplied = true;
-
-    // Disable "Test Color" button and enable the "Reset Color" button
-    applyColorBtn.disabled = true;  // Disable Apply button
-    resetColorBtn.disabled = false; // Enable Reset button
 }
 
 /**
@@ -43,9 +40,6 @@ function resetColor() {
         // Set colorApplied to false because we're resetting to defaults
         colorApplied = false;
 
-        // Disable "Reset Color" button and enable the "Test Color" button
-        resetColorBtn.disabled = true;  // Disable Reset button
-        applyColorBtn.disabled = false; // Enable Apply button
     }
 }
 

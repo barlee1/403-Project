@@ -78,26 +78,28 @@ app.post("/login", async (req, res) => {
     const { email, password } = req.body;
   
     try {
-      // Check if the user exists
-      const user = await knex("users").where({ email }).first();
-      if (!user) {
-        return res.render("login", { error: { type: "login", message: "Email not found." } });
-      }
-  
-      // Verify password
-      const validPassword = await bcrypt.compare(password, user.password);
-      if (!validPassword) {
-        return res.render("login", { error: { type: "login", message: "Invalid password." } });
-      }
-  
-      // Save user ID in the session
-      req.session.userId = user.id;
-  
-      // Redirect to home
-      res.redirect("/home");
-    } catch (err) {
-      console.error("Error during login:", err);
-      res.status(500).send("An error occurred during login.");
+        // Check if the user exists
+        const user = await knex("users").where({ email }).first();
+        if (!user) {
+            return res.render("login", { error: { type: "login", message: "Email not found." } });
+        }
+    
+        // Verify password
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (!validPassword) {
+            return res.render("login", { error: { type: "login", message: "Invalid password." } });
+        }
+    
+        // Successful login
+        // Set the user ID in a cookie
+        res.cookie('userId', user.id, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+        console.log(`User with ID: ${req.cookies.userId} is logged in.`); // secure: true in production environments
+    
+        // Redirect to home
+        res.redirect("/home");
+        } catch (err) {
+        console.error("Error during login:", err);
+        res.status(500).send("An error occurred during login.");
     }
   });
   
@@ -179,37 +181,72 @@ app.get("/settings", (req, res) => {
     res.render("settings", { themeColor, userId }); // Pass the themeColor to the EJS template
 });
 
-// Route to handle the form submission (updating settings)
-app.post('/update-settings', async (req, res) => {
-    const userId = req.cookies.userId;  // Assuming you're storing userId in the session
-    const selectedColor = req.body.selectedColor;  // Extract themeColor from the form input
-
+app.post('/update-color', async (req, res) => {
+    const userId = req.cookies.userId;
+    const selectedColor = req.body.selectedColor;
+    
     if (!userId) {
-        return res.redirect('/'); // Ensure user is logged in
+        return res.redirect('/login');
     }
 
-    // Log themeColor to confirm the value
-    console.log(`Theme Color: ${selectedColor}`);
+    console.log(`Selected Color: ${selectedColor}`);
 
     try {
-        // Update the theme color for the user
         await knex('users')
             .where({ id: userId })
-            .update({ theme_color: selectedColor});
+            .update({ theme_color: selectedColor });
 
-        console.log('Theme color updated successfully');
-        
-        // Update the cookie with the new theme color
         res.cookie('theme-color', selectedColor, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
-        // Redirect back to settings page with success message
         res.redirect('/settings');
     } catch (err) {
         console.error('Error updating theme color:', err);
-        // Redirect to settings page with an error message
         res.render("settings", { error: { message: 'Error updating theme color. Please try again.' } });
     }
 });
 
+// POST route to save expense category
+app.post('/save-expense-category', async (req, res) => {
+    const { expenseEmoji, categoryName, budgetGoal } = req.body;
+
+    try {
+        // Create a new category or update the existing one in the database
+        const newCategory = new Category({
+            emoji: expenseEmoji,
+            category: categoryName,
+            budgetGoal: parseFloat(budgetGoal) || 0,  // Ensure it's a number
+        });
+
+        await newCategory.save();
+
+        // Redirect or send a response back indicating success
+        res.redirect('/settings'); // Redirect to settings page or wherever you want
+    } catch (error) {
+        console.error('Error saving category:', error);
+        res.status(500).send('Error saving category');
+    }
+});
+
+// POST route to save income category
+router.post('/save-income-category', async (req, res) => {
+    const { expenseEmoji, categoryName, budgetGoal } = req.body;
+
+    try {
+        // Create a new category or update the existing one in the database
+        const newCategory = new Category({
+            emoji: expenseEmoji,
+            category: categoryName,
+            budgetGoal: parseFloat(budgetGoal) || 0,  // Ensure it's a number
+        });
+
+        await newCategory.save();
+
+        // Redirect or send a response back indicating success
+        res.redirect('/settings'); // Redirect to settings page or wherever you want
+    } catch (error) {
+        console.error('Error saving category:', error);
+        res.status(500).send('Error saving category');
+    }
+});
 
 
 // Profile route
@@ -274,17 +311,5 @@ app.get('/expenses', (req, res) => {
 
 // Serve static files from the "Javascript" folder
 app.use('/js', express.static(path.join(__dirname, 'Javascript')));
-
-app.get("/logout", (req, res) => {
-    req.session.destroy((err) => {
-      if (err) {
-        console.error("Error destroying session:", err);
-        return res.status(500).send("An error occurred while logging out.");
-      }
-      res.clearCookie("connect.sid"); // Clear the session cookie
-      res.redirect("/"); // Redirect to login page
-    });
-  });
-  
 
 app.listen(port, () => console.log(`Express App has started and server is listening on port ${port}!`));
