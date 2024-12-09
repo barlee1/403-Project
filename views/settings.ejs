@@ -52,7 +52,7 @@
             </form>
 
                 <!-- Expense Categories Section -->
-            <form action="/save-expense-category" method="POST" class="category-form">
+            <form action="/save-category" method="POST" class="category-form">
                 <div class="setting-section">
                     <h2 class="section-title">Expense Categories</h2>
                     <table class="table expense-categories-table">
@@ -70,54 +70,54 @@
                             <tr class="expense-category-row">
                                 <td>
                                     <!-- Dropdown for Icon (Emoji) -->
-                                    <select name="expenseEmoji" id="expenseEmoji" required>
-                                        <option value="Prize Money">🥇 (1st Place Medal)</option>
-                                        <option value="Emergency Fund">🚑 (Ambulance)</option>
-                                        <option value="Child Support">👶 (Baby)</option>
-                                        <option value="Legal Fees">⚖️ (Balance Scale)</option>
-                                        <option value="Business Profits">📊 (Bar Chart)</option>
-                                        <option value="Sports & Recreation">🏀 (Basketball)</option>
-                                        <option value="Textbooks & Supplies">📚 (Books)</option>
-                                        <option value="Government Assistance">💼 (Briefcase)</option>
-                                        <option value="Home Maintenance">🧹 (Broom)</option>
-                                        <option value="Transportation">🚗 (Car)</option>
-                                        <option value="Groceries">🥕 (Carrot)</option>
-                                        <option value="Stocks">📉 (Chart Decreasing)</option>
-                                        <option value="Investments">📈 (Chart Increasing)</option>
-                                        <option value="Entertainment">🎬 (Clapper Board)</option>
-                                        <option value="Side Business">🏪 (Convenience Store)</option>
-                                        <option value="Dividends">💳 (Credit Card)</option>
-                                        <option value="Freelance Work">🖥️ (Desktop Computer)</option>
-                                        <option value="Pets">🐕 (Dog)</option>
-                                        <option value="Student Loans">💵 (Dollar Banknote)</option>
-                                        <option value="Clothing">👗 (Dress)</option>
-                                        <option value="Royalties">📀 (DVD)</option>
-                                        <option value="Family Support">👨‍👩‍👧‍👦 (Family)</option>
-                                        <option value="Gifts">🎁 (Gift)</option>
-                                        <option value="Crowdfunding">🌐 (Globe with Meridians)</option>
-                                        <option value="Scholarships">🎓 (Graduation Cap)</option>
-                                        <option value="Miscellaneous">🛠️ (Hammer and Wrench)</option>
-                                        <option value="Partnership">🤝 (Handshake)</option>
-                                        <option value="Subscriptions">🎧 (Headphone)</option>
-                                        <option value="Charity">❤️ (Heart)</option>
-                                        <option value="Inheritance">🏠 (House)</option>
-                                        <option value="Rental Income">🏘️ (Houses)</option>
-                                        <option value="Utilities">💡 (Light Bulb)</option>
-                                        <option value="Commissions">💰 (Money Bag)</option>
-                                        <option value="Cash Gifts">💸 (Money with Wings)</option>
-                                        <option value="Pension">🧓 (Older Person)</option>
-                                        <option value="Phone & Internet">📱 (Phone)</option>
-                                        <option value="Health & Insurance">💊 (Pill)</option>
-                                        <option value="Dining Out">🍽️ (Plate with Cutlery)</option>
-                                        <option value="Alimony">💍 (Ring)</option>
-                                        <option value="Medical Expenses">🩺 (Stethoscope)</option>
-                                        <option value="Wrench">🔧 (Wrench)</option>
-                                        <option value="Vacation">✈️ (Airplane)</option>
+                                    <select name="icon" id="icon" required>
+                                        <option value="🥇">🥇 (1st Place Medal)</option>
+                                        <option value="🚑">🚑 (Ambulance)</option>
+                                        <option value="👶">👶 (Baby)</option>
+                                        <option value="⚖️">⚖️ (Balance Scale)</option>
+                                        <option value="📊">📊 (Bar Chart)</option>
+                                        <option value="🏀">🏀 (Basketball)</option>
+                                        <option value="📚">📚 (Books)</option>
+                                        <option value="💼">💼 (Briefcase)</option>
+                                        <option value="🧹">🧹 (Broom)</option>
+                                        <option value="🚗">🚗 (Car)</option>
+                                        <option value="🥕">🥕 (Carrot)</option>
+                                        <option value="📉">📉 (Chart Decreasing)</option>
+                                        <option value="📈">📈 (Chart Increasing)</option>
+                                        <option value="🎬">🎬 (Clapper Board)</option>
+                                        <option value="🏪">🏪 (Convenience Store)</option>
+                                        <option value="💳">💳 (Credit Card)</option>
+                                        <option value="🖥️">🖥️ (Desktop Computer)</option>
+                                        <option value="🐕">🐕 (Dog)</option>
+                                        <option value="💵">💵 (Dollar Banknote)</option>
+                                        <option value="👗">👗 (Dress)</option>
+                                        <option value="📀">📀 (DVD)</option>
+                                        <option value="👨‍👩‍👧‍👦">👨‍👩‍👧‍👦 (Family)</option>
+                                        <option value="🎁">🎁 (Gift)</option>
+                                        <option value="🌐">🌐 (Globe with Meridians)</option>
+                                        <option value="🎓">🎓 (Graduation Cap)</option>
+                                        <option value="🛠️">🛠️ (Hammer and Wrench)</option>
+                                        <option value="🤝">🤝 (Handshake)</option>
+                                        <option value="🎧">🎧 (Headphone)</option>
+                                        <option value="❤️">❤️ (Heart)</option>
+                                        <option value="🏠">🏠 (House)</option>
+                                        <option value="🏘️">🏘️ (Houses)</option>
+                                        <option value="💡">💡 (Light Bulb)</option>
+                                        <option value="💰">💰 (Money Bag)</option>
+                                        <option value="💸">💸 (Money with Wings)</option>
+                                        <option value="🧓">🧓 (Older Person)</option>
+                                        <option value="📱">📱 (Phone)</option>
+                                        <option value="💊">💊 (Pill)</option>
+                                        <option value="🍽️">🍽️ (Plate with Cutlery)</option>
+                                        <option value="💍">💍 (Ring)</option>
+                                        <option value="🩺">🩺 (Stethoscope)</option>
+                                        <option value="🔧">🔧 (Wrench)</option>
+                                        <option value="✈️">✈️ (Airplane)</option>
                                     </select>
                                 </td>
                                 <td>
                                     <!-- Dropdown for Category Selection -->
-                                    <select name="category-name" class="category-select" required>
+                                    <select name="categoryname" id= "categoryname" class="category-select" required>
                                         <option value="Tuition & Fees">Tuition & Fees</option>
                                         <option value="Textbooks & Supplies">Textbooks & Supplies</option>
                                         <option value="Housing">Housing</option>
@@ -138,7 +138,7 @@
                                     <!-- Budget Goal Input -->
                                     <div class="budget-goal-container">
                                         <span class="currency-symbol">$</span>
-                                        <input type="text" class="budget-goal-input" placeholder="0.00" required>
+                                        <input type="number" class="budget" id="budget" name="budget" placeholder="0.00" step="0.01" required>
                                         <span class="per-month-text">per month</span>
                                     </div>
                                 </td>
@@ -148,7 +148,7 @@
                                 </td>
                                 <td>
                                     <!-- Save Button -->
-                                    <button type="button" class="save-category" style="background-color: var(--theme-color); color: white;">Save</button>
+                                    <button type="submit" class="save-category" style="background-color: var(--theme-color); color: white;">Save</button>
                                 </td>
                                 <td>
                                     <!-- Delete Button -->
@@ -158,12 +158,13 @@
                         </tbody>
                     </table>
                     <br>
+                    <input type="hidden" name="type" value="X">
                 </form>
                     <button type="button" class="add-new-expense-category" style="background-color: var(--theme-color); color: white;">Add New Expense Category</button>
                 </div>
 
                 <!-- Income Categories Section -->
-                <form action="/save-income-category" method="POST" class="category-form">
+                <form action="/save-category" method="POST" class="category-form">
                 <div class="setting-section">
                     <h2 class="section-title">Income Categories</h2>
                     <table class="table income-categories-table">
@@ -181,54 +182,54 @@
                             <tr class="income-category-row">
                                 <td>
                                     <!-- Dropdown for Icon (Emoji) -->
-                                    <select name="incomeEmoji" id="incomeEmoji" required>
-                                        <option value="Prize Money">🥇 (1st Place Medal)</option>
-                                        <option value="Emergency Fund">🚑 (Ambulance)</option>
-                                        <option value="Child Support">👶 (Baby)</option>
-                                        <option value="Legal Fees">⚖️ (Balance Scale)</option>
-                                        <option value="Business Profits">📊 (Bar Chart)</option>
-                                        <option value="Sports & Recreation">🏀 (Basketball)</option>
-                                        <option value="Textbooks & Supplies">📚 (Books)</option>
-                                        <option value="Government Assistance">💼 (Briefcase)</option>
-                                        <option value="Home Maintenance">🧹 (Broom)</option>
-                                        <option value="Transportation">🚗 (Car)</option>
-                                        <option value="Groceries">🥕 (Carrot)</option>
-                                        <option value="Stocks">📉 (Chart Decreasing)</option>
-                                        <option value="Investments">📈 (Chart Increasing)</option>
-                                        <option value="Entertainment">🎬 (Clapper Board)</option>
-                                        <option value="Side Business">🏪 (Convenience Store)</option>
-                                        <option value="Dividends">💳 (Credit Card)</option>
-                                        <option value="Freelance Work">🖥️ (Desktop Computer)</option>
-                                        <option value="Pets">🐕 (Dog)</option>
-                                        <option value="Student Loans">💵 (Dollar Banknote)</option>
-                                        <option value="Clothing">👗 (Dress)</option>
-                                        <option value="Royalties">📀 (DVD)</option>
-                                        <option value="Family Support">👨‍👩‍👧‍👦 (Family)</option>
-                                        <option value="Gifts">🎁 (Gift)</option>
-                                        <option value="Crowdfunding">🌐 (Globe with Meridians)</option>
-                                        <option value="Scholarships">🎓 (Graduation Cap)</option>
-                                        <option value="Miscellaneous">🛠️ (Hammer and Wrench)</option>
-                                        <option value="Partnership">🤝 (Handshake)</option>
-                                        <option value="Subscriptions">🎧 (Headphone)</option>
-                                        <option value="Charity">❤️ (Heart)</option>
-                                        <option value="Inheritance">🏠 (House)</option>
-                                        <option value="Rental Income">🏘️ (Houses)</option>
-                                        <option value="Utilities">💡 (Light Bulb)</option>
-                                        <option value="Commissions">💰 (Money Bag)</option>
-                                        <option value="Cash Gifts">💸 (Money with Wings)</option>
-                                        <option value="Pension">🧓 (Older Person)</option>
-                                        <option value="Phone & Internet">📱 (Phone)</option>
-                                        <option value="Health & Insurance">💊 (Pill)</option>
-                                        <option value="Dining Out">🍽️ (Plate with Cutlery)</option>
-                                        <option value="Alimony">💍 (Ring)</option>
-                                        <option value="Medical Expenses">🩺 (Stethoscope)</option>
-                                        <option value="Wrench">🔧 (Wrench)</option>
-                                        <option value="Vacation">✈️ (Airplane)</option>
+                                    <select name="icon" id="icon" required>
+                                        <option value="🥇">🥇 (1st Place Medal)</option>
+                                        <option value="🚑">🚑 (Ambulance)</option>
+                                        <option value="👶">👶 (Baby)</option>
+                                        <option value="⚖️">⚖️ (Balance Scale)</option>
+                                        <option value="📊">📊 (Bar Chart)</option>
+                                        <option value="🏀">🏀 (Basketball)</option>
+                                        <option value="📚">📚 (Books)</option>
+                                        <option value="💼">💼 (Briefcase)</option>
+                                        <option value="🧹">🧹 (Broom)</option>
+                                        <option value="🚗">🚗 (Car)</option>
+                                        <option value="🥕">🥕 (Carrot)</option>
+                                        <option value="📉">📉 (Chart Decreasing)</option>
+                                        <option value="📈">📈 (Chart Increasing)</option>
+                                        <option value="🎬">🎬 (Clapper Board)</option>
+                                        <option value="🏪">🏪 (Convenience Store)</option>
+                                        <option value="💳">💳 (Credit Card)</option>
+                                        <option value="🖥️">🖥️ (Desktop Computer)</option>
+                                        <option value="🐕">🐕 (Dog)</option>
+                                        <option value="💵">💵 (Dollar Banknote)</option>
+                                        <option value="👗">👗 (Dress)</option>
+                                        <option value="📀">📀 (DVD)</option>
+                                        <option value="👨‍👩‍👧‍👦">👨‍👩‍👧‍👦 (Family)</option>
+                                        <option value="🎁">🎁 (Gift)</option>
+                                        <option value="🌐">🌐 (Globe with Meridians)</option>
+                                        <option value="🎓">🎓 (Graduation Cap)</option>
+                                        <option value="🛠️">🛠️ (Hammer and Wrench)</option>
+                                        <option value="🤝">🤝 (Handshake)</option>
+                                        <option value="🎧">🎧 (Headphone)</option>
+                                        <option value="❤️">❤️ (Heart)</option>
+                                        <option value="🏠">🏠 (House)</option>
+                                        <option value="🏘️">🏘️ (Houses)</option>
+                                        <option value="💡">💡 (Light Bulb)</option>
+                                        <option value="💰">💰 (Money Bag)</option>
+                                        <option value="💸">💸 (Money with Wings)</option>
+                                        <option value="🧓">🧓 (Older Person)</option>
+                                        <option value="📱">📱 (Phone)</option>
+                                        <option value="💊">💊 (Pill)</option>
+                                        <option value="🍽️">🍽️ (Plate with Cutlery)</option>
+                                        <option value="💍">💍 (Ring)</option>
+                                        <option value="🩺">🩺 (Stethoscope)</option>
+                                        <option value="🔧">🔧 (Wrench)</option>
+                                        <option value="✈️">✈️ (Airplane)</option>
                                     </select>
                                 </td>
                                 <td>
                                     <!-- Dropdown for Category Selection -->
-                                    <select name="category-name" class="category-select" required>
+                                    <select name="categoryname" id="categoryname" class="category-select" required>
                                         <option value="Part-Time Job">Paycheck</option>
                                         <option value="Scholarships">Scholarships</option>
                                         <option value="Student Loans">Student Loan Receipt</option>
@@ -242,7 +243,7 @@
                                     <!-- Budget Goal Input -->
                                     <div class="budget-goal-container">
                                         <span class="currency-symbol">$</span>
-                                        <input type="text" class="budget-goal-input" placeholder="0.00" required>
+                                        <input type="number" class="budget" id="budget" name="budget" placeholder="0.00" step="0.01" required>
                                         <span class="per-month-text">per month</span>
                                     </div>
                                 </td>
@@ -266,7 +267,7 @@
                     <button type="button" class="add-new-income-category" style="background-color: var(--theme-color); color: white;">Add New Income Category</button>
                 </div>
                 <br>
-
+                <input type="hidden" name="type" value="I">
             </form>
         </div>
     </div>
