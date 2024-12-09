@@ -204,49 +204,34 @@ app.post('/update-color', async (req, res) => {
     }
 });
 
-// POST route to save expense category
-/*app.post('/save-expense-category', async (req, res) => {
-    const { expenseEmoji, categoryName, budgetGoal } = req.body;
+// POST route to save categories
+app.post('/save-category', async (req, res) => {
+    const {icon, categoryname, budget, type } = req.body;
+    const userId = req.cookies.userId; // Assuming userId is stored in the session
+
+    console.log(categoryname, icon, budget, type, userId);
+
+    if (!userId) {
+        return res.status(400).send('User ID not found.');
+    }
 
     try {
-        // Create a new category or update the existing one in the database
-        const newCategory = new Category({
-            emoji: expenseEmoji,
-            category: categoryName,
-            budgetGoal: parseFloat(budgetGoal) || 0,  // Ensure it's a number
+        // Use Knex to insert the data into the database
+        await knex('category').insert({
+            icon: icon,
+            categoryname: categoryname,
+            budget: parseFloat(budget) || 0, // Ensure it's a number
+            type: type,
+            userId: userId
         });
 
-        await newCategory.save();
-
         // Redirect or send a response back indicating success
-        res.redirect('/settings'); // Redirect to settings page or wherever you want
+        res.redirect('/settings'); // Redirect to settings page or another relevant page
     } catch (error) {
         console.error('Error saving category:', error);
-        res.status(500).send('Error saving category');
+        res.status(500).send('Error saving category.');
     }
 });
-
-// POST route to save income category
-router.post('/save-income-category', async (req, res) => {
-    const { expenseEmoji, categoryName, budgetGoal } = req.body;
-
-    try {
-        // Create a new category or update the existing one in the database
-        const newCategory = new Category({
-            emoji: expenseEmoji,
-            category: categoryName,
-            budgetGoal: parseFloat(budgetGoal) || 0,  // Ensure it's a number
-        });
-
-        await newCategory.save();
-
-        // Redirect or send a response back indicating success
-        res.redirect('/settings'); // Redirect to settings page or wherever you want
-    } catch (error) {
-        console.error('Error saving category:', error);
-        res.status(500).send('Error saving category');
-    }
-});*/
 
 // Profile route
 app.get("/profile", (req, res) => {
