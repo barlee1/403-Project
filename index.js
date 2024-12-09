@@ -147,19 +147,51 @@ app.get("/home", (req, res) => {
     res.render("home", {themeColor, userId}); // Render views/home.ejs
 });
 
-// Expenses route
-app.get("/expenses", (req, res) => {
-                        //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-                        const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-                        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+app.route('/expenses')
+    .get(async (req, res) => {
+        // Default to a type if no type is selected
+        let selectedType = req.query.type || 'X';  // Use query or default to 'X'
+        let selectedCategory = req.query.category || ''; // Default empty category or set from previous submit
 
+        // Fetch categories based on selectedType
+        const categories = await knex('category')
+            .select('categoryid', 'categoryname')
+            .where('type', selectedType)
+            .andWhere('userId', req.cookies.userId);
+        
+        //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
+        const userId = req.cookies.userId; // Retrieve the user ID from the cookie
+        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
 
-                        if (!userId) {
-                            // If userId doesn't exist in the cookie, redirect to login
-                            return res.redirect('/');
-                        }
-    res.render("expenses", {themeColor, userId}); // Render views/expenses.ejs
-});
+        if (!userId) {
+            // If userId doesn't exist in the cookie, redirect to login
+            return res.redirect('/');
+        }
+        // Render the page with the selectedType and categories
+        res.render('expenses', { categories, selectedType, selectedCategory, themeColor, userId  });
+    })
+    .post(async (req, res) => {
+        // Handle form submission (update logic)
+        let selectedType = req.body.type;  // Get type from submitted form
+        let selectedCategory = req.body.category;  // Get selected category
+
+        // Fetch categories based on selectedType
+        const categories = await knex('category')
+            .select('categoryid', 'categoryname')
+            .where('type', selectedType)
+            .andWhere('userId', req.cookies.userId);
+        
+        const userId = req.cookies.userId; // Retrieve the user ID from the cookie
+        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+
+        if (!userId) {
+            // If userId doesn't exist in the cookie, redirect to login
+            return res.redirect('/');
+        }
+        // Render the page with the selected values
+        res.render('expenses', { categories, selectedType, selectedCategory, themeColor, userId });
+    });
+
 
 // Helpful Tips route
 app.get("/helpfultips", (req, res) => {
@@ -259,19 +291,6 @@ app.get("/profile", (req, res) => {
                 return res.redirect('/');
             }
     res.render("profile", { themeColor, userId }); // Render views/profile.ejs
-});
-
-// Route to fetch the expenses page
-app.get('/expenses', (req, res) => {
-    //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-    const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-    const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
-
-    if (!userId) {
-        // If userId doesn't exist in the cookie, redirect to login
-        return res.redirect('/');
-    }
-    res.render("expenses", { themeColor, userId });
 });
 
 
