@@ -163,7 +163,7 @@ app.get("/expenses", (req, res) => {
 
 // Helpful Tips route
 app.get("/helpfultips", (req, res) => {
-                        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+            const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
     res.render("helpfultips", {themeColor}); // Render views/helpfultips.ejs
 });
 
@@ -248,51 +248,17 @@ router.post('/save-income-category', async (req, res) => {
     }
 });*/
 
-
 // Profile route
 app.get("/profile", (req, res) => {
-                            //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-                            const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-                            const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+            //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
+            const userId = req.cookies.userId; // Retrieve the user ID from the cookie
+            const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
 
-                            if (!userId) {
-                                // If userId doesn't exist in the cookie, redirect to login
-                                return res.redirect('/');
-                            }
+            if (!userId) {
+                // If userId doesn't exist in the cookie, redirect to login
+                return res.redirect('/');
+            }
     res.render("profile", { themeColor, userId }); // Render views/profile.ejs
-});
-
-// Data route to fetch data from the database
-app.get('/expenses-by-month', async (req, res) => {
-    try {
-        const result = await knex('expenseinfo')
-            .select(knex.raw("TO_CHAR(DATE_TRUNC('month', expensedatecreated), 'YYYY-MM') AS month"))
-            .avg('expenseamount AS avg_expense')
-            .groupBy(knex.raw("DATE_TRUNC('month', expensedatecreated)"))
-            .orderBy('month');
-
-        // Send the data in a JSON format
-        res.json(result);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching data from database');
-    }
-});
-
-app.get('/income-by-month', async (req, res) => {
-    try {
-        const result = await knex('incomeinfo')
-            .select(knex.raw("TO_CHAR(DATE_TRUNC('month', incomedatecreated), 'YYYY-MM') AS month"))
-            .sum('incomeamount AS total_income')
-            .groupBy(knex.raw("DATE_TRUNC('month', incomedatecreated)"))
-            .orderBy('month');
-
-        // Send the data in a JSON format
-        res.json(result);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching income data from database');
-    }
 });
 
 // Route to fetch the expenses page
@@ -312,4 +278,5 @@ app.get('/expenses', (req, res) => {
 // Serve static files from the "Javascript" folder
 app.use('/js', express.static(path.join(__dirname, 'Javascript')));
 
+// Port is listening
 app.listen(port, () => console.log(`Express App has started and server is listening on port ${port}!`));
