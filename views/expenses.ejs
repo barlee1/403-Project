@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <% selectedType = selectedType || 'X'; %> <!-- Set default value if undefined -->
+    <% categories = categories || '[1, 2, 3]'; %>
 
     <!-- Nav Bar -->
     <%- include("partials/navbar") %>
@@ -43,16 +45,41 @@
                         <tbody>
                             <tr class="expense-category-row">
                                 <td>
-                                    <label><input type="radio" name="entryType" id="expenseRadio" checked> New Expense Entry</label>
-                                    <label><input type="radio" name="entryType" id="incomeRadio"> New Income Entry</label>
+                                    <form method="POST" action="/expenses" id="typeForm">
+                                        <!-- Radio button for 'X' (Expenses) -->
+                                        <label>
+                                            <input 
+                                                type="radio" 
+                                                name="type" 
+                                                value="X" 
+                                                <%= selectedType === 'X' ? 'checked' : '' %> 
+                                                onchange="document.getElementById('typeForm').submit()">
+                                            Expenses
+                                        </label>
+                                    
+                                        <!-- Radio button for 'I' (Income) -->
+                                        <label>
+                                            <input 
+                                                type="radio" 
+                                                name="type" 
+                                                value="I" 
+                                                <%= selectedType === 'I' ? 'checked' : '' %> 
+                                                onchange="document.getElementById('typeForm').submit()">
+                                            Income
+                                        </label>
+                                    </form>                                    
+                                    
                                 </td>
                                 <td>
                                     <input type="date" id="entryDate" class="styled-input">
                                 </td>
                                 <td>
                                     <select id="category" class="styled-select">
-                                        <!-- Dynamic categories will be inserted here -->
+                                        <% categories.forEach(category => { %>
+                                            <option value="<%= category.categoryid %>" <%= selectedType === 'X' && category.type === 'expense' ? 'selected' : '' %>><%= category.categoryname %></option>
+                                        <% }); %>
                                     </select>
+                                    
                                 </td>
                                 <td>
                                     <input type="number" id="amount" placeholder="Enter amount" class="input-field">
