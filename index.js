@@ -65,11 +65,11 @@ app.use(
     }
 })();
 
-// Routes
+// ==== Routes ======
 
 // Landing Page
 app.get("/", (req, res) => {
-    const error = null; // Or get this from a specific source, like flash messages
+    const error = null; 
     res.render("login", { error }); // Pass 'error' to the template
 });
 
