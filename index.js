@@ -134,36 +134,176 @@ app.post("/signup", async (req, res) => {
     }
 });
 
-// Home route
+// Home route 
 app.get("/home", (req, res) => {
-    //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
+    console.log("User ID:", req.cookies.userId);
     const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-    const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+    const themeColor = req.cookies['theme-color'] || '#4e73df'; // Retrieve theme color from cookie
 
     if (!userId) {
-        // If userId doesn't exist in the cookie, redirect to login
+        // If no userId, redirect to login
         return res.redirect('/');
     }
-    res.render("home", {themeColor, userId}); // Render views/home.ejs
+    // Render the home view and pass the userId and themeColor
+    res.render("home", { themeColor, userId });
 });
 
-// Expenses route
-app.get("/expenses", (req, res) => {
-                        //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-                        const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-                        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+
+app.route('/expenses')
+    .get(async (req, res) => {
+        // Default to a type if no type is selected
+        let selectedType = req.query.type || 'X';  // Use query or default to 'X'
+        let selectedCategory = req.query.category || ''; // Default empty category or set from previous submit
+
+        // Fetch categories based on selectedType
+        const categories = await knex('category')
+            .select('categoryid', 'categoryname')
+            .where('type', selectedType)
+            .andWhere('userId', req.cookies.userId);
+        
+        //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
+        const userId = req.cookies.userId; // Retrieve the user ID from the cookie
+        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+
+        if (!userId) {
+            // If userId doesn't exist in the cookie, redirect to login
+            return res.redirect('/');
+        }
+
+                // pull current entries
+                try {
+                    // Fetch data from entryinfo table using Knex
+                    const entries = await knex('entryinfo')
+                    .join('category', 'entryinfo.categoryid', 'category.categoryid')
+                    .select('amount', 'datecreated', 'category.categoryname', 'description')
+                    .select(knex.raw("TO_CHAR(datecreated, 'MM/DD/YYYY') AS formattedDate"))
+                    .where('userId', req.cookies.userId);
+                    
+                    // Format datecreated field manually
+                    const formattedEntries = entries.map(entry => {
+                        const formattedDate = new Date(entry.datecreated).toLocaleDateString('en-US');
+                        return { 
+                            ...entry, 
+                            formattedDate 
+                        };
+                    });
+
+                    // Render the view with the entries data
+                    res.render('expenses', { categories, selectedType, selectedCategory, themeColor, userId, entries: formattedEntries });
+                  } catch (error) {
+                    console.error('Error fetching entries:', error);
+                    res.status(500).json({ error: 'Database error' });
+                  }
+    })
+
+// Route to fetch all expense/income entries
+    .post(async (req, res) => {
+        // Handle form submission (update logic)
+        let selectedType = req.body.type;  // Get type from submitted form
+        let selectedCategory = req.body.category;  // Get selected category
+
+        // Fetch categories based on selectedType
+        const categories = await knex('category')
+            .select('categoryid', 'categoryname')
+            .where('type', selectedType)
+            .andWhere('userId', req.cookies.userId);
+        
+        const userId = req.cookies.userId; // Retrieve the user ID from the cookie
+        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+
+        if (!userId) {
+            // If userId doesn't exist in the cookie, redirect to login
+            return res.redirect('/');
+        }
 
 
-                        if (!userId) {
-                            // If userId doesn't exist in the cookie, redirect to login
-                            return res.redirect('/');
-                        }
-    res.render("expenses", {themeColor, userId}); // Render views/expenses.ejs
-});
+        try {
+            // Fetch entries from the database
+            const entries = await knex('entryinfo')
+                .join('category', 'entryinfo.categoryid', 'category.categoryid')
+                .select('amount', 'datecreated', 'category.categoryname', 'description')
+                .select(knex.raw("TO_CHAR(datecreated, 'MM/DD/YYYY') AS formattedDate"))
+                .where('userId', req.cookies.userId);
+    
+            // Format datecreated field manually
+            const formattedEntries = entries.map(entry => {
+                const formattedDate = new Date(entry.datecreated).toLocaleDateString('en-US');
+                return { 
+                    ...entry, 
+                    formattedDate 
+                };
+            });
+    
+            // Render the template with the fetched data
+            res.render('expenses', { 
+                categories, 
+                selectedType, 
+                selectedCategory, 
+                themeColor, 
+                userId, 
+                entries: formattedEntries 
+            });
+        } catch (error) { // Missing catch block added here
+            console.error('Error fetching entries:', error);
+            res.status(500).json({ error: 'Database error' });
+        } // Missing closing brace for try...catch
+    });
+
+//Search
+app.get('/search-expenses', async (req, res) => {
+        const { year, month, day } = req.query;
+        const userId = req.cookies.userId;
+        const themeColor = req.cookies['theme-color'] || '#4e73df';
+        const selectedType = req.query.type || 'X';
+    
+        if (!userId) {
+            return res.redirect('/');
+        }
+    
+        try {
+            const categories = await knex('category')
+                .select('categoryid', 'categoryname')
+                .where('type', selectedType)
+                .andWhere('userId', userId);
+    
+            let query = knex('entryinfo')
+                .join('category', 'entryinfo.categoryid', 'category.categoryid')
+                .select('amount', 'datecreated', 'category.categoryname', 'description')
+                .where('entryinfo.userid', userId);
+    
+            if (year) query.andWhere(knex.raw("EXTRACT(YEAR FROM datecreated) = ?", [year]));
+            if (month) query.andWhere(knex.raw("EXTRACT(MONTH FROM datecreated) = ?", [month]));
+            if (day) query.andWhere(knex.raw("EXTRACT(DAY FROM datecreated) = ?", [day]));
+    
+            console.log('Filters:', { year, month, day });
+            console.log('Query:', query.toString());
+    
+            const results = await query;
+            console.log('Results:', results);
+    
+            const formattedResults = results.map(entry => ({
+                ...entry,
+                formattedDate: new Date(entry.datecreated).toLocaleDateString('en-US'),
+            }));
+            console.log('Formatted Results:', formattedResults);
+    
+            res.render('expenses', {
+                entries: formattedResults,
+                categories,
+                selectedType,
+                themeColor,
+                userId,
+                searchFilters: { year, month, day },
+            });
+        } catch (error) {
+            console.error('Error searching expenses:', error);
+            res.status(500).send('An error occurred while searching for expenses.');
+        }
+    });
 
 // Helpful Tips route
 app.get("/helpfultips", (req, res) => {
-                        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+            const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
     res.render("helpfultips", {themeColor}); // Render views/helpfultips.ejs
 });
 
@@ -204,47 +344,32 @@ app.post('/update-color', async (req, res) => {
     }
 });
 
-// POST route to save expense category
-/*app.post('/save-expense-category', async (req, res) => {
-    const { expenseEmoji, categoryName, budgetGoal } = req.body;
+// POST route to save categories
+app.post('/save-category', async (req, res) => {
+    const {icon, categoryname, budget, type } = req.body;
+    const userId = req.cookies.userId; // Assuming userId is stored in the session
 
-    try {
-        // Create a new category or update the existing one in the database
-        const newCategory = new Category({
-            emoji: expenseEmoji,
-            category: categoryName,
-            budgetGoal: parseFloat(budgetGoal) || 0,  // Ensure it's a number
-        });
+    console.log(categoryname, icon, budget, type, userId);
 
-        await newCategory.save();
-
-        // Redirect or send a response back indicating success
-        res.redirect('/settings'); // Redirect to settings page or wherever you want
-    } catch (error) {
-        console.error('Error saving category:', error);
-        res.status(500).send('Error saving category');
+    if (!userId) {
+        return res.status(400).send('User ID not found.');
     }
-});
-
-// POST route to save income category
-router.post('/save-income-category', async (req, res) => {
-    const { expenseEmoji, categoryName, budgetGoal } = req.body;
 
     try {
-        // Create a new category or update the existing one in the database
-        const newCategory = new Category({
-            emoji: expenseEmoji,
-            category: categoryName,
-            budgetGoal: parseFloat(budgetGoal) || 0,  // Ensure it's a number
+        // Use Knex to insert the data into the database
+        await knex('category').insert({
+            icon: icon,
+            categoryname: categoryname,
+            budget: parseFloat(budget) || 0, // Ensure it's a number
+            type: type,
+            userId: userId
         });
 
-        await newCategory.save();
-
         // Redirect or send a response back indicating success
-        res.redirect('/settings'); // Redirect to settings page or wherever you want
+        res.redirect('/settings'); // Redirect to settings page or another relevant page
     } catch (error) {
         console.error('Error saving category:', error);
-        res.status(500).send('Error saving category');
+        res.status(500).send('Error saving category.');
     }
 });*/
 
@@ -301,54 +426,35 @@ app.post("/profile/update-picture", async (req, res) => {
     }
 });
 
-// Data route to fetch data from the database
-app.get('/expenses-by-month', async (req, res) => {
-    try {
-        const result = await knex('expenseinfo')
-            .select(knex.raw("TO_CHAR(DATE_TRUNC('month', expensedatecreated), 'YYYY-MM') AS month"))
-            .avg('expenseamount AS avg_expense')
-            .groupBy(knex.raw("DATE_TRUNC('month', expensedatecreated)"))
-            .orderBy('month');
+// POST Route to save Entry Information
+app.post('/entry-submit', (req, res) => {
+    // Extract data from the submitted form
+    const { entryDate, category, amount, description, userId } = req.body;
+    
+    // Format the amount to remove dollar sign and commas (optional step)
+    const formattedAmount = amount.replace(/[^0-9.-]+/g, ''); // Removes any non-numeric characters (like $)
 
-        // Send the data in a JSON format
-        res.json(result);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching data from database');
-    }
-});
-
-app.get('/income-by-month', async (req, res) => {
-    try {
-        const result = await knex('incomeinfo')
-            .select(knex.raw("TO_CHAR(DATE_TRUNC('month', incomedatecreated), 'YYYY-MM') AS month"))
-            .sum('incomeamount AS total_income')
-            .groupBy(knex.raw("DATE_TRUNC('month', incomedatecreated)"))
-            .orderBy('month');
-
-        // Send the data in a JSON format
-        res.json(result);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching income data from database');
-    }
-});
-
-// Route to fetch the expenses page
-app.get('/expenses', (req, res) => {
-    //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-    const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-    const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
-
-    if (!userId) {
-        // If userId doesn't exist in the cookie, redirect to login
-        return res.redirect('/');
-    }
-    res.render("expenses", { themeColor, userId });
+    // Insert data into the database
+    knex('entryinfo')
+    .insert({
+            datecreated: entryDate,      // Date of the entry
+            categoryid: category,     // Category ID
+            amount: formattedAmount,  // The numeric amount
+            description: description,  // Description (optional)
+            userid: userId
+        })
+    .then (() => { 
+        res.redirect('/expenses');
+    })
+    .catch (error =>  {
+        console.error("Error inserting data:", error);
+        res.status(500).send("An error occurred while saving your entry.");
+    });
 });
 
 
 // Serve static files from the "Javascript" folder
 app.use('/js', express.static(path.join(__dirname, 'Javascript')));
 
+// Port is listening
 app.listen(port, () => console.log(`Express App has started and server is listening on port ${port}!`));
