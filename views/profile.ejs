@@ -27,6 +27,24 @@
         <!-- Main Content -->
         <main class="main-content">
             <h1>Edit Profile</h1>
+            <!-- Profile Picture -->
+            <h2>Profile Picture</h2>
+            <img src="/<%= profilePicture %>" alt="Profile Picture" style="width: 150px; height: 150px;">
+
+            <form action="/profile/update-picture" method="POST">
+                <label for="profilepic">Choose a new profile picture:</label>
+                <select name="profilepic" id="profilepic" required>
+                    <option value="browncow.png" <%= profilePicture === "browncow.png" ? "selected" : "" %>>Brown Cow</option>
+                    <option value="bluecow.png" <%= profilePicture === "bluecow.png" ? "selected" : "" %>>Blue Cow</option>
+                    <option value="blackcow.png" <%= profilePicture === "blackcow.png" ? "selected" : "" %>>Black Cow</option>
+                    <option value="pinkcow.png" <%= profilePicture === "pinkcow.png" ? "selected" : "" %>>Pink Cow</option>
+                    <option value="greencow.png" <%= profilePicture === "greencow.png" ? "selected" : "" %>>Green Cow</option>
+                    <!-- Add more options dynamically if needed -->
+                </select>
+                <button type="submit">Update Picture</button>
+                <br><br>
+            </form>
+        
             <form action="/update-profile" method="POST">
                 <!-- Username Field -->
                 <div class="form-group">
