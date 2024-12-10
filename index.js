@@ -527,6 +527,43 @@ app.post('/entry-submit', (req, res) => {
     });
 });
 
+// Chart for home page routes
+app.get('/chart-data', async (req, res) => {
+    try {
+        const userId = req.session.userId; // Replace with your user authentication logic
+
+        const incomeData = await knex('entryinfo')
+            .join('category', 'entryinfo.categoryid', 'category.categoryid')
+            .select(
+                knex.raw("DATE_TRUNC('month', entryinfo.datecreated) AS month"),
+                knex.raw('SUM(entryinfo.amount) AS total')
+            )
+            .where({ 'entryinfo.userid': 1, 'category.type': 'I' })
+            .groupByRaw("DATE_TRUNC('month', entryinfo.datecreated)")
+            .orderByRaw("DATE_TRUNC('month', entryinfo.datecreated)");
+
+        const expenseData = await knex('entryinfo')
+            .join('category', 'entryinfo.categoryid', 'category.categoryid')
+            .select(
+                knex.raw("DATE_TRUNC('month', entryinfo.datecreated) AS month"),
+                knex.raw('SUM(entryinfo.amount) AS total')
+            )
+            .where({ 'entryinfo.userid': 1, 'category.type': 'X' })
+            .groupByRaw("DATE_TRUNC('month', entryinfo.datecreated)")
+            .orderByRaw("DATE_TRUNC('month', entryinfo.datecreated)");
+
+        res.json({
+            incomeData,
+            expenseData,
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching chart data');
+    }
+});
+
+
 
 // Serve static files from the "Javascript" folder
 app.use('/js', express.static(path.join(__dirname, 'Javascript')));
