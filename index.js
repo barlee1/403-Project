@@ -147,20 +147,6 @@ app.get("/home", (req, res) => {
     res.render("home", {themeColor, userId}); // Render views/home.ejs
 });
 
-// Expenses route
-app.get("/expenses", (req, res) => {
-                        //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-                        const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-                        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
-
-
-                        if (!userId) {
-                            // If userId doesn't exist in the cookie, redirect to login
-                            return res.redirect('/');
-                        }
-    res.render("expenses", {themeColor, userId}); // Render views/expenses.ejs
-});
-
 // Helpful Tips route
 app.get("/helpfultips", (req, res) => {
                         const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
