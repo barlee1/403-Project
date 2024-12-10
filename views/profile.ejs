@@ -27,6 +27,7 @@
         <!-- Main Content -->
         <main class="main-content">
             <h1>Edit Profile</h1>
+            
             <!-- Profile Picture -->
             <h2>Profile Picture</h2>
             <img src="/<%= profilePicture %>" alt="Profile Picture" style="width: 150px; height: 150px;">
@@ -39,134 +40,48 @@
                     <option value="blackcow.png" <%= profilePicture === "blackcow.png" ? "selected" : "" %>>Black Cow</option>
                     <option value="pinkcow.png" <%= profilePicture === "pinkcow.png" ? "selected" : "" %>>Pink Cow</option>
                     <option value="greencow.png" <%= profilePicture === "greencow.png" ? "selected" : "" %>>Green Cow</option>
-                    <!-- Add more options dynamically if needed -->
                 </select>
                 <button type="submit">Update Picture</button>
-                <br><br>
             </form>
-        
-            <form action="/update-profile" method="POST">
-                <!-- Username Field -->
+            <br><br>
+
+            <!-- Update Email -->
+            <form action="/update-email" method="POST">
+                <h2>Update Email</h2>
                 <div class="form-group">
-                    <label for="username">Username</label>
-                    <div class="input-container">
-                        <input type="text" id="username" name="username" placeholder="Enter your username" disabled>
-                        <button type="button" class="edit-btn" onclick="editField('username')">
-                            <span>&#9998;</span> Edit
-                        </button>
-                    </div>
+                    <label for="email">New Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your new email" required>
                 </div>
-                <!-- Email Field -->
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <div class="input-container">
-                        <input type="email" id="email" name="email" placeholder="Enter your email" disabled>
-                        <button type="button" class="edit-btn" onclick="editField('email')">
-                            <span>&#9998;</span> Edit
-                        </button>
-                    </div>
-                </div>
-                <!-- Phone Number Field -->
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <div class="input-container">
-                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" disabled>
-                        <button type="button" class="edit-btn" onclick="editField('phone')">
-                            <span>&#9998;</span> Edit
-                        </button>
-                    </div>
-                </div>
-                <!-- Password Update Fields -->
+                <button type="submit" class="btn btn-primary">Update Email</button>
+            </form>
+            <br>
+
+            <!-- Update Password -->
+            <form action="/update-password" method="POST">
+                <h2>Update Password</h2>
                 <div class="form-group">
                     <label for="old-password">Old Password</label>
-                    <div class="input-container">
-                        <input type="password" id="old-password" name="old-password" placeholder="Enter your old password" required>
-                        <button type="button" class="toggle-password" onclick="togglePassword('old-password')">
-                            <span>&#128065;</span> Show
-                        </button>
-                    </div>
+                    <input type="password" id="old-password" name="oldPassword" placeholder="Enter your old password" required>
                 </div>
                 <div class="form-group">
                     <label for="new-password">New Password</label>
-                    <div class="input-container">
-                        <input type="password" id="new-password" name="new-password" placeholder="Enter your new password" required>
-                        <button type="button" class="toggle-password" onclick="togglePassword('new-password')">
-                            <span>&#128065;</span> Show
-                        </button>
-                    </div>
+                    <input type="password" id="new-password" name="newPassword" placeholder="Enter your new password" required>
                 </div>
                 <div class="form-group">
                     <label for="confirm-password">Confirm New Password</label>
-                    <div class="input-container">
-                        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your new password" required>
-                        <button type="button" class="toggle-password" onclick="togglePassword('confirm-password')">
-                            <span>&#128065;</span> Show
-                        </button>
-                    </div>
+                    <input type="password" id="confirm-password" name="confirmPassword" placeholder="Confirm your new password" required>
                 </div>
-                <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary">Update Profile</button>
+                <button type="submit" class="btn btn-primary">Update Password</button>
             </form>
-            <!-- Delete Account Button (Red) -->
-            <button id="delete-account-btn" class="btn btn-danger">Delete Account</button>
-            <!-- Confirmation Popup -->
-            <div id="confirmation-popup" class="confirmation-popup">
-                <div class="popup-content">
-                    <h3>Are you sure you want to delete your account?</h3>
-                    <button id="confirm-delete" class="btn btn-danger">Yes, Delete</button>
-                    <button id="cancel-delete" class="btn btn-secondary">Cancel</button>
-                </div>
-            </div>
+            <br>
+
+            <!-- Delete Account -->
+            <form action="/delete-account" method="POST">
+                <h2>Delete Account</h2>
+                <p><strong>Warning:</strong> Deleting your account is permanent and cannot be undone.</p>
+                <button type="submit" class="btn btn-danger">Delete Account</button>
+            </form>
         </main>
     </div>
-    <!-- JavaScript for Edit/Save functionality -->
-    <script>
-        function editField(fieldId) {
-            const inputField = document.getElementById(fieldId);
-            const editButton = inputField.nextElementSibling;
-            // Enable input field for editing
-            inputField.disabled = false;
-            // Change button to Save
-            editButton.innerHTML = '<span>&#10004;</span> Save Changes';
-            editButton.setAttribute('onclick', `saveChanges('${fieldId}')`);
-        }
-        function saveChanges(fieldId) {
-            const inputField = document.getElementById(fieldId);
-            const editButton = inputField.nextElementSibling;
-            // Disable input field after saving
-            inputField.disabled = true;
-            // Change button back to Edit
-            editButton.innerHTML = '<span>&#9998;</span> Edit';
-            editButton.setAttribute('onclick', `editField('${fieldId}')`);
-            // Optionally, save the changes (send data to server, etc.)
-            // Example: document.forms[0].submit();
-        }
-        // Password visibility toggle
-        function togglePassword(passwordFieldId) {
-            const passwordField = document.getElementById(passwordFieldId);
-            const icon = passwordField.nextElementSibling.querySelector('span');
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                icon.textContent = "Hide";
-            } else {
-                passwordField.type = "password";
-                icon.textContent = "Show";
-            }
-        }
-        const deleteAccountBtn = document.getElementById('delete-account-btn');
-        const confirmationPopup = document.getElementById('confirmation-popup');
-        const confirmDeleteBtn = document.getElementById('confirm-delete');
-        const cancelDeleteBtn = document.getElementById('cancel-delete');
-        deleteAccountBtn.addEventListener('click', () => {
-            confirmationPopup.style.display = 'flex';
-        });
-        cancelDeleteBtn.addEventListener('click', () => {
-            confirmationPopup.style.display = 'none';
-        });
-        confirmDeleteBtn.addEventListener('click', () => {
-            // Logic for deleting account (this should redirect to a backend route)
-            window.location.href = '/delete-account';  // Replace with actual route
-        });
-    </script>
 </body>
 </html>
