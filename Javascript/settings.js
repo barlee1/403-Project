@@ -166,12 +166,12 @@ document.querySelector('.add-new-expense-category').addEventListener('click', ()
             </div>
         </td>
         <td>
-            <!-- Edit -->
-            <button type="button" class="edit-category" style="background-color: var(--theme-color); color: white;">Edit</button>
-        </td>
-        <td>
             <!-- Save Button -->
             <button type="submit" class="save-category" style="background-color: var(--theme-color); color: white;">Save</button>
+        </td>
+        <td>
+            <!-- Delete Button Form -->
+            <button type="submit" class="delete-empty-category" style="background-color: #c82333;">Delete</button>
         </td>
         <td>
             <input type="hidden" name="type" value="X">
@@ -259,12 +259,12 @@ document.querySelector('.add-new-income-category').addEventListener('click', () 
             </div>
         </td>
         <td>
-            <!-- Edit -->
-            <button type="button" class="edit-category" style="background-color: var(--theme-color); color: white;">Edit</button>
-        </td>
-        <td>
             <!-- Save Button -->
             <button type="submit" class="Save-category" style="background-color: var(--theme-color); color: white;">Save</button>
+        </td>
+        <td>
+            <!-- Delete Button Form -->
+            <button type="submit" class="delete-empty-category" style="background-color: #c82333;">Delete</button>
         </td>
         <td>
             <input type="hidden" name="type" value="I">
@@ -275,6 +275,16 @@ document.querySelector('.add-new-income-category').addEventListener('click', () 
 
     // Reattach listeners to include the new row
     attachCategorySelectListeners();
+});
+
+/**
+ * Delete a row (for both expense and income categories).
+ */
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete-empty-category')) {
+        const row = event.target.closest('tr'); // Find the closest row to the delete button
+        row.remove(); // Remove the row from the table
+    }
 });
 
 
