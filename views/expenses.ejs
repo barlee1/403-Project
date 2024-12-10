@@ -23,6 +23,10 @@
 .clear-button:hover {
     background-color: #e0e0e0; /* Slightly darker grey */
 }
+
+.search-form > div {
+    display: inline-block;
+}
 </style>
 <body>
     <% selectedType = selectedType || 'X'; %> <!-- Set default value if undefined -->
@@ -131,7 +135,7 @@
                         <a href="/expenses?type=<%= selectedType %>" class="clear-button">Clear</a>
                     </form>
                 </div>
-
+<br><br><br>
                 <!-- Display Entries -->
                 <h1>Expense/Income Entries</h1>
                 <table class="table expense-categories-table" id="entriesTable">
