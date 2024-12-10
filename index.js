@@ -534,6 +534,103 @@ app.post("/profile/update-picture", async (req, res) => {
     }
 });
 
+//update email
+app.post("/update-email", async (req, res) => {
+    const userId = req.cookies.userId; // Retrieve the user ID from the cookie
+    const { email } = req.body; // New email from the form
+
+    if (!userId) {
+        return res.redirect('/');
+    }
+
+    try {
+        const updateResult = await knex('users')
+            .where('id', userId)
+            .update({ email });
+
+        if (updateResult === 0) {
+            return res.status(404).send('User not found or no associated profile!');
+        }
+
+        res.redirect("/profile");
+    } catch (error) {
+        console.error("Error updating email:", error);
+        res.status(500).send("Error updating email");
+    }
+});
+
+//update password
+app.post("/update-password", async (req, res) => {
+    const userId = req.cookies.userId;
+    const { oldPassword, newPassword, confirmPassword } = req.body;
+
+    if (!userId) {
+        return res.redirect('/');
+    }
+
+    if (newPassword !== confirmPassword) {
+        return res.status(400).send("New password and confirm password do not match.");
+    }
+
+    try {
+        // Fetch the current password hash from the database
+        const user = await knex('users')
+            .select('password')
+            .where('id', userId)
+            .first();
+
+        if (!user || !(await bcrypt.compare(oldPassword, user.password))) {
+            return res.status(400).send("Old password is incorrect.");
+        }
+
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update the password in the database
+        const updateResult = await knex('users')
+            .where('id', userId)
+            .update({ password: hashedPassword });
+
+        if (updateResult === 0) {
+            return res.status(404).send('User not found or no associated profile!');
+        }
+
+        res.redirect("/profile");
+    } catch (error) {
+        console.error("Error updating password:", error);
+        res.status(500).send("Error updating password");
+    }
+});
+
+//delete account
+app.post("/delete-account", async (req, res) => {
+    const userId = req.cookies.userId;
+
+    if (!userId) {
+        return res.redirect('/');
+    }
+
+    try {
+        const deleteResult = await knex('users')
+            .where('id', userId)
+            .del();
+
+        if (deleteResult === 0) {
+            return res.status(404).send('User not found or no associated profile!');
+        }
+
+        // Clear the user cookie after deleting the account
+        res.clearCookie('userId');
+        res.clearCookie('theme-color');
+
+        res.redirect("/"); // Redirect to home or login after account deletion
+    } catch (error) {
+        console.error("Error deleting account:", error);
+        res.status(500).send("Error deleting account");
+    }
+});
+
+
 // POST Route to save Entry Information
 app.post('/entry-submit', (req, res) => {
     // Extract data from the submitted form
