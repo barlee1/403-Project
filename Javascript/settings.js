@@ -287,4 +287,20 @@ document.addEventListener('click', (event) => {
     }
 });
 
+function toggleEditForm(categoryId) {
+    const formRow = document.getElementById(`editForm-${categoryId}`);
+    const isHidden = formRow.classList.contains('hidden');
+    
+    if (formRow) {
+        // If form is hidden, make it visible
+        formRow.classList.remove('hidden');
+        
+        // If form is visible, make it hidden
+        if (!isHidden) {
+            formRow.classList.add('hidden');
+        }
+    }
+}
+
+
 

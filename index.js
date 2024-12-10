@@ -446,6 +446,46 @@ app.post('/delete-category', async (req, res) => {
     }
 });
 
+// POST route to edit a category
+app.post('/edit-category', async (req, res) => {
+    const { categoryid, icon, categoryname, budget, type } = req.body;
+    const userId = req.cookies.userId; // Assuming userId is stored in the session
+
+    console.log('Editing category:', { categoryid, icon, categoryname, budget, type, userId });
+
+    if (!userId) {
+        return res.status(400).send('User ID not found.');
+    }
+
+    if (!categoryid) {
+        return res.status(400).send('Category ID not provided.');
+    }
+
+    try {
+        // Use Knex to update the category in the database
+        const updatedRows = await knex('category')
+            .where({ categoryid: categoryid, userId: userId }) // Match both category and user for security
+            .update({
+                icon: icon,
+                categoryname: categoryname,
+                budget: parseFloat(budget) || 0, // Ensure it's a number
+                type: type,
+            });
+
+        if (updatedRows === 0) {
+            // No rows were updated; this might happen if the category doesn't belong to the user
+            return res.status(404).send('Category not found or you do not have permission to edit it.');
+        }
+
+        // Redirect or send a response back indicating success
+        res.redirect('/settings'); // Redirect to settings page or another relevant page
+    } catch (error) {
+        console.error('Error editing category:', error);
+        res.status(500).send('Error editing category.');
+    }
+});
+
+
 
 
 // Profile route

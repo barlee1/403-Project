@@ -410,3 +410,8 @@ textarea:focus {
 .back-to-dropdown:hover {
     background-color: #3e5bb1;
 }
+
+.hidden {
+    display: none; /* Completely removes the element from the layout */
+    visibility: hidden; /* Makes the element invisible */
+}

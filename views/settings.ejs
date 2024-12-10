@@ -60,8 +60,8 @@
                                 <th>Icon</th>
                                 <th>Category</th>
                                 <th>Budget Goal</th>
-                                <th>Edit</th>
-                                <th>Action</th>
+                                <th>Edit/Save</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,7 +74,7 @@
                                         <td><%= category.budget%> per month</td>
                                         <td>
                                             <!-- Edit -->
-                                            <button type="button" class="edit-category" style="background-color: var(--theme-color); color: white;">Edit</button>
+                                            <button type="button" class="edit-category" onclick="toggleEditForm('<%= category.categoryid %>')" style="background-color: var(--theme-color); color: white;">Edit</button>
                                         </td>
                                         <td>
                                             <!-- Delete Button Form -->
@@ -83,6 +83,97 @@
                                                 <button type="submit" class="delete-category" style="background-color: #c82333;">Delete</button>
                                             </form>
                                         </td>
+                                            <tr id="editForm-<%= category.categoryid %>" class="hidden">
+                                                <form action="/edit-category" method="POST">
+                                                    <input type="hidden" name="categoryid" value="<%= category.categoryid %>">
+                                                    <td>
+                                                        <!-- Dropdown for Icon (Emoji) -->
+                                                        <select name="icon" id="icon" required>
+                                                            <option value="🥇" <%= category.icon === '🥇' ? 'selected' : '' %>>🥇 (1st Place Medal)</option>
+                                                            <option value="🚑" <%= category.icon === '🚑' ? 'selected' : '' %>>🚑 (Ambulance)</option>
+                                                            <option value="👶" <%= category.icon === '👶' ? 'selected' : '' %>>👶 (Baby)</option>
+                                                            <option value="⚖️" <%= category.icon === '⚖️' ? 'selected' : '' %>>⚖️ (Balance Scale)</option>
+                                                            <option value="📊" <%= category.icon === '📊' ? 'selected' : '' %>>📊 (Bar Chart)</option>
+                                                            <option value="🏀" <%= category.icon === '🏀' ? 'selected' : '' %>>🏀 (Basketball)</option>
+                                                            <option value="📚" <%= category.icon === '📚' ? 'selected' : '' %>>📚 (Books)</option>
+                                                            <option value="💼" <%= category.icon === '💼' ? 'selected' : '' %>>💼 (Briefcase)</option>
+                                                            <option value="🧹" <%= category.icon === '🧹' ? 'selected' : '' %>>🧹 (Broom)</option>
+                                                            <option value="🚗" <%= category.icon === '🚗' ? 'selected' : '' %>>🚗 (Car)</option>
+                                                            <option value="🥕" <%= category.icon === '🥕' ? 'selected' : '' %>>🥕 (Carrot)</option>
+                                                            <option value="📉" <%= category.icon === '📉' ? 'selected' : '' %>>📉 (Chart Decreasing)</option>
+                                                            <option value="📈" <%= category.icon === '📈' ? 'selected' : '' %>>📈 (Chart Increasing)</option>
+                                                            <option value="🎬" <%= category.icon === '🎬' ? 'selected' : '' %>>🎬 (Clapper Board)</option>
+                                                            <option value="🏪" <%= category.icon === '🏪' ? 'selected' : '' %>>🏪 (Convenience Store)</option>
+                                                            <option value="💳" <%= category.icon === '💳' ? 'selected' : '' %>>💳 (Credit Card)</option>
+                                                            <option value="🖥️" <%= category.icon === '🖥️' ? 'selected' : '' %>>🖥️ (Desktop Computer)</option>
+                                                            <option value="🐕" <%= category.icon === '🐕' ? 'selected' : '' %>>🐕 (Dog)</option>
+                                                            <option value="💵" <%= category.icon === '💵' ? 'selected' : '' %>>💵 (Dollar Banknote)</option>
+                                                            <option value="👗" <%= category.icon === '👗' ? 'selected' : '' %>>👗 (Dress)</option>
+                                                            <option value="📀" <%= category.icon === '📀' ? 'selected' : '' %>>📀 (DVD)</option>
+                                                            <option value="👨‍👩‍👧‍👦" <%= category.icon === '👨‍👩‍👧‍👦' ? 'selected' : '' %>>👨‍👩‍👧‍👦 (Family)</option>
+                                                            <option value="🎁" <%= category.icon === '🎁' ? 'selected' : '' %>>🎁 (Gift)</option>
+                                                            <option value="🌐" <%= category.icon === '🌐' ? 'selected' : '' %>>🌐 (Globe with Meridians)</option>
+                                                            <option value="🎓" <%= category.icon === '🎓' ? 'selected' : '' %>>🎓 (Graduation Cap)</option>
+                                                            <option value="🛠️" <%= category.icon === '🛠️' ? 'selected' : '' %>>🛠️ (Hammer and Wrench)</option>
+                                                            <option value="🤝" <%= category.icon === '🤝' ? 'selected' : '' %>>🤝 (Handshake)</option>
+                                                            <option value="🎧" <%= category.icon === '🎧' ? 'selected' : '' %>>🎧 (Headphone)</option>
+                                                            <option value="❤️" <%= category.icon === '❤️' ? 'selected' : '' %>>❤️ (Heart)</option>
+                                                            <option value="🏠" <%= category.icon === '🏠' ? 'selected' : '' %>>🏠 (House)</option>
+                                                            <option value="🏘️" <%= category.icon === '🏘️' ? 'selected' : '' %>>🏘️ (Houses)</option>
+                                                            <option value="💡" <%= category.icon === '💡' ? 'selected' : '' %>>💡 (Light Bulb)</option>
+                                                            <option value="💰" <%= category.icon === '💰' ? 'selected' : '' %>>💰 (Money Bag)</option>
+                                                            <option value="💸" <%= category.icon === '💸' ? 'selected' : '' %>>💸 (Money with Wings)</option>
+                                                            <option value="🧓" <%= category.icon === '🧓' ? 'selected' : '' %>>🧓 (Older Person)</option>
+                                                            <option value="📱" <%= category.icon === '📱' ? 'selected' : '' %>>📱 (Phone)</option>
+                                                            <option value="💊" <%= category.icon === '💊' ? 'selected' : '' %>>💊 (Pill)</option>
+                                                            <option value="🍽️" <%= category.icon === '🍽️' ? 'selected' : '' %>>🍽️ (Plate with Cutlery)</option>
+                                                            <option value="💍" <%= category.icon === '💍' ? 'selected' : '' %>>💍 (Ring)</option>
+                                                            <option value="🩺" <%= category.icon === '🩺' ? 'selected' : '' %>>🩺 (Stethoscope)</option>
+                                                            <option value="🔧" <%= category.icon === '🔧' ? 'selected' : '' %>>🔧 (Wrench)</option>
+                                                            <option value="✈️" <%= category.icon === '✈️' ? 'selected' : '' %>>✈️ (Airplane)</option>
+                                                        </select>
+                                                    </td>
+                                                    
+                                                    <td>
+                                                        <!-- Dropdown for Category Selection -->
+                                                        <select name="categoryname" id= "categoryname" class="category-select" required>
+                                                            <option value="Tuition & Fees" <%= category.categoryname === 'Tuition & Fees' ? 'selected' : '' %>>Tuition & Fees</option>
+                                                            <option value="Textbooks & Supplies" <%= category.categoryname === 'Textbooks & Supplies' ? 'selected' : '' %>>Textbooks & Supplies</option>
+                                                            <option value="Housing" <%= category.categoryname === 'Housing' ? 'selected' : '' %>>Housing</option>
+                                                            <option value="Utilities" <%= category.categoryname === 'Utilities' ? 'selected' : '' %>>Utilities</option>
+                                                            <option value="Groceries" <%= category.categoryname === 'Groceries' ? 'selected' : '' %>>Groceries</option>
+                                                            <option value="Dining Out" <%= category.categoryname === 'Dining Out' ? 'selected' : '' %>>Dining Out</option>
+                                                            <option value="Transportation" <%= category.categoryname === 'Transportation' ? 'selected' : '' %>>Transportation</option>
+                                                            <option value="Health & Insurance" <%= category.categoryname === 'Health & Insurance' ? 'selected' : '' %>>Health & Insurance</option>
+                                                            <option value="Entertainment" <%= category.categoryname === 'Entertainment' ? 'selected' : '' %>>Entertainment</option>
+                                                            <option value="Clothing" <%= category.categoryname === 'Clothing' ? 'selected' : '' %>>Clothing</option>
+                                                            <option value="Personal Care" <%= category.categoryname === 'Personal Care' ? 'selected' : '' %>>Personal Care</option>
+                                                            <option value="Phone & Internet" <%= category.categoryname === 'Phone & Internet' ? 'selected' : '' %>>Phone & Internet</option>
+                                                            <option value="Sports & Recreation" <%= category.categoryname === 'Sports & Recreation' ? 'selected' : '' %>>Sports & Recreation</option>
+                                                            <option value="Miscellaneous" <%= category.categoryname === 'Miscellaneous' ? 'selected' : '' %>>Miscellaneous</option>
+                                                        </select>
+                                                    </td>
+                                                    
+                                                    <td>
+                                                        <div class="budget-goal-container">
+                                                            <span class="currency-symbol">$</span>
+                                                            <input type="number" class="budget" id="budget" value="<%= category.budget %>" name="budget" placeholder="<%= category.budget %>" step="0.01" required>
+                                                            <span class="per-month-text">per month</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="Save-category" style="background-color: var(--theme-color); color: white;">Save</button>
+                                                    </td>
+                                                    <td>
+                                                        <!-- Edit -->
+                                                        <button type="button" class="delete-category" style="background-color: #c82333;" onclick="toggleEditForm('<%= category.categoryid %>')">
+                                                            Cancel
+                                                        </button>                                        
+                                                    </td>
+                                                    
+                                                </form>
+                                            </div>
+                                        </tr>
                                     </tr>
                                 <% }); %>
                             <% } else { %>
@@ -194,8 +285,8 @@
                                 <th>Icon</th>
                                 <th>Category</th>
                                 <th>Budget Goal</th>
-                                <th>Edit</th>
-                                <th>Action</th>
+                                <th>Edit/Save</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -208,7 +299,9 @@
                                         <td><%= category.budget%> per month</td>
                                         <td>
                                             <!-- Edit -->
-                                            <button type="button" class="edit-category" style="background-color: var(--theme-color); color: white;">Edit</button>
+                                            <button type="button" class="edit-category" onclick="toggleEditForm('<%= category.categoryid %>')" style="background-color: var(--theme-color); color: white;">
+                                                Edit
+                                            </button>                                        
                                         </td>
                                         <td>
                                             <!-- Delete Button Form -->
@@ -217,7 +310,92 @@
                                                 <button type="submit" class="delete-category" style="background-color: #c82333;">Delete</button>
                                             </form>
                                         </td>
+                                        <tr id="editForm-<%= category.categoryid %>" class="hidden">
+                                                <form action="/edit-category" method="POST">
+                                                    <input type="hidden" name="categoryid" value="<%= category.categoryid %>">
+                                                    <td>
+                                                        <!-- Dropdown for Icon (Emoji) -->
+                                                        <select name="icon" id="icon" required>
+                                                            <option value="🥇" <%= category.icon === '🥇' ? 'selected' : '' %>>🥇 (1st Place Medal)</option>
+                                                            <option value="🚑" <%= category.icon === '🚑' ? 'selected' : '' %>>🚑 (Ambulance)</option>
+                                                            <option value="👶" <%= category.icon === '👶' ? 'selected' : '' %>>👶 (Baby)</option>
+                                                            <option value="⚖️" <%= category.icon === '⚖️' ? 'selected' : '' %>>⚖️ (Balance Scale)</option>
+                                                            <option value="📊" <%= category.icon === '📊' ? 'selected' : '' %>>📊 (Bar Chart)</option>
+                                                            <option value="🏀" <%= category.icon === '🏀' ? 'selected' : '' %>>🏀 (Basketball)</option>
+                                                            <option value="📚" <%= category.icon === '📚' ? 'selected' : '' %>>📚 (Books)</option>
+                                                            <option value="💼" <%= category.icon === '💼' ? 'selected' : '' %>>💼 (Briefcase)</option>
+                                                            <option value="🧹" <%= category.icon === '🧹' ? 'selected' : '' %>>🧹 (Broom)</option>
+                                                            <option value="🚗" <%= category.icon === '🚗' ? 'selected' : '' %>>🚗 (Car)</option>
+                                                            <option value="🥕" <%= category.icon === '🥕' ? 'selected' : '' %>>🥕 (Carrot)</option>
+                                                            <option value="📉" <%= category.icon === '📉' ? 'selected' : '' %>>📉 (Chart Decreasing)</option>
+                                                            <option value="📈" <%= category.icon === '📈' ? 'selected' : '' %>>📈 (Chart Increasing)</option>
+                                                            <option value="🎬" <%= category.icon === '🎬' ? 'selected' : '' %>>🎬 (Clapper Board)</option>
+                                                            <option value="🏪" <%= category.icon === '🏪' ? 'selected' : '' %>>🏪 (Convenience Store)</option>
+                                                            <option value="💳" <%= category.icon === '💳' ? 'selected' : '' %>>💳 (Credit Card)</option>
+                                                            <option value="🖥️" <%= category.icon === '🖥️' ? 'selected' : '' %>>🖥️ (Desktop Computer)</option>
+                                                            <option value="🐕" <%= category.icon === '🐕' ? 'selected' : '' %>>🐕 (Dog)</option>
+                                                            <option value="💵" <%= category.icon === '💵' ? 'selected' : '' %>>💵 (Dollar Banknote)</option>
+                                                            <option value="👗" <%= category.icon === '👗' ? 'selected' : '' %>>👗 (Dress)</option>
+                                                            <option value="📀" <%= category.icon === '📀' ? 'selected' : '' %>>📀 (DVD)</option>
+                                                            <option value="👨‍👩‍👧‍👦" <%= category.icon === '👨‍👩‍👧‍👦' ? 'selected' : '' %>>👨‍👩‍👧‍👦 (Family)</option>
+                                                            <option value="🎁" <%= category.icon === '🎁' ? 'selected' : '' %>>🎁 (Gift)</option>
+                                                            <option value="🌐" <%= category.icon === '🌐' ? 'selected' : '' %>>🌐 (Globe with Meridians)</option>
+                                                            <option value="🎓" <%= category.icon === '🎓' ? 'selected' : '' %>>🎓 (Graduation Cap)</option>
+                                                            <option value="🛠️" <%= category.icon === '🛠️' ? 'selected' : '' %>>🛠️ (Hammer and Wrench)</option>
+                                                            <option value="🤝" <%= category.icon === '🤝' ? 'selected' : '' %>>🤝 (Handshake)</option>
+                                                            <option value="🎧" <%= category.icon === '🎧' ? 'selected' : '' %>>🎧 (Headphone)</option>
+                                                            <option value="❤️" <%= category.icon === '❤️' ? 'selected' : '' %>>❤️ (Heart)</option>
+                                                            <option value="🏠" <%= category.icon === '🏠' ? 'selected' : '' %>>🏠 (House)</option>
+                                                            <option value="🏘️" <%= category.icon === '🏘️' ? 'selected' : '' %>>🏘️ (Houses)</option>
+                                                            <option value="💡" <%= category.icon === '💡' ? 'selected' : '' %>>💡 (Light Bulb)</option>
+                                                            <option value="💰" <%= category.icon === '💰' ? 'selected' : '' %>>💰 (Money Bag)</option>
+                                                            <option value="💸" <%= category.icon === '💸' ? 'selected' : '' %>>💸 (Money with Wings)</option>
+                                                            <option value="🧓" <%= category.icon === '🧓' ? 'selected' : '' %>>🧓 (Older Person)</option>
+                                                            <option value="📱" <%= category.icon === '📱' ? 'selected' : '' %>>📱 (Phone)</option>
+                                                            <option value="💊" <%= category.icon === '💊' ? 'selected' : '' %>>💊 (Pill)</option>
+                                                            <option value="🍽️" <%= category.icon === '🍽️' ? 'selected' : '' %>>🍽️ (Plate with Cutlery)</option>
+                                                            <option value="💍" <%= category.icon === '💍' ? 'selected' : '' %>>💍 (Ring)</option>
+                                                            <option value="🩺" <%= category.icon === '🩺' ? 'selected' : '' %>>🩺 (Stethoscope)</option>
+                                                            <option value="🔧" <%= category.icon === '🔧' ? 'selected' : '' %>>🔧 (Wrench)</option>
+                                                            <option value="✈️" <%= category.icon === '✈️' ? 'selected' : '' %>>✈️ (Airplane)</option>
+                                                        </select>
+                                                    </td>
+                                                    
+                                                    <td>
+                                                        <!-- Dropdown for Category Selection -->
+                                                        <select name="categoryname" id="categoryname" class="category-select" required>
+                                                            <option value="Paycheck" <%= category.categoryname === 'Paycheck' ? 'selected' : '' %>>Paycheck</option>
+                                                            <option value="Scholarships" <%= category.categoryname === 'Scholarships' ? 'selected' : '' %>>Scholarships</option>
+                                                            <option value="Student Loan Receipt" <%= category.categoryname === 'Student Loan Receipt' ? 'selected' : '' %>>Student Loan Receipt</option>
+                                                            <option value="Family Support" <%= category.categoryname === 'Family Support' ? 'selected' : '' %>>Family Support</option>
+                                                            <option value="Grants" <%= category.categoryname === 'Grants' ? 'selected' : '' %>>Grants</option>
+                                                            <option value="Gifts" <%= category.categoryname === 'Gifts' ? 'selected' : '' %>>Gifts</option>
+                                                            <option value="Investments" <%= category.categoryname === 'Investments' ? 'selected' : '' %>>Investments</option>
+                                                        </select>
+                                                    </td>
+                                                    
+                                                    <td>
+                                                        <div class="budget-goal-container">
+                                                            <span class="currency-symbol">$</span>
+                                                            <input type="number" class="budget" id="budget" value="<%= category.budget %>" name="budget" placeholder="<%= category.budget %>" step="0.01" required>
+                                                            <span class="per-month-text">per month</span>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <button type="submit" class="Save-category" style="background-color: var(--theme-color); color: white;">Save</button>
+                                                    </td>
+                                                    <td>
+                                                        <!-- Edit -->
+                                                        <button type="button" class="delete-category" style="background-color: #c82333;" onclick="toggleEditForm('<%= category.categoryid %>')">
+                                                            Cancel
+                                                        </button>                                        
+                                                    </td>
+                                                    
+                                                </form>
+                                            </div>
+                                        </tr>
                                     </tr>
+                                    
                                 <% }); %>
                             <% } else { %>
                                 <tr>
@@ -276,9 +454,9 @@
                                 <td>
                                     <!-- Dropdown for Category Selection -->
                                     <select name="categoryname" id="categoryname" class="category-select" required>
-                                        <option value="Part-Time Job">Paycheck</option>
+                                        <option value="Paycheck">Paycheck</option>
                                         <option value="Scholarships">Scholarships</option>
-                                        <option value="Student Loans">Student Loan Receipt</option>
+                                        <option value="Student Loan Receipt">Student Loan Receipt</option>
                                         <option value="Family Support">Family Support</option>
                                         <option value="Grants">Grants</option>
                                         <option value="Gifts">Gifts</option>
