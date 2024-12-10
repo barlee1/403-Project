@@ -275,18 +275,11 @@ app.get('/search-expenses', async (req, res) => {
             if (month) query.andWhere(knex.raw("EXTRACT(MONTH FROM datecreated) = ?", [month]));
             if (day) query.andWhere(knex.raw("EXTRACT(DAY FROM datecreated) = ?", [day]));
     
-            console.log('Filters:', { year, month, day });
-            console.log('Query:', query.toString());
-    
-            const results = await query;
-            console.log('Results:', results);
-    
             const formattedResults = results.map(entry => ({
                 ...entry,
                 formattedDate: new Date(entry.datecreated).toLocaleDateString('en-US'),
             }));
-            console.log('Formatted Results:', formattedResults);
-    
+                
             res.render('expenses', {
                 entries: formattedResults,
                 categories,
