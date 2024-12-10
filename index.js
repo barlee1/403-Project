@@ -391,7 +391,7 @@ app.post('/save-category', async (req, res) => {
         console.error('Error saving category:', error);
         res.status(500).send('Error saving category.');
     }
-});
+});*/
 
 
 // DELETE route to delete a category
@@ -450,16 +450,56 @@ app.post('/delete-category', async (req, res) => {
 
 
 // Profile route
-app.get("/profile", (req, res) => {
-            //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-            const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-            const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+app.get("/profile", async (req, res) => {
+    const userId = req.cookies.userId; // Retrieve the user ID from the cookie
+    const themeColor = req.cookies['theme-color'] || '#4e73df'; // Retrieve the theme color
+    if (!userId) {
+        // If userId doesn't exist in the cookie, redirect to login
+        return res.redirect('/');
+    }
 
-            if (!userId) {
-                // If userId doesn't exist in the cookie, redirect to login
-                return res.redirect('/');
-            }
-    res.render("profile", { themeColor, userId }); // Render views/profile.ejs
+    try {
+        // Fetch the current user's profile picture from the users table
+        const userInfo = await knex('users')
+            .select('profilepic')
+            .where('id', userId)
+            .first();
+
+        const profilePicture = userInfo?.profilepic || 'browncow.png'; // Default picture fallback
+
+        // Render the profile page with the current profile picture
+        res.render("profile", { themeColor, userId, profilePicture });
+    } catch (error) {
+        console.error("Error fetching user info:", error);
+        res.status(500).send("Error loading profile page");
+    }
+});
+
+// Route to update profile picture
+app.post("/profile/update-picture", async (req, res) => {
+    const userId = req.cookies.userId; // Retrieve the user ID from the cookie
+    const { profilepic } = req.body; // New profile picture ID from the form
+
+    if (!userId) {
+        // If userId doesn't exist in the cookie, redirect to login
+        return res.redirect('/');
+    }
+
+    try {
+        // Update the user's profile picture in the users table
+        const updateResult = await knex('users')
+            .where('id', userId)
+            .update({ profilepic });
+
+        if (updateResult === 0) {
+            return res.status(404).send('User not found or no associated profile!');
+        }
+
+        res.redirect("/profile"); // Redirect back to the profile page after update
+    } catch (error) {
+        console.error("Error updating profile picture:", error);
+        res.status(500).send("Error updating profile picture");
+    }
 });
 
 // POST Route to save Entry Information
