@@ -167,9 +167,33 @@ app.route('/expenses')
             // If userId doesn't exist in the cookie, redirect to login
             return res.redirect('/');
         }
-        // Render the page with the selectedType and categories
-        res.render('expenses', { categories, selectedType, selectedCategory, themeColor, userId  });
+
+                // pull current entries
+                try {
+                    // Fetch data from entryinfo table using Knex
+                    const entries = await knex('entryinfo')
+                    .join('category', 'entryinfo.categoryid', 'category.categoryid')
+                    .select('amount', 'datecreated', 'category.categoryname', 'description')
+                    .select(knex.raw("TO_CHAR(datecreated, 'MM/DD/YYYY') AS formattedDate"));
+                    
+                    // Format datecreated field manually
+                    const formattedEntries = entries.map(entry => {
+                        const formattedDate = new Date(entry.datecreated).toLocaleDateString('en-US');
+                        return { 
+                            ...entry, 
+                            formattedDate 
+                        };
+                    });
+
+                    // Render the view with the entries data
+                    res.render('expenses', { categories, selectedType, selectedCategory, themeColor, userId, entries: formattedEntries });
+                  } catch (error) {
+                    console.error('Error fetching entries:', error);
+                    res.status(500).json({ error: 'Database error' });
+                  }
     })
+
+// Route to fetch all expense/income entries
     .post(async (req, res) => {
         // Handle form submission (update logic)
         let selectedType = req.body.type;  // Get type from submitted form
@@ -188,8 +212,37 @@ app.route('/expenses')
             // If userId doesn't exist in the cookie, redirect to login
             return res.redirect('/');
         }
-        // Render the page with the selected values
-        res.render('expenses', { categories, selectedType, selectedCategory, themeColor, userId });
+
+
+        try {
+            // Fetch entries from the database
+            const entries = await knex('entryinfo')
+                .join('category', 'entryinfo.categoryid', 'category.categoryid')
+                .select('amount', 'datecreated', 'category.categoryname', 'description')
+                .select(knex.raw("TO_CHAR(datecreated, 'MM/DD/YYYY') AS formattedDate"));
+    
+            // Format datecreated field manually
+            const formattedEntries = entries.map(entry => {
+                const formattedDate = new Date(entry.datecreated).toLocaleDateString('en-US');
+                return { 
+                    ...entry, 
+                    formattedDate 
+                };
+            });
+    
+            // Render the template with the fetched data
+            res.render('expenses', { 
+                categories, 
+                selectedType, 
+                selectedCategory, 
+                themeColor, 
+                userId, 
+                entries: formattedEntries 
+            });
+        } catch (error) { // Missing catch block added here
+            console.error('Error fetching entries:', error);
+            res.status(500).json({ error: 'Database error' });
+        } // Missing closing brace for try...catch
     });
 
 // Helpful Tips route

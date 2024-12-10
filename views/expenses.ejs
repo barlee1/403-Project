@@ -97,6 +97,30 @@
                 </tbody>
             </table>
         </div>
+    
+        <h1>Expense/Income Entries</h1>
+
+        <table class="table expense-categories-table" id="entriesTable">
+          <thead>
+            <tr>
+              <th>Date Created</th>
+              <th>Amount</th>
+              <th>Category</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% entries.forEach(entry => { %>
+              <tr>
+                <td><%= entry.formattedDate %></td>
+                <td><%= entry.amount %></td>
+                <td><%= entry.categoryname %></td> <!-- You might want to join with category table to get the category name -->
+                <td><%= entry.description %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>       
+    
     </div>
 </div>
 </div>
