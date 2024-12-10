@@ -139,13 +139,14 @@ app.get("/home", (req, res) => {
     console.log("User ID:", req.cookies.userId);
     const userId = req.cookies.userId; // Retrieve the user ID from the cookie
     const themeColor = req.cookies['theme-color'] || '#4e73df'; // Retrieve theme color from cookie
+    const profilePicture = req.cookies.profilePicture || 'browncow.png'; // Retrieve from cookie
 
     if (!userId) {
         // If no userId, redirect to login
         return res.redirect('/');
     }
     // Render the home view and pass the userId and themeColor
-    res.render("home", { themeColor, userId });
+    res.render("home", { themeColor, userId, profilePicture });
 });
 
 
@@ -164,6 +165,7 @@ app.route('/expenses')
         //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
         const userId = req.cookies.userId; // Retrieve the user ID from the cookie
         const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+        const profilePicture = req.cookies.profilePicture || 'browncow.png'; // Retrieve from cookie
 
         if (!userId) {
             // If userId doesn't exist in the cookie, redirect to login
@@ -189,7 +191,7 @@ app.route('/expenses')
                     });
 
                     // Render the view with the entries data
-                    res.render('expenses', { categories, selectedType, selectedCategory, themeColor, userId, entries: formattedEntries });
+                    res.render('expenses', { categories, selectedType, selectedCategory, themeColor, profilePicture, userId, entries: formattedEntries });
                   } catch (error) {
                     console.error('Error fetching entries:', error);
                     res.status(500).json({ error: 'Database error' });
@@ -297,13 +299,15 @@ app.get('/search-expenses', async (req, res) => {
 // Helpful Tips route
 app.get("/helpfultips", (req, res) => {
             const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
-    res.render("helpfultips", {themeColor}); // Render views/helpfultips.ejs
+            const profilePicture = req.cookies.profilePicture || 'browncow.png'; // Retrieve from cookie
+    res.render("helpfultips", {themeColor, profilePicture}); // Render views/helpfultips.ejs
 });
 
 app.get("/settings", async (req, res) => {
     // Retrieve user ID and theme color from cookies
     const userId = req.cookies.userId;
     const themeColor = req.cookies['theme-color'] || '#4e73df'; // Default to #4e73df if not set
+    const profilePicture = req.cookies.profilePicture || 'browncow.png'; // Retrieve from cookie
     
     console.log(themeColor);
     console.log(userId);
@@ -325,7 +329,7 @@ app.get("/settings", async (req, res) => {
         const typeICategories = categories.filter(category => category.type === 'I');
 
         // Render the settings page with theme color, user ID, and categories
-        res.render("settings", { themeColor, userId, typeXCategories, typeICategories });
+        res.render("settings", { themeColor, userId, typeXCategories, typeICategories, profilePicture});
 
     } catch (error) {
         console.error("Error retrieving categories:", error);
@@ -485,6 +489,7 @@ app.post('/edit-category', async (req, res) => {
 app.get("/profile", async (req, res) => {
     const userId = req.cookies.userId; // Retrieve the user ID from the cookie
     const themeColor = req.cookies['theme-color'] || '#4e73df'; // Retrieve the theme color
+    const profilePicture = req.cookies.profilePicture || 'browncow.png'; // Retrieve from cookie
     if (!userId) {
         // If userId doesn't exist in the cookie, redirect to login
         return res.redirect('/');
@@ -526,6 +531,9 @@ app.post("/profile/update-picture", async (req, res) => {
         if (updateResult === 0) {
             return res.status(404).send('User not found or no associated profile!');
         }
+
+        // Store the updated profile picture in the cookie
+        res.cookie('profilePicture', profilepic, { httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 24 * 60 * 60 * 1000 });
 
         res.redirect("/profile"); // Redirect back to the profile page after update
     } catch (error) {

@@ -74,6 +74,16 @@ body, html {
     color: var(--theme-color); /* Active link text in theme color */
 }
 
+/* Logo Styles */
+.navbar .navbar-logo {
+    width: 50px; /* Adjust the size of the logo */
+    height: 50px; /* Adjust the size of the logo */
+    border-radius: 50%; /* Makes the image circular */
+    border: 3px solid #000000; /* Bold white circular ring around the image */
+    margin-right: 1rem; /* Space between logo and navbar items */
+    object-fit: cover; /* Ensures the image doesn't stretch/distort */
+}
+
 /* Content Wrapper */
 .content-wrapper {
     display: flex;
