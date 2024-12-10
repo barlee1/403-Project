@@ -134,7 +134,7 @@ app.post("/signup", async (req, res) => {
     }
 });
 
-// Home route
+// Home route 
 app.get("/home", (req, res) => {
     //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
     const userId = req.cookies.userId; // Retrieve the user ID from the cookie
@@ -174,7 +174,8 @@ app.route('/expenses')
                     const entries = await knex('entryinfo')
                     .join('category', 'entryinfo.categoryid', 'category.categoryid')
                     .select('amount', 'datecreated', 'category.categoryname', 'description')
-                    .select(knex.raw("TO_CHAR(datecreated, 'MM/DD/YYYY') AS formattedDate"));
+                    .select(knex.raw("TO_CHAR(datecreated, 'MM/DD/YYYY') AS formattedDate"))
+                    .where('userId', req.cookies.userId);
                     
                     // Format datecreated field manually
                     const formattedEntries = entries.map(entry => {
@@ -219,7 +220,8 @@ app.route('/expenses')
             const entries = await knex('entryinfo')
                 .join('category', 'entryinfo.categoryid', 'category.categoryid')
                 .select('amount', 'datecreated', 'category.categoryname', 'description')
-                .select(knex.raw("TO_CHAR(datecreated, 'MM/DD/YYYY') AS formattedDate"));
+                .select(knex.raw("TO_CHAR(datecreated, 'MM/DD/YYYY') AS formattedDate"))
+                .where('userId', req.cookies.userId);
     
             // Format datecreated field manually
             const formattedEntries = entries.map(entry => {
