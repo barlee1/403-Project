@@ -245,6 +245,58 @@ app.route('/expenses')
         } // Missing closing brace for try...catch
     });
 
+//Search
+app.get('/search-expenses', async (req, res) => {
+        const { year, month, day } = req.query;
+        const userId = req.cookies.userId;
+        const themeColor = req.cookies['theme-color'] || '#4e73df';
+        const selectedType = req.query.type || 'X';
+    
+        if (!userId) {
+            return res.redirect('/');
+        }
+    
+        try {
+            const categories = await knex('category')
+                .select('categoryid', 'categoryname')
+                .where('type', selectedType)
+                .andWhere('userId', userId);
+    
+            let query = knex('entryinfo')
+                .join('category', 'entryinfo.categoryid', 'category.categoryid')
+                .select('amount', 'datecreated', 'category.categoryname', 'description')
+                .where('entryinfo.userid', userId);
+    
+            if (year) query.andWhere(knex.raw("EXTRACT(YEAR FROM datecreated) = ?", [year]));
+            if (month) query.andWhere(knex.raw("EXTRACT(MONTH FROM datecreated) = ?", [month]));
+            if (day) query.andWhere(knex.raw("EXTRACT(DAY FROM datecreated) = ?", [day]));
+    
+            console.log('Filters:', { year, month, day });
+            console.log('Query:', query.toString());
+    
+            const results = await query;
+            console.log('Results:', results);
+    
+            const formattedResults = results.map(entry => ({
+                ...entry,
+                formattedDate: new Date(entry.datecreated).toLocaleDateString('en-US'),
+            }));
+            console.log('Formatted Results:', formattedResults);
+    
+            res.render('expenses', {
+                entries: formattedResults,
+                categories,
+                selectedType,
+                themeColor,
+                userId,
+                searchFilters: { year, month, day },
+            });
+        } catch (error) {
+            console.error('Error searching expenses:', error);
+            res.status(500).send('An error occurred while searching for expenses.');
+        }
+    });
+
 // Helpful Tips route
 app.get("/helpfultips", (req, res) => {
             const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color

@@ -7,6 +7,23 @@
     <link rel="stylesheet" href="/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
 </head>
+<style>
+.clear-button {
+    display: inline-block;
+    padding: 8px 16px;
+    margin-left: 10px;
+    background-color: #f0f0f0; /* Light grey */
+    color: #333; /* Dark text */
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.clear-button:hover {
+    background-color: #e0e0e0; /* Slightly darker grey */
+}
+</style>
 <body>
     <% selectedType = selectedType || 'X'; %> <!-- Set default value if undefined -->
     <% categories = categories || '[1, 2, 3]'; %>
@@ -14,148 +31,154 @@
     <!-- Nav Bar -->
     <%- include("partials/navbar") %>
 
-<!-- Content Wrapper -->
-<div class="content-wrapper">
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <a href="/home" class="nav-link">Home</a>
-        <a href="/expenses" class="nav-link active">Expenses</a>
-        <a href="/helpfultips" class="nav-link">Helpful Tips</a>
-        <a href="/settings" class="nav-link">Settings</a>
-        <a href="/profile" class="nav-link">Profile</a>
-    </div>
-
-<!-- Main Content -->
-<div class="main-content">
-    <div class="container">
-        <!-- Expense/Income Entry Form -->
-        <div class="setting-section">
-            <h2 class="section-title">Add New Entry</h2>
-            <table class="table expense-categories-table">
-                <thead>
-                    <tr>
-                        <th>Entry Type</th>
-                        <th>Date</th>
-                        <th>Category</th>
-                        <th>Amount</th>
-                        <th>Description</th>
-                        <th>Submit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="expense-category-row">
-                    <td>
-                        <form method="POST" action="/expenses" id="typeForm">
-                            <!-- Radio button for 'X' (Expenses) -->
-                            <label>
-                                <input 
-                                    type="radio" 
-                                    name="type" 
-                                    value="X" 
-                                    <%= selectedType === 'X' ? 'checked' : '' %> 
-                                    onchange="document.getElementById('typeForm').submit()">
-                                Expenses
-                            </label>
-                            <!-- Radio button for 'I' (Income) -->
-                            <label>
-                                <input 
-                                    type="radio" 
-                                    name="type" 
-                                    value="I" 
-                                    <%= selectedType === 'I' ? 'checked' : '' %> 
-                                    onchange="document.getElementById('typeForm').submit()">
-                                Income
-                            </label>
-                        </form>                                    
-                    </td>
-
-                        <form action="/entry-submit" method="POST"> 
-                        <td>
-                            <input required type="date" id="entryDate" name="entryDate" class="styled-input">
-                        </td>
-                        <td>
-                            <select id="category" required name="category" class="styled-select">
-                                <% categories.forEach(category => { %>
-                                    <option value="<%= category.categoryid %>" <%= selectedType === 'X' && category.type === 'expense' ? 'selected' : '' %>><%= category.categoryname %></option>
-                                <% }); %>
-                            </select>
-                            
-                        </td>
-                        <td>
-                            <input required type="text" id="amount" name="amount" placeholder="$0.00" />
-                        </td>
-                        <td>
-                            <input type="text" required id="description" name="description" placeholder="Enter description (optional)"></input>
-                        </td>
-                        <td>
-                            <button type="submit" class="submit-entry">Submit</button>
-                        </td>
-                        <input type="hidden" name="userId" id="userId" value="<%= userId %>">
-                    </form>
-
-                    </tr>
-                </tbody>
-            </table>
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <a href="/home" class="nav-link">Home</a>
+            <a href="/expenses" class="nav-link active">Expenses</a>
+            <a href="/helpfultips" class="nav-link">Helpful Tips</a>
+            <a href="/settings" class="nav-link">Settings</a>
+            <a href="/profile" class="nav-link">Profile</a>
         </div>
-    
-        <h1>Expense/Income Entries</h1>
 
-        <table class="table expense-categories-table" id="entriesTable">
-          <thead>
-            <tr>
-              <th>Date Created</th>
-              <th>Amount</th>
-              <th>Category</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% entries.forEach(entry => { %>
-              <tr>
-                <td><%= entry.formattedDate %></td>
-                <td><%= entry.amount %></td>
-                <td><%= entry.categoryname %></td> <!-- You might want to join with category table to get the category name -->
-                <td><%= entry.description %></td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>       
-    
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="container">
+                <!-- Search Form -->
+                <div class="search-section">
+                    <h2 class="section-title">Search Expenses</h2>
+                    <form action="/search-expenses" method="get" class="search-form">
+                        <div>
+                            <label for="year">Year:</label>
+                            <input type="text" id="year" name="year" placeholder="e.g., 2024">
+                        </div>
+                        <div>
+                            <label for="month">Month:</label>
+                            <input type="text" id="month" name="month" placeholder="e.g., 12">
+                        </div>
+                        <div>
+                            <label for="day">Day:</label>
+                            <input type="text" id="day" name="day" placeholder="e.g., 25">
+                        </div>
+                        <button type="submit" class="search-button">Search</button>
+                        <a href="/expenses?type=<%= selectedType %>" class="clear-button">Clear</a>
+                    </form>
+                </div>
+
+                <!-- Expense/Income Entry Form -->
+                <div class="setting-section">
+                    <h2 class="section-title">Add New Entry</h2>
+                    <table class="table expense-categories-table">
+                        <thead>
+                            <tr>
+                                <th>Entry Type</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Description</th>
+                                <th>Submit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="expense-category-row">
+                                <td>
+                                    <form method="POST" action="/expenses" id="typeForm">
+                                        <label>
+                                            <input 
+                                                type="radio" 
+                                                name="type" 
+                                                value="X" 
+                                                <%= selectedType === 'X' ? 'checked' : '' %> 
+                                                onchange="document.getElementById('typeForm').submit()">
+                                            Expenses
+                                        </label>
+                                        <label>
+                                            <input 
+                                                type="radio" 
+                                                name="type" 
+                                                value="I" 
+                                                <%= selectedType === 'I' ? 'checked' : '' %> 
+                                                onchange="document.getElementById('typeForm').submit()">
+                                            Income
+                                        </label>
+                                    </form>                                    
+                                </td>
+                                <form action="/entry-submit" method="POST"> 
+                                    <td>
+                                        <input required type="date" id="entryDate" name="entryDate" class="styled-input">
+                                    </td>
+                                    <td>
+                                        <select id="category" required name="category" class="styled-select">
+                                            <% categories.forEach(category => { %>
+                                                <option value="<%= category.categoryid %>"><%= category.categoryname %></option>
+                                            <% }); %>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input required type="text" id="amount" name="amount" placeholder="$0.00" />
+                                    </td>
+                                    <td>
+                                        <input type="text" required id="description" name="description" placeholder="Enter description"></input>
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="submit-entry">Submit</button>
+                                    </td>
+                                    <input type="hidden" name="userId" id="userId" value="<%= userId %>">
+                                </form>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Display Entries -->
+                <h1>Expense/Income Entries</h1>
+                <table class="table expense-categories-table" id="entriesTable">
+                    <thead>
+                        <tr>
+                            <th>Date Created</th>
+                            <th>Amount</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (entries && entries.length > 0) { %>
+                            <% entries.forEach(entry => { %>
+                                <tr>
+                                    <td><%= entry.formattedDate %></td>
+                                    <td>$<%= entry.amount %></td>
+                                    <td><%= entry.categoryname %></td>
+                                    <td><%= entry.description %></td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr>
+                                <td colspan="4">No expenses found for the selected filters.</td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>       
+            </div>
+        </div>
     </div>
-</div>
-</div>
 
     <script>
-
-        // Makes the number be added in a currency format
         document.getElementById('amount').addEventListener('input', function (e) {
-        let value = e.target.value;
-
-        // Remove any characters that are not digits or a single decimal
-        value = value.replace(/[^0-9.]/g, '');
-
-        // Allow only one decimal point
-        if (value.indexOf('.') !== -1) {
-            const parts = value.split('.');
-            value = parts[0] + '.' + parts[1].slice(0, 2); // Limit to 2 decimals
-        }
-
-        // Format as currency
-        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');  // Add commas for thousands
-        if (value) {
-            value = '$' + value; // Add dollar sign
-        }
-
-        e.target.value = value;  // Update the input value
-    });
-
-
+            let value = e.target.value.replace(/[^0-9.]/g, ''); // Remove non-numeric characters
+            if (value.indexOf('.') !== -1) {
+                const parts = value.split('.');
+                value = parts[0] + '.' + parts[1].slice(0, 2); // Limit to 2 decimals
+            }
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            if (value) value = '$' + value;
+            e.target.value = value;
+        });
     </script>
 
     <!-- Footer -->
     <footer class="footer" style="background-color: var(--theme-color); color: white;">
         &copy; 2024 CashCow. All rights reserved.
     </footer>
-
 </body>
 </html>
