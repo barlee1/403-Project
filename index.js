@@ -192,7 +192,6 @@ app.route('/expenses')
         res.render('expenses', { categories, selectedType, selectedCategory, themeColor, userId });
     });
 
-
 // Helpful Tips route
 app.get("/helpfultips", (req, res) => {
             const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
