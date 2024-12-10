@@ -52,7 +52,6 @@
             </form>
 
                 <!-- Expense Categories Section -->
-            <form action="/save-category" method="POST" class="category-form">
                 <div class="setting-section">
                     <h2 class="section-title">Expense Categories</h2>
                     <table class="table expense-categories-table">
@@ -62,11 +61,36 @@
                                 <th>Category</th>
                                 <th>Budget Goal</th>
                                 <th>Edit</th>
-                                <th>Save</th>
-                                <th>Delete</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <% if (typeXCategories.length > 0) { %>
+                                <% typeXCategories.forEach(category => { %>
+                                    <tr>
+                                        <td style="display: none;"><%= category.categoryid %></td>
+                                        <td><%= category.icon %></td>
+                                        <td><%= category.categoryname %></td>
+                                        <td><%= category.budget%> per month</td>
+                                        <td>
+                                            <!-- Edit -->
+                                            <button type="button" class="edit-category" style="background-color: var(--theme-color); color: white;">Edit</button>
+                                        </td>
+                                        <td>
+                                            <!-- Delete Button Form -->
+                                            <form action="/delete-category" method="POST" style="display: inline;" class="delete-category">
+                                                <input type="hidden" name="categoryid" value="<%= category.categoryid %>">
+                                                <button type="submit" class="delete-category" style="background-color: #c82333;">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="5" style="text-align: center;">No expense categories available.</td>
+                                </tr>
+                            <% } %>
+                            <form action="/save-category" method="POST" class="category-form">
                             <tr class="expense-category-row">
                                 <td>
                                     <!-- Dropdown for Icon (Emoji) -->
@@ -151,20 +175,17 @@
                                     <button type="submit" class="save-category" style="background-color: var(--theme-color); color: white;">Save</button>
                                 </td>
                                 <td>
-                                    <!-- Delete Button -->
-                                    <button type="button" class="delete-category" style="background-color: #c82333;">Delete</button>
+                                    <input type="hidden" name="type" value="X">
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                     <br>
-                    <input type="hidden" name="type" value="X">
                 </form>
                     <button type="button" class="add-new-expense-category" style="background-color: var(--theme-color); color: white;">Add New Expense Category</button>
                 </div>
 
                 <!-- Income Categories Section -->
-                <form action="/save-category" method="POST" class="category-form">
                 <div class="setting-section">
                     <h2 class="section-title">Income Categories</h2>
                     <table class="table income-categories-table">
@@ -172,13 +193,38 @@
                             <tr>
                                 <th>Icon</th>
                                 <th>Category</th>
-                                <th>Expected Income</th>
+                                <th>Budget Goal</th>
                                 <th>Edit</th>
-                                <th>Save</th>
-                                <th>Delete</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <% if (typeICategories.length > 0) { %>
+                                <% typeICategories.forEach(category => { %>
+                                    <tr>
+                                        <td style="display: none;"><%= category.categoryid %></td>
+                                        <td><%= category.icon %></td>
+                                        <td><%= category.categoryname %></td>
+                                        <td><%= category.budget%> per month</td>
+                                        <td>
+                                            <!-- Edit -->
+                                            <button type="button" class="edit-category" style="background-color: var(--theme-color); color: white;">Edit</button>
+                                        </td>
+                                        <td>
+                                            <!-- Delete Button Form -->
+                                            <form action="/delete-category" method="POST" style="display: inline;" class="delete-category">
+                                                <input type="hidden" name="categoryid" value="<%= category.categoryid %>">
+                                                <button type="submit" class="delete-category" style="background-color: #c82333;">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="5" style="text-align: center;">No income categories available.</td>
+                                </tr>
+                            <% } %>
+                            <form action="/save-category" method="POST" class="category-form">
                             <tr class="income-category-row">
                                 <td>
                                     <!-- Dropdown for Icon (Emoji) -->
@@ -253,21 +299,19 @@
                                 </td>
                                 <td>
                                     <!-- Save Button -->
-                                    <button type="button" class="Save-category" style="background-color: var(--theme-color); color: white;">Save</button>
+                                    <button type="submit" class="Save-category" style="background-color: var(--theme-color); color: white;">Save</button>
                                 </td>
                                 <td>
-                                    <!-- Delete Button -->
-                                    <button type="button" class="delete-category" style="background-color: #c82333;">Delete</button>
+                                    <input type="hidden" name="type" value="I">
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> 
                 </form>
                     <br>
                     <button type="button" class="add-new-income-category" style="background-color: var(--theme-color); color: white;">Add New Income Category</button>
                 </div>
                 <br>
-                <input type="hidden" name="type" value="I">
             </form>
         </div>
     </div>

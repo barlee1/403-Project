@@ -174,8 +174,7 @@ document.querySelector('.add-new-expense-category').addEventListener('click', ()
             <button type="submit" class="save-category" style="background-color: var(--theme-color); color: white;">Save</button>
         </td>
         <td>
-            <!-- Delete Button -->
-            <button type="button" class="delete-category" style="background-color: #c82333;">Delete</button>
+            <input type="hidden" name="type" value="X">
         </td>
     `;
     tableBody.appendChild(newRow);
@@ -265,11 +264,10 @@ document.querySelector('.add-new-income-category').addEventListener('click', () 
         </td>
         <td>
             <!-- Save Button -->
-            <button type="button" class="Save-category" style="background-color: var(--theme-color); color: white;">Save</button>
+            <button type="submit" class="Save-category" style="background-color: var(--theme-color); color: white;">Save</button>
         </td>
         <td>
-            <!-- Delete Button -->
-            <button type="button" class="delete-category" style="background-color: #c82333;">Delete</button>
+            <input type="hidden" name="type" value="I">
         </td>
 
     `;
@@ -279,13 +277,4 @@ document.querySelector('.add-new-income-category').addEventListener('click', () 
     attachCategorySelectListeners();
 });
 
-/**
- * Delete a row (for both expense and income categories).
- */
-document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('delete-category')) {
-        const row = event.target.closest('tr'); // Find the closest row to the delete button
-        row.remove(); // Remove the row from the table
-    }
-});
 

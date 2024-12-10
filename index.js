@@ -307,19 +307,39 @@ app.get("/helpfultips", (req, res) => {
     res.render("helpfultips", {themeColor}); // Render views/helpfultips.ejs
 });
 
-// Settings route - Retrieve the theme color and categories from cookies or settings
-app.get("/settings", (req, res) => {
-                            //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-                            const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-                            const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
-                            console.log(themeColor);
-                            console.log(userId);
-                            if (!userId) {
-                                // If userId doesn't exist in the cookie, redirect to login
-                                return res.redirect('/');
-                            }
-    res.render("settings", { themeColor, userId }); // Pass the themeColor to the EJS template
+app.get("/settings", async (req, res) => {
+    // Retrieve user ID and theme color from cookies
+    const userId = req.cookies.userId;
+    const themeColor = req.cookies['theme-color'] || '#4e73df'; // Default to #4e73df if not set
+    
+    console.log(themeColor);
+    console.log(userId);
+    
+    if (!userId) {
+        // Redirect to login if no user ID is found in the cookies
+        return res.redirect('/');
+    }
+
+    try {
+        // Use Knex to query the categories table for the user's categories
+        const categories = await knex('category')
+            .select('categoryid', 'icon', 'categoryname', 'budget', 'type')
+            .where('userId', userId);
+
+
+        // Split categories by type
+        const typeXCategories = categories.filter(category => category.type === 'X');
+        const typeICategories = categories.filter(category => category.type === 'I');
+
+        // Render the settings page with theme color, user ID, and categories
+        res.render("settings", { themeColor, userId, typeXCategories, typeICategories });
+
+    } catch (error) {
+        console.error("Error retrieving categories:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
+
 
 app.post('/update-color', async (req, res) => {
     const userId = req.cookies.userId;
@@ -372,6 +392,62 @@ app.post('/save-category', async (req, res) => {
         res.status(500).send('Error saving category.');
     }
 });
+
+
+// DELETE route to delete a category
+app.post('/delete-category', async (req, res) => {
+    const { categoryid } = req.body;
+    const userId = req.cookies.userId; // Assuming userId is stored in the cookies
+
+    console.log('Deleting category with ID:', categoryid, 'for user:', userId);
+
+    if (!userId) {
+        return res.status(400).send('User ID not found.');
+    }
+
+    if (!categoryid) {
+        return res.status(400).send('Category ID not provided.');
+    }
+
+    try {
+        // Delete from the entryinfo table (if any entries exist)
+        const deletedEntries = await knex('entryinfo')
+            .where({ categoryid: categoryid, userid: userId }) // Matching categoryID and userID
+            .del();
+
+        // Log the result of deletion, but don't return an error if no entries were deleted
+        if (deletedEntries > 0) {
+            console.log(`Deleted ${deletedEntries} entry(s) from entryinfo table.`);
+        } else {
+            console.log('No entries found in entryinfo table for the given category and user.');
+        }
+
+        // Now, delete the category itself from the category table
+        const deletedCategory = await knex('category')
+            .where({ categoryid: categoryid, userId: userId })
+            .del();
+
+        // If no category is deleted, return a 404 response
+        if (deletedCategory === 0) {
+            return res.status(404).send('Category not found or you do not have permission to delete it.');
+        }
+
+        // Redirect to the settings page after successful deletion
+        res.redirect('/settings');
+    } catch (error) {
+        console.error('Error deleting category:', error);
+
+        // Check if the error is a foreign key violation (error code 23503)
+        if (error.code === '23503') {
+            return res.status(400).send('Cannot delete category because it is referenced by other entries.');
+        }
+
+        // Generic error response
+        res.status(500).send('Error deleting category.');
+    }
+});
+
+
 
 // Profile route
 app.get("/profile", (req, res) => {
