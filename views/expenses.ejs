@@ -45,26 +45,6 @@
         <!-- Main Content -->
         <div class="main-content">
             <div class="container">
-                <!-- Search Form -->
-                <div class="search-section">
-                    <h2 class="section-title">Search Expenses</h2>
-                    <form action="/search-expenses" method="get" class="search-form">
-                        <div>
-                            <label for="year">Year:</label>
-                            <input type="text" id="year" name="year" placeholder="e.g., 2024">
-                        </div>
-                        <div>
-                            <label for="month">Month:</label>
-                            <input type="text" id="month" name="month" placeholder="e.g., 12">
-                        </div>
-                        <div>
-                            <label for="day">Day:</label>
-                            <input type="text" id="day" name="day" placeholder="e.g., 25">
-                        </div>
-                        <button type="submit" class="search-button">Search</button>
-                        <a href="/expenses?type=<%= selectedType %>" class="clear-button">Clear</a>
-                    </form>
-                </div>
 
                 <!-- Expense/Income Entry Form -->
                 <div class="setting-section">
@@ -129,6 +109,27 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+<br><br><br>
+                <!-- Search Form -->
+                <div class="search-section">
+                    <h2 class="section-title">Search Expenses</h2>
+                    <form action="/search-expenses" method="get" class="search-form">
+                        <div>
+                            <label for="year">Year:</label>
+                            <input type="text" id="year" name="year" placeholder="e.g., 2024">
+                        </div>
+                        <div>
+                            <label for="month">Month:</label>
+                            <input type="text" id="month" name="month" placeholder="e.g., 12">
+                        </div>
+                        <div>
+                            <label for="day">Day:</label>
+                            <input type="text" id="day" name="day" placeholder="e.g., 25">
+                        </div>
+                        <button type="submit" class="search-button">Search</button>
+                        <a href="/expenses?type=<%= selectedType %>" class="clear-button">Clear</a>
+                    </form>
                 </div>
 
                 <!-- Display Entries -->
