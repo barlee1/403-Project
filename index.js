@@ -391,8 +391,7 @@ app.post('/save-category', async (req, res) => {
         console.error('Error saving category:', error);
         res.status(500).send('Error saving category.');
     }
-});*/
-
+});
 
 // DELETE route to delete a category
 app.post('/delete-category', async (req, res) => {
