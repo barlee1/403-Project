@@ -136,16 +136,18 @@ app.post("/signup", async (req, res) => {
 
 // Home route 
 app.get("/home", (req, res) => {
-    //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
+    console.log("User ID:", req.cookies.userId);
     const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-    const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+    const themeColor = req.cookies['theme-color'] || '#4e73df'; // Retrieve theme color from cookie
 
     if (!userId) {
-        // If userId doesn't exist in the cookie, redirect to login
+        // If no userId, redirect to login
         return res.redirect('/');
     }
-    res.render("home", {themeColor, userId}); // Render views/home.ejs
+    // Render the home view and pass the userId and themeColor
+    res.render("home", { themeColor, userId });
 });
+
 
 app.route('/expenses')
     .get(async (req, res) => {
