@@ -277,6 +277,32 @@ app.get("/profile", (req, res) => {
     res.render("profile", { themeColor, userId }); // Render views/profile.ejs
 });
 
+// POST Route to save Entry Information
+app.post('/entry-submit', (req, res) => {
+    // Extract data from the submitted form
+    const { entryDate, category, amount, description, userId } = req.body;
+    
+    // Format the amount to remove dollar sign and commas (optional step)
+    const formattedAmount = amount.replace(/[^0-9.-]+/g, ''); // Removes any non-numeric characters (like $)
+
+    // Insert data into the database
+    knex('entryinfo')
+    .insert({
+            datecreated: entryDate,      // Date of the entry
+            categoryid: category,     // Category ID
+            amount: formattedAmount,  // The numeric amount
+            description: description,  // Description (optional)
+            userid: userId
+        })
+    .then (() => { 
+        res.redirect('/expenses');
+    })
+    .catch (error =>  {
+        console.error("Error inserting data:", error);
+        res.status(500).send("An error occurred while saving your entry.");
+    });
+});
+
 
 // Serve static files from the "Javascript" folder
 app.use('/js', express.static(path.join(__dirname, 'Javascript')));

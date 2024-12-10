@@ -14,144 +14,118 @@
     <!-- Nav Bar -->
     <%- include("partials/navbar") %>
 
-    <!-- Content Wrapper -->
-    <div class="content-wrapper">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <a href="/home" class="nav-link">Home</a>
-            <a href="/expenses" class="nav-link active">Expenses</a>
-            <a href="/helpfultips" class="nav-link">Helpful Tips</a>
-            <a href="/settings" class="nav-link">Settings</a>
-            <a href="/profile" class="nav-link">Profile</a>
-        </div>
-
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="container">
-                <!-- Expense/Income Entry Form -->
-                <div class="setting-section">
-                    <h2 class="section-title">Add New Entry</h2>
-                    <table class="table expense-categories-table">
-                        <thead>
-                            <tr>
-                                <th>Entry Type</th>
-                                <th>Date</th>
-                                <th>Category</th>
-                                <th>Amount</th>
-                                <th>Description</th>
-                                <th>Submit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="expense-category-row">
-                                <td>
-                                    <form method="POST" action="/expenses" id="typeForm">
-                                        <!-- Radio button for 'X' (Expenses) -->
-                                        <label>
-                                            <input 
-                                                type="radio" 
-                                                name="type" 
-                                                value="X" 
-                                                <%= selectedType === 'X' ? 'checked' : '' %> 
-                                                onchange="document.getElementById('typeForm').submit()">
-                                            Expenses
-                                        </label>
-                                    
-                                        <!-- Radio button for 'I' (Income) -->
-                                        <label>
-                                            <input 
-                                                type="radio" 
-                                                name="type" 
-                                                value="I" 
-                                                <%= selectedType === 'I' ? 'checked' : '' %> 
-                                                onchange="document.getElementById('typeForm').submit()">
-                                            Income
-                                        </label>
-                                    </form>                                    
-                                    
-                                </td>
-                                <td>
-                                    <input type="date" id="entryDate" class="styled-input">
-                                </td>
-                                <td>
-                                    <select id="category" class="styled-select">
-                                        <% categories.forEach(category => { %>
-                                            <option value="<%= category.categoryid %>" <%= selectedType === 'X' && category.type === 'expense' ? 'selected' : '' %>><%= category.categoryname %></option>
-                                        <% }); %>
-                                    </select>
-                                    
-                                </td>
-                                <td>
-                                    <input type="number" id="amount" placeholder="Enter amount" class="input-field">
-                                </td>
-                                <td>
-                                    <textarea id="description" placeholder="Enter description (optional)"></textarea>
-                                </td>
-                                <td>
-                                    <button type="button" class="submit-entry" onclick="submitEntry()">Submit</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+<!-- Content Wrapper -->
+<div class="content-wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="/home" class="nav-link">Home</a>
+        <a href="/expenses" class="nav-link active">Expenses</a>
+        <a href="/helpfultips" class="nav-link">Helpful Tips</a>
+        <a href="/settings" class="nav-link">Settings</a>
+        <a href="/profile" class="nav-link">Profile</a>
     </div>
 
+<!-- Main Content -->
+<div class="main-content">
+    <div class="container">
+        <!-- Expense/Income Entry Form -->
+        <div class="setting-section">
+            <h2 class="section-title">Add New Entry</h2>
+            <table class="table expense-categories-table">
+                <thead>
+                    <tr>
+                        <th>Entry Type</th>
+                        <th>Date</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Description</th>
+                        <th>Submit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="expense-category-row">
+                    <td>
+                        <form method="POST" action="/expenses" id="typeForm">
+                            <!-- Radio button for 'X' (Expenses) -->
+                            <label>
+                                <input 
+                                    type="radio" 
+                                    name="type" 
+                                    value="X" 
+                                    <%= selectedType === 'X' ? 'checked' : '' %> 
+                                    onchange="document.getElementById('typeForm').submit()">
+                                Expenses
+                            </label>
+                            <!-- Radio button for 'I' (Income) -->
+                            <label>
+                                <input 
+                                    type="radio" 
+                                    name="type" 
+                                    value="I" 
+                                    <%= selectedType === 'I' ? 'checked' : '' %> 
+                                    onchange="document.getElementById('typeForm').submit()">
+                                Income
+                            </label>
+                        </form>                                    
+                    </td>
+
+                        <form action="/entry-submit" method="POST"> 
+                        <td>
+                            <input required type="date" id="entryDate" name="entryDate" class="styled-input">
+                        </td>
+                        <td>
+                            <select id="category" required name="category" class="styled-select">
+                                <% categories.forEach(category => { %>
+                                    <option value="<%= category.categoryid %>" <%= selectedType === 'X' && category.type === 'expense' ? 'selected' : '' %>><%= category.categoryname %></option>
+                                <% }); %>
+                            </select>
+                            
+                        </td>
+                        <td>
+                            <input required type="text" id="amount" name="amount" placeholder="$0.00" />
+                        </td>
+                        <td>
+                            <input type="text" required id="description" name="description" placeholder="Enter description (optional)"></input>
+                        </td>
+                        <td>
+                            <button type="submit" class="submit-entry">Submit</button>
+                        </td>
+                        <input type="hidden" name="userId" id="userId" value="<%= userId %>">
+                    </form>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+
     <script>
-        // Fetch categories from the server dynamically
-        fetch('/expenses')
-            .then(response => response.json())
-            .then(data => {
-                const expenseCategories = data.categories; // The categories object passed from the server
 
-                // Function to populate the category dropdown
-                function populateCategoryDropdown(categories) {
-                    const categorySelect = document.getElementById('category');
-                    categorySelect.innerHTML = ''; // Clear existing options
-                    categories.forEach(category => {
-                        const option = document.createElement('option');
-                        option.value = category.name.toLowerCase();
-                        option.innerHTML = `${category.icon} ${category.name}`;
-                        categorySelect.appendChild(option);
-                    });
-                }
+        // Makes the number be added in a currency format
+        document.getElementById('amount').addEventListener('input', function (e) {
+        let value = e.target.value;
 
-                // Set the default category list to the fetched categories
-                populateCategoryDropdown(expenseCategories);
+        // Remove any characters that are not digits or a single decimal
+        value = value.replace(/[^0-9.]/g, '');
 
-                // Event listener for radio buttons
-                document.getElementById('expenseRadio').addEventListener('change', function() {
-                    if (this.checked) {
-                        populateCategoryDropdown(expenseCategories); // Show expense categories
-                    }
-                });
-
-                document.getElementById('incomeRadio').addEventListener('change', function() {
-                    if (this.checked) {
-                        populateCategoryDropdown(incomeCategories); // You can modify this to handle income categories if you have those too
-                    }
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching categories:', error);
-            });
-
-        // Submit Entry Function
-        function submitEntry() {
-            const entryDate = document.getElementById('entryDate').value;
-            const category = document.getElementById('category').value;
-            const amount = document.getElementById('amount').value;
-            const description = document.getElementById('description').value;
-            
-            // Clear the form fields after submission
-            document.getElementById('entryDate').value = '';
-            document.getElementById('category').value = ''; // default to empty
-            document.getElementById('amount').value = '';
-            document.getElementById('description').value = '';
-
-            alert('Entry Submitted!');
+        // Allow only one decimal point
+        if (value.indexOf('.') !== -1) {
+            const parts = value.split('.');
+            value = parts[0] + '.' + parts[1].slice(0, 2); // Limit to 2 decimals
         }
+
+        // Format as currency
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');  // Add commas for thousands
+        if (value) {
+            value = '$' + value; // Add dollar sign
+        }
+
+        e.target.value = value;  // Update the input value
+    });
+
+
     </script>
 
     <!-- Footer -->
