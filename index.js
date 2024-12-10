@@ -65,11 +65,11 @@ app.use(
     }
 })();
 
-// Routes
+// ==== Routes ======
 
 // Landing Page
 app.get("/", (req, res) => {
-    const error = null; // Or get this from a specific source, like flash messages
+    const error = null; 
     res.render("login", { error }); // Pass 'error' to the template
 });
 
@@ -147,9 +147,54 @@ app.get("/home", (req, res) => {
     res.render("home", {themeColor, userId}); // Render views/home.ejs
 });
 
+app.route('/expenses')
+    .get(async (req, res) => {
+        // Default to a type if no type is selected
+        let selectedType = req.query.type || 'X';  // Use query or default to 'X'
+        let selectedCategory = req.query.category || ''; // Default empty category or set from previous submit
+
+        // Fetch categories based on selectedType
+        const categories = await knex('category')
+            .select('categoryid', 'categoryname')
+            .where('type', selectedType)
+            .andWhere('userId', req.cookies.userId);
+        
+        //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
+        const userId = req.cookies.userId; // Retrieve the user ID from the cookie
+        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+
+        if (!userId) {
+            // If userId doesn't exist in the cookie, redirect to login
+            return res.redirect('/');
+        }
+        // Render the page with the selectedType and categories
+        res.render('expenses', { categories, selectedType, selectedCategory, themeColor, userId  });
+    })
+    .post(async (req, res) => {
+        // Handle form submission (update logic)
+        let selectedType = req.body.type;  // Get type from submitted form
+        let selectedCategory = req.body.category;  // Get selected category
+
+        // Fetch categories based on selectedType
+        const categories = await knex('category')
+            .select('categoryid', 'categoryname')
+            .where('type', selectedType)
+            .andWhere('userId', req.cookies.userId);
+        
+        const userId = req.cookies.userId; // Retrieve the user ID from the cookie
+        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+
+        if (!userId) {
+            // If userId doesn't exist in the cookie, redirect to login
+            return res.redirect('/');
+        }
+        // Render the page with the selected values
+        res.render('expenses', { categories, selectedType, selectedCategory, themeColor, userId });
+    });
+
 // Helpful Tips route
 app.get("/helpfultips", (req, res) => {
-                        const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+            const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
     res.render("helpfultips", {themeColor}); // Render views/helpfultips.ejs
 });
 
@@ -190,112 +235,51 @@ app.post('/update-color', async (req, res) => {
     }
 });
 
-// POST route to save expense category
-/*app.post('/save-expense-category', async (req, res) => {
-    const { expenseEmoji, categoryName, budgetGoal } = req.body;
+// POST route to save categories
+app.post('/save-category', async (req, res) => {
+    const {icon, categoryname, budget, type } = req.body;
+    const userId = req.cookies.userId; // Assuming userId is stored in the session
+
+    console.log(categoryname, icon, budget, type, userId);
+
+    if (!userId) {
+        return res.status(400).send('User ID not found.');
+    }
 
     try {
-        // Create a new category or update the existing one in the database
-        const newCategory = new Category({
-            emoji: expenseEmoji,
-            category: categoryName,
-            budgetGoal: parseFloat(budgetGoal) || 0,  // Ensure it's a number
+        // Use Knex to insert the data into the database
+        await knex('category').insert({
+            icon: icon,
+            categoryname: categoryname,
+            budget: parseFloat(budget) || 0, // Ensure it's a number
+            type: type,
+            userId: userId
         });
 
-        await newCategory.save();
-
         // Redirect or send a response back indicating success
-        res.redirect('/settings'); // Redirect to settings page or wherever you want
+        res.redirect('/settings'); // Redirect to settings page or another relevant page
     } catch (error) {
         console.error('Error saving category:', error);
-        res.status(500).send('Error saving category');
+        res.status(500).send('Error saving category.');
     }
 });
-
-// POST route to save income category
-router.post('/save-income-category', async (req, res) => {
-    const { expenseEmoji, categoryName, budgetGoal } = req.body;
-
-    try {
-        // Create a new category or update the existing one in the database
-        const newCategory = new Category({
-            emoji: expenseEmoji,
-            category: categoryName,
-            budgetGoal: parseFloat(budgetGoal) || 0,  // Ensure it's a number
-        });
-
-        await newCategory.save();
-
-        // Redirect or send a response back indicating success
-        res.redirect('/settings'); // Redirect to settings page or wherever you want
-    } catch (error) {
-        console.error('Error saving category:', error);
-        res.status(500).send('Error saving category');
-    }
-});*/
-
 
 // Profile route
 app.get("/profile", (req, res) => {
-                            //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-                            const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-                            const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
+            //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
+            const userId = req.cookies.userId; // Retrieve the user ID from the cookie
+            const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
 
-                            if (!userId) {
-                                // If userId doesn't exist in the cookie, redirect to login
-                                return res.redirect('/');
-                            }
+            if (!userId) {
+                // If userId doesn't exist in the cookie, redirect to login
+                return res.redirect('/');
+            }
     res.render("profile", { themeColor, userId }); // Render views/profile.ejs
-});
-
-// Data route to fetch data from the database
-app.get('/expenses-by-month', async (req, res) => {
-    try {
-        const result = await knex('expenseinfo')
-            .select(knex.raw("TO_CHAR(DATE_TRUNC('month', expensedatecreated), 'YYYY-MM') AS month"))
-            .avg('expenseamount AS avg_expense')
-            .groupBy(knex.raw("DATE_TRUNC('month', expensedatecreated)"))
-            .orderBy('month');
-
-        // Send the data in a JSON format
-        res.json(result);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching data from database');
-    }
-});
-
-app.get('/income-by-month', async (req, res) => {
-    try {
-        const result = await knex('incomeinfo')
-            .select(knex.raw("TO_CHAR(DATE_TRUNC('month', incomedatecreated), 'YYYY-MM') AS month"))
-            .sum('incomeamount AS total_income')
-            .groupBy(knex.raw("DATE_TRUNC('month', incomedatecreated)"))
-            .orderBy('month');
-
-        // Send the data in a JSON format
-        res.json(result);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching income data from database');
-    }
-});
-
-// Route to fetch the expenses page
-app.get('/expenses', (req, res) => {
-    //This just allows the currently logged in user's id to be accessed for things like filtering in tableau. 
-    const userId = req.cookies.userId; // Retrieve the user ID from the cookie
-    const themeColor = req.cookies['theme-color'] || '#4e73df'; //retrieves the theme color
-
-    if (!userId) {
-        // If userId doesn't exist in the cookie, redirect to login
-        return res.redirect('/');
-    }
-    res.render("expenses", { themeColor, userId });
 });
 
 
 // Serve static files from the "Javascript" folder
 app.use('/js', express.static(path.join(__dirname, 'Javascript')));
 
+// Port is listening
 app.listen(port, () => console.log(`Express App has started and server is listening on port ${port}!`));
