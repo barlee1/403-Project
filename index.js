@@ -565,19 +565,17 @@ app.route('/expenses')
     .get(async (req, res) => {
         let selectedType = req.query.type || 'X';
         const userId = req.cookies.userId;
-        const themeColor = req.cookies['theme-color'] || '#4e73df';
+        const themeColor = req.cookies['theme-color'] || '#4E73DF';
         const profilePicture = req.cookies.profilePicture || 'browncow.png'; // Retrieve from cookie
-
         if (!userId) {
             return res.redirect('/');
         }
-
+  
         try {
             const categories = await knex('category')
                 .select('categoryid', 'categoryname')
                 .where('type', selectedType)
                 .andWhere('userId', userId);
-
             const entries = await knex('entryinfo')
                 .join('category', 'entryinfo.categoryid', 'category.categoryid')
                 .select(
@@ -588,7 +586,6 @@ app.route('/expenses')
                     knex.raw("TO_CHAR(datecreated, 'MM/DD/YYYY') AS formattedDate")
                 )
                 .where('entryinfo.userid', userId);
-
             // Debugging: Log the entries to check if datecreated exists
             console.log('Entries fetched in GET /expenses:', entries);
 
@@ -608,19 +605,16 @@ app.route('/expenses')
     .post(async (req, res) => {
         const userId = req.cookies.userId;
         const { type = 'X', category } = req.body; // Default type to 'X' if undefined
-        const themeColor = req.cookies['theme-color'] || '#4e73df';
+        const themeColor = req.cookies['theme-color'] || '#4E73DF';
         const profilePicture = req.cookies.profilePicture || 'browncow.png'; // Retrieve from cookie
-
         if (!userId) {
             return res.redirect('/');
         }
-
         try {
             const categories = await knex('category')
                 .select('categoryid', 'categoryname')
                 .where('type', type)
                 .andWhere('userId', userId);
-
             const entries = await knex('entryinfo')
                 .join('category', 'entryinfo.categoryid', 'category.categoryid')
                 .select(
@@ -631,10 +625,8 @@ app.route('/expenses')
                     knex.raw("TO_CHAR(datecreated, 'MM/DD/YYYY') AS formattedDate")
                 )
                 .where('entryinfo.userid', userId);
-
             // Debugging: Log the entries to check if datecreated exists
             console.log('Entries fetched in POST /expenses:', entries);
-
             res.render('expenses', {
                 categories,
                 selectedType: type,
@@ -653,22 +645,30 @@ app.route('/expenses')
 app.get('/search-expenses', async (req, res) => {
     const { year, month, day } = req.query;
     const userId = req.cookies.userId;
+    const selectedType = req.query.type || 'X'; // Default to 'X' for expenses
     const themeColor = req.cookies['theme-color'] || '#4e73df';
-    const selectedType = req.query.type || 'X';
 
     if (!userId) {
         return res.redirect('/');
     }
 
     try {
+        // Fetch categories for the selected type
         const categories = await knex('category')
             .select('categoryid', 'categoryname')
             .where('type', selectedType)
             .andWhere('userId', userId);
 
+        // Build the query for filtered entries
         let query = knex('entryinfo')
             .join('category', 'entryinfo.categoryid', 'category.categoryid')
-            .select('amount', 'datecreated', 'category.categoryname', 'description')
+            .select(
+                'amount',
+                'datecreated',
+                'category.categoryname',
+                'description',
+                knex.raw("TO_CHAR(datecreated, 'MM/DD/YYYY') AS formattedDate")
+            )
             .where('entryinfo.userid', userId);
 
         if (year) query.andWhere(knex.raw("EXTRACT(YEAR FROM datecreated) = ?", [year]));
@@ -677,16 +677,10 @@ app.get('/search-expenses', async (req, res) => {
 
         const results = await query;
 
-        // Debugging: Log the entries to check if datecreated exists
         console.log('Entries fetched in GET /search-expenses:', results);
 
-        const formattedResults = results.map(entry => ({
-            ...entry,
-            formattedDate: new Date(entry.datecreated).toLocaleDateString('en-US'),
-        }));
-
         res.render('expenses', {
-            entries: formattedResults,
+            entries: results,
             categories,
             selectedType,
             themeColor,
@@ -694,7 +688,7 @@ app.get('/search-expenses', async (req, res) => {
             searchFilters: { year, month, day },
         });
     } catch (error) {
-        console.error('Error searching expenses:', error);
+        console.error('Error searching expenses in GET /search-expenses:', error);
         res.status(500).send('An error occurred while searching for expenses.');
     }
 });
