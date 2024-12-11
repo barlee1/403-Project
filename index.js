@@ -54,6 +54,12 @@ app.use(
   })
 );
 
+// Middleware to pass profilePicture to all views
+app.use((req, res, next) => {
+    res.locals.profilePicture = req.cookies.profilePic || 'browncow.png'; // Default profile picture
+    next();
+});
+
 
 // Test the database connection
 (async () => {
