@@ -151,18 +151,18 @@
                         <% if (entries && entries.length > 0) { %>
                             <% entries.forEach(entry => { %>
                                 <tr>
-                                    <td><%= entry.formattedDate %></td>
+                                    <td><%= entry.formatteddate %></td> <!-- Use formatteddate -->
                                     <td>$<%= entry.amount %></td>
                                     <td><%= entry.categoryname %></td>
                                     <td><%= entry.description %></td>
                                 </tr>
-                            <% }) %>
+                            <% }); %>
                         <% } else { %>
                             <tr>
                                 <td colspan="4">No expenses found for the selected filters.</td>
                             </tr>
                         <% } %>
-                    </tbody>
+                    </tbody>                    
                 </table>       
             </div>
         </div>
