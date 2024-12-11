@@ -570,6 +570,7 @@ app.route('/expenses')
         if (!userId) {
             return res.redirect('/');
         }
+  
         try {
             const categories = await knex('category')
                 .select('categoryid', 'categoryname')
@@ -587,6 +588,7 @@ app.route('/expenses')
                 .where('entryinfo.userid', userId);
             // Debugging: Log the entries to check if datecreated exists
             console.log('Entries fetched in GET /expenses:', entries);
+
             res.render('expenses', {
                 categories,
                 selectedType,
